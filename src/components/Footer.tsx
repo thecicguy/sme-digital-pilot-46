@@ -50,9 +50,7 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/legal/copyright" className="text-muted-foreground hover:text-primary transition-colors">
-                  Copyright
-                </Link>
+                <Link to="/legal/copyright" className="text-muted-foreground hover:text-primary transition-colors">Copyright (c) 2025</Link>
               </li>
             </ul>
           </div>
