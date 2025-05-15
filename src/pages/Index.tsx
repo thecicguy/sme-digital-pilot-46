@@ -7,7 +7,7 @@ const Index = () => {
 
   useEffect(() => {
     // Redirect to clients page on load
-    navigate("/clients");
+    navigate("/clients", { replace: true });
   }, [navigate]);
 
   return (

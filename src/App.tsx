@@ -25,6 +25,9 @@ import ClientDetail from "./pages/ClientDetail";
 import Projects from "./pages/Projects";
 import Tasks from "./pages/Tasks";
 import NotFound from "./pages/NotFound";
+import Reports from "./pages/Reports";
+import EmailTemplates from "./pages/EmailTemplates";
+import Settings from "./pages/Settings";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -57,6 +60,9 @@ const App = () => (
                   <Route path="/clients/:clientId" element={<ClientDetail />} />
                   <Route path="/projects" element={<Projects />} />
                   <Route path="/tasks" element={<Tasks />} />
+                  <Route path="/email-templates" element={<EmailTemplates />} />
+                  <Route path="/reports" element={<Reports />} />
+                  <Route path="/settings" element={<Settings />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/booking" element={<Booking />} />

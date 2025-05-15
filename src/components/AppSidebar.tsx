@@ -2,7 +2,20 @@
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
-import { Book, BookmarkCheck, Building, Calendar, Contact, Info, Mail, Settings, Shield, Users } from "lucide-react";
+import { 
+  Book, 
+  BookmarkCheck, 
+  Building, 
+  Calendar, 
+  Contact, 
+  Info, 
+  Mail, 
+  Settings, 
+  Shield, 
+  Users,
+  FileText,
+  Home 
+} from "lucide-react";
 
 const AppSidebar = () => {
   const { user, logout } = useAuth();
@@ -32,7 +45,7 @@ const AppSidebar = () => {
     { 
       name: "Reports", 
       path: "/reports", 
-      icon: <Book className="h-5 w-5" /> 
+      icon: <FileText className="h-5 w-5" /> 
     },
     { 
       name: "Settings", 
@@ -68,6 +81,7 @@ const AppSidebar = () => {
     <aside className="fixed left-0 top-0 z-30 flex h-screen w-64 flex-col border-r border-border bg-background transition-all duration-300">
       <div className="flex h-16 items-center border-b border-border px-6">
         <Link to="/" className="flex items-center gap-2 font-bold text-xl">
+          <Home className="h-5 w-5 text-primary" />
           <span className="text-primary">CRM for SMEs</span>
         </Link>
       </div>
