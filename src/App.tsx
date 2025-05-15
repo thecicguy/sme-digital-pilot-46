@@ -23,6 +23,7 @@ import Unauthorized from "./pages/Unauthorized";
 import Clients from "./pages/Clients";
 import ClientDetail from "./pages/ClientDetail";
 import Projects from "./pages/Projects";
+import ProjectDetail from "./pages/ProjectDetail";
 import Tasks from "./pages/Tasks";
 import NotFound from "./pages/NotFound";
 import Reports from "./pages/Reports";
@@ -59,6 +60,7 @@ const App = () => (
                   <Route path="/clients" element={<Clients />} />
                   <Route path="/clients/:clientId" element={<ClientDetail />} />
                   <Route path="/projects" element={<Projects />} />
+                  <Route path="/projects/:projectId" element={<ProjectDetail />} />
                   <Route path="/tasks" element={<Tasks />} />
                   <Route path="/email-templates" element={<EmailTemplates />} />
                   <Route path="/reports" element={<Reports />} />

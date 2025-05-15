@@ -64,17 +64,32 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4">Connect</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+                <a 
+                  href="https://www.linkedin.com/in/brendonmcloughlin/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
                   LinkedIn
                 </a>
               </li>
               <li>
-                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+                <a 
+                  href="https://x.com/FrugalInnovator" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
                   Twitter
                 </a>
               </li>
               <li>
-                <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+                <a 
+                  href="https://www.facebook.com/brendon.mcloughlin" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
                   Facebook
                 </a>
               </li>
@@ -83,7 +98,7 @@ const Footer = () => {
         </div>
         
         <div className="mt-10 border-t border-border pt-6 text-center text-sm text-muted-foreground">
-          <p>© 2025 CRM for SMEs. All rights reserved.</p>
+          <p>© 2025 InnovationWorks.ie. All rights reserved.</p>
         </div>
       </div>
     </footer>

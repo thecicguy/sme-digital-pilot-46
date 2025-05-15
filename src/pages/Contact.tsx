@@ -184,18 +184,19 @@ const Contact = () => {
             <CardContent className="space-y-4">
               <div>
                 <h3 className="font-medium">Email</h3>
-                <p className="text-muted-foreground">contact@crmforsmes.com</p>
+                <p className="text-muted-foreground">info@InnovationWorks.ie</p>
               </div>
               <div>
                 <h3 className="font-medium">Phone</h3>
-                <p className="text-muted-foreground">+1 (555) 123-4567</p>
+                <p className="text-muted-foreground">+353 1234567890</p>
               </div>
               <div>
                 <h3 className="font-medium">Address</h3>
                 <p className="text-muted-foreground">
-                  123 Business Avenue<br />
-                  Suite 456<br />
-                  San Francisco, CA 94105
+                  Tiny Village, Small Town<br />
+                  Big City, Co. Tipperary<br />
+                  Ireland<br />
+                  ABC 123
                 </p>
               </div>
             </CardContent>
