@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { fetchProject, fetchTasks } from "@/lib/api";
+import { fetchProject, fetchTasks, fetchClient } from "@/lib/api";
 import { 
   ArrowLeft, 
   Calendar, 
@@ -28,6 +28,12 @@ const ProjectDetail = () => {
     queryKey: ["project", projectId],
     queryFn: () => projectId ? fetchProject(projectId) : undefined,
     enabled: !!projectId
+  });
+
+  const { data: client } = useQuery({
+    queryKey: ["client", project?.clientId],
+    queryFn: () => project?.clientId ? fetchClient(project.clientId) : undefined,
+    enabled: !!project?.clientId
   });
 
   const { data: tasks, isLoading: isTasksLoading } = useQuery({
@@ -80,7 +86,7 @@ const ProjectDetail = () => {
           </Button>
           <div>
             <span className="text-sm font-medium text-muted-foreground capitalize">{project.type} Project</span>
-            <h1 className="text-2xl font-bold tracking-tight">Project for {project.clientName}</h1>
+            <h1 className="text-2xl font-bold tracking-tight">Project for {client?.businessName || "Loading client..."}</h1>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -133,7 +139,7 @@ const ProjectDetail = () => {
                 to={`/clients/${project.clientId}`}
                 className="text-sm hover:underline"
               >
-                {project.clientName}
+                {client?.businessName || "Loading client..."}
               </Link>
             </div>
           </CardContent>
@@ -163,7 +169,7 @@ const ProjectDetail = () => {
                     {totalTasks === 0 ? (
                       <Badge variant="outline">Not Started</Badge>
                     ) : completedTasks === totalTasks ? (
-                      <Badge variant="success">Completed</Badge>
+                      <Badge variant="secondary">Completed</Badge>
                     ) : (
                       <Badge variant="secondary">In Progress</Badge>
                     )}
@@ -171,7 +177,7 @@ const ProjectDetail = () => {
                 </div>
                 <div>
                   <dt className="text-sm font-medium text-muted-foreground">Client</dt>
-                  <dd className="text-lg">{project.clientName}</dd>
+                  <dd className="text-lg">{client?.businessName || "Loading client..."}</dd>
                 </div>
                 <div>
                   <dt className="text-sm font-medium text-muted-foreground">Days Allocated</dt>
