@@ -6,29 +6,61 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
 
-const Login = () => {
+const Register = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (password !== confirmPassword) {
+      toast({
+        title: "Password Error",
+        description: "Passwords do not match. Please try again.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setIsLoading(true);
+    
     try {
+      // In a real application, this would call a registration API
+      // For demo purposes, we'll just simulate successful registration
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      toast({
+        title: "Registration Successful",
+        description: "Your account has been created successfully.",
+      });
+      
+      // Auto login after registration
       const success = await login(email, password);
       if (success) {
         navigate("/clients");
       }
+    } catch (error) {
+      console.error("Registration error:", error);
+      toast({
+        title: "Registration Failed",
+        description: "An error occurred during registration. Please try again.",
+        variant: "destructive",
+      });
     } finally {
       setIsLoading(false);
     }
   };
 
-  const navigateToRegister = () => {
-    navigate("/register");
+  const navigateToLogin = () => {
+    navigate("/login");
   };
 
   return (
@@ -40,11 +72,23 @@ const Login = () => {
 
       <Card className="mx-auto w-full max-w-md">
         <CardHeader>
-          <CardTitle>Login</CardTitle>
-          <CardDescription>Enter your credentials to access the CRM system</CardDescription>
+          <CardTitle>Create an Account</CardTitle>
+          <CardDescription>Register to access the CRM system</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="name">Full Name</Label>
+              <Input
+                id="name"
+                type="text"
+                placeholder="John Doe"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                disabled={isLoading}
+              />
+            </div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -69,40 +113,45 @@ const Login = () => {
                 disabled={isLoading}
               />
             </div>
+            <div className="space-y-2">
+              <Label htmlFor="confirmPassword">Confirm Password</Label>
+              <Input
+                id="confirmPassword"
+                type="password"
+                placeholder="••••••••"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                disabled={isLoading}
+              />
+            </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? (
                 <>
                   <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-t-transparent"></div>
-                  Logging in...
+                  Creating Account...
                 </>
               ) : (
-                "Login"
+                "Sign Up"
               )}
             </Button>
             <div className="text-center text-sm">
-              Don't have an account?{" "}
+              Already have an account?{" "}
               <button
                 type="button"
                 className="text-crm-blue hover:underline"
-                onClick={navigateToRegister}
+                onClick={navigateToLogin}
               >
-                Sign up here
+                Login here
               </button>
             </div>
           </CardFooter>
         </form>
       </Card>
-
-      <div className="mt-6 text-center text-sm text-crm-gray">
-        <p>For demo purposes, use:</p>
-        <p>Service Provider: jane@serviceprovider.com</p>
-        <p>Client Contact: john@client.com</p>
-        <p>(Any password will work)</p>
-      </div>
     </div>
   );
 };
 
-export default Login;
+export default Register;

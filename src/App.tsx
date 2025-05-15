@@ -7,9 +7,18 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import AppLayout from "@/components/AppLayout";
+import Footer from "@/components/Footer";
 
 // Pages
 import Login from "./pages/Login";
+import Register from "./pages/Register";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+import Booking from "./pages/Booking";
+import DataPrivacy from "./pages/Legal/DataPrivacy";
+import DataProtection from "./pages/Legal/DataProtection";
+import TermsOfUse from "./pages/Legal/TermsOfUse";
+import Copyright from "./pages/Legal/Copyright";
 import Unauthorized from "./pages/Unauthorized";
 import Clients from "./pages/Clients";
 import ClientDetail from "./pages/ClientDetail";
@@ -32,24 +41,37 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/unauthorized" element={<Unauthorized />} />
-            
-            <Route element={
-              <ProtectedRoute>
-                <AppLayout />
-              </ProtectedRoute>
-            }>
-              <Route path="/" element={<Clients />} />
-              <Route path="/clients" element={<Clients />} />
-              <Route path="/clients/:clientId" element={<ClientDetail />} />
-              <Route path="/projects" element={<Projects />} />
-              <Route path="/tasks" element={<Tasks />} />
-            </Route>
-            
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <div className="flex min-h-screen flex-col">
+            <div className="flex-1">
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                
+                <Route element={
+                  <ProtectedRoute>
+                    <AppLayout />
+                  </ProtectedRoute>
+                }>
+                  <Route path="/" element={<Clients />} />
+                  <Route path="/clients" element={<Clients />} />
+                  <Route path="/clients/:clientId" element={<ClientDetail />} />
+                  <Route path="/projects" element={<Projects />} />
+                  <Route path="/tasks" element={<Tasks />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/booking" element={<Booking />} />
+                  <Route path="/legal/data-privacy" element={<DataPrivacy />} />
+                  <Route path="/legal/data-protection" element={<DataProtection />} />
+                  <Route path="/legal/terms-of-use" element={<TermsOfUse />} />
+                  <Route path="/legal/copyright" element={<Copyright />} />
+                </Route>
+                
+                <Route path="/unauthorized" element={<Unauthorized />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </div>
+            <Footer />
+          </div>
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>
