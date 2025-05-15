@@ -1,10 +1,7 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-
 const About = () => {
-  return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-6">About CRM for SMEs</h1>
+  return <div className="container mx-auto py-8">
+      <h1 className="text-3xl font-bold mb-6">About CRM4SMEs</h1>
       
       <div className="grid gap-6 md:grid-cols-2">
         <Card>
@@ -28,12 +25,7 @@ const About = () => {
             <CardDescription>End-to-end CRM solution</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-muted-foreground">
-              CRM for SMEs facilitates end-to-end management of service provider 
-              interactions with SMEs, supporting clients in identifying, standardizing, 
-              harmonizing, adopting, and adapting innovative digital technologies to enhance 
-              business practices and processes.
-            </p>
+            <p className="text-muted-foreground">CRM4SMEs facilitates end-to-end management of service provider interactions with SMEs, supporting clients in identifying, standardizing, harmonizing, adopting, and adapting innovative digital technologies to enhance business practices and processes.</p>
           </CardContent>
         </Card>
         
@@ -75,8 +67,6 @@ const About = () => {
           </CardContent>
         </Card>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default About;
