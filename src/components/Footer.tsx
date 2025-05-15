@@ -69,9 +69,7 @@ const Footer = () => {
                 <a href="https://x.com/FrugalInnovator" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">X</a>
               </li>
               <li>
-                <a href="https://www.facebook.com/brendon.mcloughlin" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
-                  Facebook
-                </a>
+                <a href="https://www.facebook.com/brendon.mcloughlin" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">Meta</a>
               </li>
             </ul>
           </div>
