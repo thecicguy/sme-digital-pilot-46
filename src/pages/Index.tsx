@@ -13,7 +13,7 @@ const Index = () => {
   return (
     <div className="flex h-screen items-center justify-center">
       <div className="text-center">
-        <h1 className="text-3xl font-bold">CRM for SMEs</h1>
+        <h1 className="text-3xl font-bold">CRM4SMEs</h1>
         <p className="mt-2">Redirecting to dashboard...</p>
         <div className="mt-4 h-2 w-40 overflow-hidden rounded-full bg-gray-200">
           <div className="h-full animate-pulse bg-primary"></div>
