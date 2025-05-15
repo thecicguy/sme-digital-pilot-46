@@ -1,9 +1,6 @@
-
 import { Link } from "react-router-dom";
-
 const Footer = () => {
-  return (
-    <footer className="border-t border-border bg-muted/40">
+  return <footer className="border-t border-border bg-muted/40">
       <div className="container mx-auto py-10">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div>
@@ -64,32 +61,15 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4">Connect</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <a 
-                  href="https://www.linkedin.com/in/brendonmcloughlin/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                >
+                <a href="https://www.linkedin.com/in/brendonmcloughlin/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                   LinkedIn
                 </a>
               </li>
               <li>
-                <a 
-                  href="https://x.com/FrugalInnovator" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                >
-                  Twitter
-                </a>
+                <a href="https://x.com/FrugalInnovator" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">X</a>
               </li>
               <li>
-                <a 
-                  href="https://www.facebook.com/brendon.mcloughlin" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                >
+                <a href="https://www.facebook.com/brendon.mcloughlin" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                   Facebook
                 </a>
               </li>
@@ -101,8 +81,6 @@ const Footer = () => {
           <p>© 2025 InnovationWorks.ie. All rights reserved.</p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
