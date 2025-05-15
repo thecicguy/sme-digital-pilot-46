@@ -20,12 +20,12 @@ const Projects = () => {
 
   const { data: projects, isLoading, error } = useQuery({
     queryKey: ["projects"],
-    queryFn: fetchProjects,
+    queryFn: () => fetchProjects(),
   });
 
   const { data: clients } = useQuery({
     queryKey: ["clients"],
-    queryFn: fetchClients,
+    queryFn: () => fetchClients(),
   });
 
   const filteredProjects = projects?.filter((project) => {
@@ -66,7 +66,7 @@ const Projects = () => {
             <SelectValue placeholder="Filter by client" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Clients</SelectItem>
+            <SelectItem value="all">All Clients</SelectItem>
             {clients?.map((client) => (
               <SelectItem key={client.id} value={client.id}>
                 {client.businessName}

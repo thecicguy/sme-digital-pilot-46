@@ -49,7 +49,7 @@ const CreateTaskDialog = ({ open, onClose, projectId: initialProjectId }: Create
 
   const { data: projects } = useQuery({
     queryKey: ["projects"],
-    queryFn: fetchProjects,
+    queryFn: () => fetchProjects(),
     enabled: open && !initialProjectId,
   });
 
