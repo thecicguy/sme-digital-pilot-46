@@ -21,7 +21,6 @@ import {
 import { formatDistanceToNow } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import CreateContactDialog from "@/components/clients/CreateContactDialog";
@@ -31,7 +30,6 @@ import CreateNoteDialog from "@/components/notes/CreateNoteDialog";
 const ClientDetail = () => {
   const { clientId } = useParams<{ clientId: string }>();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("overview");
   const [isContactDialogOpen, setIsContactDialogOpen] = useState(false);
   const [isProjectDialogOpen, setIsProjectDialogOpen] = useState(false);
   const [isNoteDialogOpen, setIsNoteDialogOpen] = useState(false);
@@ -207,70 +205,63 @@ const ClientDetail = () => {
         </Card>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
+      {/* Client Description Section - Formerly in Overview tab */}
+      <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <TabsList>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="notes">Notes</TabsTrigger>
-          </TabsList>
-          {activeTab === "notes" && (
-            <Button size="sm" onClick={() => setIsNoteDialogOpen(true)}>
+          <h2 className="text-lg font-semibold">Client Description</h2>
+        </div>
+        <Card>
+          <CardContent className="pt-6">
+            <p>{client.description}</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Notes Section - Formerly in Notes tab */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold">Notes</h2>
+          <Button size="sm" onClick={() => setIsNoteDialogOpen(true)}>
+            <Plus className="mr-2 h-4 w-4" />
+            Add Note
+          </Button>
+        </div>
+        
+        {isNotesLoading ? (
+          <div className="space-y-4">
+            <Skeleton className="h-32 w-full" />
+            <Skeleton className="h-32 w-full" />
+          </div>
+        ) : notes && notes.length > 0 ? (
+          notes.map((note) => (
+            <Card key={note.id}>
+              <CardHeader className="pb-2">
+                <div className="flex items-center justify-between">
+                  <Badge>{note.category}</Badge>
+                  <span className="text-xs text-muted-foreground">
+                    {formatDistanceToNow(new Date(note.createdAt), { addSuffix: true })}
+                  </span>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p>{note.content}</p>
+              </CardContent>
+            </Card>
+          ))
+        ) : (
+          <div className="rounded-lg border border-dashed p-8 text-center">
+            <FileText className="mx-auto h-8 w-8 text-muted-foreground" />
+            <h3 className="mt-2 text-lg font-medium">No notes yet</h3>
+            <p className="text-sm text-muted-foreground">
+              Notes help you keep track of important information about clients
+            </p>
+            <Button className="mt-4" onClick={() => setIsNoteDialogOpen(true)}>
               <Plus className="mr-2 h-4 w-4" />
               Add Note
             </Button>
-          )}
-        </div>
-
-        <TabsContent value="overview" className="pt-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Client Description</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>{client.description}</p>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="notes" className="pt-4">
-          <div className="space-y-4">
-            {isNotesLoading ? (
-              <div className="space-y-4">
-                <Skeleton className="h-32 w-full" />
-                <Skeleton className="h-32 w-full" />
-              </div>
-            ) : notes && notes.length > 0 ? (
-              notes.map((note) => (
-                <Card key={note.id}>
-                  <CardHeader className="pb-2">
-                    <div className="flex items-center justify-between">
-                      <Badge>{note.category}</Badge>
-                      <span className="text-xs text-muted-foreground">
-                        {formatDistanceToNow(new Date(note.createdAt), { addSuffix: true })}
-                      </span>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p>{note.content}</p>
-                  </CardContent>
-                </Card>
-              ))
-            ) : (
-              <div className="rounded-lg border border-dashed p-8 text-center">
-                <FileText className="mx-auto h-8 w-8 text-muted-foreground" />
-                <h3 className="mt-2 text-lg font-medium">No notes yet</h3>
-                <p className="text-sm text-muted-foreground">
-                  Notes help you keep track of important information about clients
-                </p>
-                <Button className="mt-4" onClick={() => setIsNoteDialogOpen(true)}>
-                  <Plus className="mr-2 h-4 w-4" />
-                  Add Note
-                </Button>
-              </div>
-            )}
           </div>
-        </TabsContent>
-      </Tabs>
+        )}
+      </div>
 
       {clientId && (
         <>
