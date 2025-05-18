@@ -7,7 +7,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import AppLayout from "@/components/AppLayout";
-import Footer from "@/components/Footer";
 
 // Pages
 import Login from "./pages/Login";
@@ -78,7 +77,7 @@ const App = () => (
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </div>
-            <Footer />
+            {/* Footer removed from here */}
           </div>
         </BrowserRouter>
       </TooltipProvider>
