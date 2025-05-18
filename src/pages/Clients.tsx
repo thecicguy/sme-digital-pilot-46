@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { fetchClients } from "@/lib/api";
-import { Plus, Search, MapPin, Building } from "lucide-react";
+import { Plus, Search, MapPin, Building, Phone, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -117,23 +117,30 @@ const Clients = () => {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filteredClients?.map((client) => (
             <Card key={client.id} className="overflow-hidden transition-all hover:shadow-md">
-              <CardHeader className="p-4">
-                <CardTitle className="truncate text-lg">{client.businessName}</CardTitle>
-              </CardHeader>
-              <CardContent className="p-4 pt-0">
-                <p className="mb-3 text-sm text-muted-foreground">{client.description}</p>
-                <div className="flex flex-wrap gap-2">
-                  {client.location && (
-                    <Badge variant="outline" className="flex items-center">
-                      <MapPin className="mr-1 h-3 w-3" />
-                      {client.location}
-                    </Badge>
-                  )}
+              <CardHeader className="p-4 pb-2">
+                <CardTitle className="flex items-center justify-between">
+                  <span className="truncate text-lg font-bold">{client.businessName}</span>
                   {client.potentialName && (
-                    <Badge variant="outline" className="flex items-center">
-                      <Building className="mr-1 h-3 w-3" />
+                    <Badge variant="outline" className="ml-2">
                       {client.potentialName}
                     </Badge>
+                  )}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-4 pt-1">
+                <p className="mb-3 text-sm text-muted-foreground line-clamp-2">{client.description}</p>
+                <div className="space-y-2">
+                  {client.location && (
+                    <div className="flex items-center text-sm">
+                      <MapPin className="mr-2 h-4 w-4 text-muted-foreground flex-shrink-0" />
+                      <span className="truncate">{client.location}</span>
+                    </div>
+                  )}
+                  {client.potentialName && (
+                    <div className="flex items-center text-sm">
+                      <Building className="mr-2 h-4 w-4 text-muted-foreground flex-shrink-0" />
+                      <span className="truncate">Potential Name: {client.potentialName}</span>
+                    </div>
                   )}
                 </div>
               </CardContent>
@@ -150,6 +157,7 @@ const Clients = () => {
           <TableHeader>
             <TableRow>
               <TableHead>Business Name</TableHead>
+              <TableHead>Potential Name</TableHead>
               <TableHead>Description</TableHead>
               <TableHead>Location</TableHead>
               <TableHead className="text-right">Actions</TableHead>
@@ -159,13 +167,16 @@ const Clients = () => {
             {filteredClients?.map((client) => (
               <TableRow key={client.id} className="hover:bg-muted/50">
                 <TableCell className="font-medium">{client.businessName}</TableCell>
+                <TableCell>{client.potentialName || "—"}</TableCell>
                 <TableCell className="max-w-xs truncate">{client.description}</TableCell>
                 <TableCell>
-                  {client.location && (
-                    <Badge variant="outline" className="flex items-center w-fit">
-                      <MapPin className="mr-1 h-3 w-3" />
-                      {client.location}
-                    </Badge>
+                  {client.location ? (
+                    <div className="flex items-center">
+                      <MapPin className="mr-1 h-3 w-3 text-muted-foreground" />
+                      <span>{client.location}</span>
+                    </div>
+                  ) : (
+                    "—"
                   )}
                 </TableCell>
                 <TableCell className="text-right">
