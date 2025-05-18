@@ -16,13 +16,19 @@ import {
   Plus,
   Building,
   MapPin,
-  Calendar
+  Calendar,
+  Globe,
+  Mail,
+  Phone,
+  File,
+  MessageSquare
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 import CreateContactDialog from "@/components/clients/CreateContactDialog";
 import CreateProjectDialog from "@/components/projects/CreateProjectDialog";
 import CreateNoteDialog from "@/components/notes/CreateNoteDialog";
@@ -67,7 +73,7 @@ const ClientDetail = () => {
           </Button>
           <Skeleton className="h-8 w-64" />
         </div>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4">
           <Skeleton className="h-32 w-full" />
           <Skeleton className="h-32 w-full" />
           <Skeleton className="h-32 w-full" />
@@ -90,7 +96,7 @@ const ClientDetail = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => navigate(-1)}>
@@ -100,116 +106,76 @@ const ClientDetail = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+      {/* Company Details Section */}
+      <div className="space-y-4">
+        <h2 className="text-xl font-semibold flex items-center gap-2">
+          <Building className="h-5 w-5" />
+          Company Details
+        </h2>
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Contacts</CardTitle>
-            <Button size="sm" variant="ghost" onClick={() => setIsContactDialogOpen(true)}>
-              <Plus className="h-4 w-4" />
-            </Button>
-          </CardHeader>
-          <CardContent>
-            {isContactsLoading ? (
-              <div className="space-y-2">
-                <Skeleton className="h-5 w-full" />
-                <Skeleton className="h-5 w-full" />
-              </div>
-            ) : contacts && contacts.length > 0 ? (
-              <div className="space-y-2">
-                {contacts.map((contact) => (
-                  <div key={contact.id} className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium">{contact.name}</p>
-                      <p className="text-xs text-muted-foreground">{contact.email}</p>
-                    </div>
-                    <Badge>{contact.role}</Badge>
+          <CardContent className="pt-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">Business Name</p>
+                  <p className="text-base">{client.businessName}</p>
+                </div>
+                
+                {client.potentialName && (
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">Trading Name</p>
+                    <p className="text-base">{client.potentialName}</p>
                   </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-sm text-muted-foreground">No contacts added yet</p>
-            )}
-          </CardContent>
-        </Card>
+                )}
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Projects</CardTitle>
-            <Button size="sm" variant="ghost" onClick={() => setIsProjectDialogOpen(true)}>
-              <Plus className="h-4 w-4" />
-            </Button>
-          </CardHeader>
-          <CardContent>
-            {isProjectsLoading ? (
-              <div className="space-y-2">
-                <Skeleton className="h-5 w-full" />
-                <Skeleton className="h-5 w-full" />
+                {client.location && (
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">Address</p>
+                    <p className="text-base flex items-center gap-1">
+                      <MapPin className="h-4 w-4" />
+                      {client.location}
+                    </p>
+                  </div>
+                )}
               </div>
-            ) : projects && projects.length > 0 ? (
-              <div className="space-y-2">
-                {projects.map((project) => (
-                  <Link 
-                    key={project.id} 
-                    to={`/projects/${project.id}`}
-                    className="flex items-center justify-between rounded-md border p-2 hover:bg-accent"
-                  >
-                    <div>
-                      <p className="font-medium capitalize">{project.type}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {formatDistanceToNow(new Date(project.createdAt), { addSuffix: true })}
-                      </p>
-                    </div>
-                    <Badge variant="outline">{project.daysAllocated} days</Badge>
-                  </Link>
-                ))}
-              </div>
-            ) : (
-              <p className="text-sm text-muted-foreground">No projects added yet</p>
-            )}
-          </CardContent>
-        </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Details</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              <div>
-                <p className="text-xs text-muted-foreground">Created</p>
-                <p className="flex items-center text-sm">
-                  <Calendar className="mr-1 h-3 w-3" />
-                  {formatDistanceToNow(new Date(client.createdAt), { addSuffix: true })}
-                </p>
-              </div>
-              {client.location && (
+              <div className="space-y-4">
                 <div>
-                  <p className="text-xs text-muted-foreground">Location</p>
-                  <p className="flex items-center text-sm">
-                    <MapPin className="mr-1 h-3 w-3" />
-                    {client.location}
+                  <p className="text-sm font-medium text-muted-foreground">Created</p>
+                  <p className="text-base flex items-center gap-1">
+                    <Calendar className="h-4 w-4" />
+                    {formatDistanceToNow(new Date(client.createdAt), { addSuffix: true })}
                   </p>
                 </div>
-              )}
-              {client.potentialName && (
+                
+                {/* Placeholder for website, email, etc. that would come from extended client data */}
                 <div>
-                  <p className="text-xs text-muted-foreground">Potential Name</p>
-                  <p className="flex items-center text-sm">
-                    <Building className="mr-1 h-3 w-3" />
-                    {client.potentialName}
+                  <p className="text-sm font-medium text-muted-foreground">Website</p>
+                  <p className="text-base text-muted-foreground flex items-center gap-1">
+                    <Globe className="h-4 w-4" />
+                    Not provided
                   </p>
                 </div>
-              )}
+                
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">Email</p>
+                  <p className="text-base text-muted-foreground flex items-center gap-1">
+                    <Mail className="h-4 w-4" />
+                    Not provided
+                  </p>
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Client Description Section - Formerly in Overview tab */}
+      {/* Client Description Section */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Client Description</h2>
-        </div>
+        <h2 className="text-xl font-semibold flex items-center gap-2">
+          <MessageSquare className="h-5 w-5" />
+          Client Description
+        </h2>
         <Card>
           <CardContent className="pt-6">
             <p>{client.description}</p>
@@ -217,10 +183,79 @@ const ClientDetail = () => {
         </Card>
       </div>
 
-      {/* Notes Section - Formerly in Notes tab */}
+      {/* Contacts Section */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Notes</h2>
+          <h2 className="text-xl font-semibold flex items-center gap-2">
+            <Users className="h-5 w-5" />
+            Contacts
+          </h2>
+          <Button size="sm" onClick={() => setIsContactDialogOpen(true)}>
+            <Plus className="mr-2 h-4 w-4" />
+            Add Contact
+          </Button>
+        </div>
+        
+        {isContactsLoading ? (
+          <div className="space-y-2">
+            <Skeleton className="h-20 w-full" />
+            <Skeleton className="h-20 w-full" />
+          </div>
+        ) : contacts && contacts.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {contacts.map((contact) => (
+              <Card key={contact.id} className="overflow-hidden">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-lg">{contact.name}</CardTitle>
+                  <CardDescription>
+                    <Badge className="capitalize">{contact.role}</Badge>
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    <div className="flex items-center">
+                      <Mail className="h-4 w-4 mr-2 text-muted-foreground" />
+                      <a href={`mailto:${contact.email}`} className="text-sm hover:underline">
+                        {contact.email}
+                      </a>
+                    </div>
+                    {contact.mobileNumber && (
+                      <div className="flex items-center">
+                        <Phone className="h-4 w-4 mr-2 text-muted-foreground" />
+                        <a href={`tel:${contact.mobileNumber}`} className="text-sm hover:underline">
+                          {contact.mobileNumber}
+                        </a>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <Card>
+            <CardContent className="p-6 text-center">
+              <Users className="mx-auto h-8 w-8 text-muted-foreground" />
+              <h3 className="mt-2 text-lg font-medium">No contacts yet</h3>
+              <p className="text-sm text-muted-foreground">
+                Add contacts to keep track of important people for this client
+              </p>
+              <Button className="mt-4" onClick={() => setIsContactDialogOpen(true)}>
+                <Plus className="mr-2 h-4 w-4" />
+                Add Contact
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+      </div>
+
+      {/* Notes Section */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold flex items-center gap-2">
+            <FileText className="h-5 w-5" />
+            Notes
+          </h2>
           <Button size="sm" onClick={() => setIsNoteDialogOpen(true)}>
             <Plus className="mr-2 h-4 w-4" />
             Add Note
@@ -249,17 +284,111 @@ const ClientDetail = () => {
             </Card>
           ))
         ) : (
-          <div className="rounded-lg border border-dashed p-8 text-center">
-            <FileText className="mx-auto h-8 w-8 text-muted-foreground" />
-            <h3 className="mt-2 text-lg font-medium">No notes yet</h3>
+          <Card>
+            <CardContent className="p-6 text-center">
+              <FileText className="mx-auto h-8 w-8 text-muted-foreground" />
+              <h3 className="mt-2 text-lg font-medium">No notes yet</h3>
+              <p className="text-sm text-muted-foreground">
+                Notes help you keep track of important information about clients
+              </p>
+              <Button className="mt-4" onClick={() => setIsNoteDialogOpen(true)}>
+                <Plus className="mr-2 h-4 w-4" />
+                Add Note
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+      </div>
+
+      {/* Emails Section */}
+      <div className="space-y-4">
+        <h2 className="text-xl font-semibold flex items-center gap-2">
+          <Mail className="h-5 w-5" />
+          Emails
+        </h2>
+        
+        <Card>
+          <CardContent className="p-6 text-center">
+            <Mail className="mx-auto h-8 w-8 text-muted-foreground" />
+            <h3 className="mt-2 text-lg font-medium">No emails yet</h3>
             <p className="text-sm text-muted-foreground">
-              Notes help you keep track of important information about clients
+              Email communications with this client will appear here
             </p>
-            <Button className="mt-4" onClick={() => setIsNoteDialogOpen(true)}>
-              <Plus className="mr-2 h-4 w-4" />
-              Add Note
-            </Button>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Document Store Section */}
+      <div className="space-y-4">
+        <h2 className="text-xl font-semibold flex items-center gap-2">
+          <File className="h-5 w-5" />
+          Document Store
+        </h2>
+        
+        <Card>
+          <CardContent className="p-6 text-center">
+            <File className="mx-auto h-8 w-8 text-muted-foreground" />
+            <h3 className="mt-2 text-lg font-medium">No documents yet</h3>
+            <p className="text-sm text-muted-foreground">
+              Documents related to this client will appear here
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Projects Related to this Client - Kept for reference */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold flex items-center gap-2">
+            <Briefcase className="h-5 w-5" />
+            Projects
+          </h2>
+          <Button size="sm" onClick={() => setIsProjectDialogOpen(true)}>
+            <Plus className="mr-2 h-4 w-4" />
+            Add Project
+          </Button>
+        </div>
+        
+        {isProjectsLoading ? (
+          <div className="space-y-2">
+            <Skeleton className="h-20 w-full" />
+            <Skeleton className="h-20 w-full" />
           </div>
+        ) : projects && projects.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {projects.map((project) => (
+              <Card key={project.id} className="overflow-hidden">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-lg capitalize">{project.type}</CardTitle>
+                  <CardDescription>
+                    Created {formatDistanceToNow(new Date(project.createdAt), { addSuffix: true })}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-between">
+                    <Badge variant="outline">{project.daysAllocated} days</Badge>
+                    <Button size="sm" asChild>
+                      <Link to={`/projects/${project.id}`}>View Details</Link>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <Card>
+            <CardContent className="p-6 text-center">
+              <Briefcase className="mx-auto h-8 w-8 text-muted-foreground" />
+              <h3 className="mt-2 text-lg font-medium">No projects yet</h3>
+              <p className="text-sm text-muted-foreground">
+                Create a project to start working with this client
+              </p>
+              <Button className="mt-4" onClick={() => setIsProjectDialogOpen(true)}>
+                <Plus className="mr-2 h-4 w-4" />
+                Add Project
+              </Button>
+            </CardContent>
+          </Card>
         )}
       </div>
 
