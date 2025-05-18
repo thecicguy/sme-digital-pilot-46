@@ -33,6 +33,10 @@ const AppSidebar = () => {
     path: "/calendar",
     icon: <Calendar className="h-5 w-5" />
   }, {
+    name: "Document Store",
+    path: "/documents",
+    icon: <FileText className="h-5 w-5" />
+  }, {
     name: "Reports",
     path: "/reports",
     icon: <FileText className="h-5 w-5" />
