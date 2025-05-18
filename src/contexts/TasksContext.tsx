@@ -14,8 +14,6 @@ interface TasksContextType {
   setSearchTerm: (term: string) => void;
   filterProjectId: string;
   setFilterProjectId: (id: string) => void;
-  activeTab: string;
-  setActiveTab: (tab: string) => void;
   view: "grid" | "list" | "kanban";
   setView: (view: "grid" | "list" | "kanban") => void;
   isCreateDialogOpen: boolean;
@@ -31,7 +29,6 @@ export const TasksProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   // We'll keep these state variables for potential future use
   const [searchTerm, setSearchTerm] = useState("");
   const [filterProjectId, setFilterProjectId] = useState("all");
-  const [activeTab, setActiveTab] = useState("all");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [view, setView] = useState<"grid" | "list" | "kanban">("kanban");
 
@@ -81,13 +78,8 @@ export const TasksProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     return project?.type || "Unknown Project";
   };
 
-  const filterTasksByTab = (tasks: Task[] = []) => {
-    if (activeTab === "all") return tasks;
-    return tasks.filter(task => task.status === activeTab);
-  };
-
-  // We're still keeping the filteredTasks logic but it will now only filter by tab
-  const filteredTasks = tasks ? filterTasksByTab(tasks) : [];
+  // Return all tasks since we're not filtering by tab anymore
+  const filteredTasks = tasks || [];
 
   const value = {
     tasks,
@@ -99,8 +91,6 @@ export const TasksProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setSearchTerm,
     filterProjectId,
     setFilterProjectId,
-    activeTab,
-    setActiveTab,
     view,
     setView,
     isCreateDialogOpen,
