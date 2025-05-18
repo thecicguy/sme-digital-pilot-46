@@ -1,4 +1,3 @@
-
 import { Client, Contact, Project, Task, Note, User, Deliverable, Feedback, Email, Report } from "@/types";
 import { toast } from "@/hooks/use-toast";
 
@@ -167,6 +166,100 @@ export const notes: Note[] = [
   },
 ];
 
+// Mock Document types
+export type DocumentVersion = {
+  id: string;
+  documentId: string;
+  number: number;
+  uploadedBy: string;
+  uploadDate: string;
+  size: string;
+  notes?: string;
+  fileUrl: string; // In a real app, this would point to the actual file
+};
+
+export type Document = {
+  id: string;
+  name: string;
+  category: string;
+  uploadedBy: string;
+  uploadDate: string;
+  size: string;
+  tags: string[];
+  type: string;
+  clientId?: string;
+  projectId?: string;
+  versions: DocumentVersion[];
+};
+
+// Mock Documents
+export const documents: Document[] = [
+  {
+    id: "doc-1",
+    name: "Project Proposal.pdf",
+    category: "Proposals",
+    uploadedBy: "John Doe",
+    uploadDate: "2024-05-10",
+    size: "2.4 MB",
+    tags: ["Client", "Proposal"],
+    type: "pdf",
+    versions: [
+      {
+        id: "v1-doc-1",
+        documentId: "doc-1",
+        number: 1,
+        uploadedBy: "John Doe",
+        uploadDate: "2024-05-10",
+        size: "2.4 MB",
+        notes: "Initial draft",
+        fileUrl: "/documents/doc-1/v1"
+      },
+      {
+        id: "v2-doc-1",
+        documentId: "doc-1",
+        number: 2,
+        uploadedBy: "Jane Smith",
+        uploadDate: "2024-05-12",
+        size: "2.5 MB",
+        notes: "Updated with client feedback",
+        fileUrl: "/documents/doc-1/v2"
+      },
+      {
+        id: "v3-doc-1",
+        documentId: "doc-1",
+        number: 3,
+        uploadedBy: "John Doe",
+        uploadDate: "2024-05-15",
+        size: "2.4 MB",
+        notes: "Final version",
+        fileUrl: "/documents/doc-1/v3"
+      }
+    ]
+  },
+  {
+    id: "doc-2",
+    name: "Contract Agreement.docx",
+    category: "Contracts",
+    uploadedBy: "Jane Smith",
+    uploadDate: "2024-05-12",
+    size: "1.8 MB",
+    tags: ["Legal", "Contract"],
+    type: "docx",
+    versions: [
+      {
+        id: "v1-doc-2",
+        documentId: "doc-2",
+        number: 1,
+        uploadedBy: "Jane Smith",
+        uploadDate: "2024-05-12",
+        size: "1.8 MB",
+        notes: "Initial contract draft",
+        fileUrl: "/documents/doc-2/v1"
+      }
+    ]
+  },
+];
+
 // API simulation functions
 export async function fetchClients(): Promise<Client[]> {
   await new Promise(resolve => setTimeout(resolve, MOCK_DELAY));
@@ -330,4 +423,114 @@ export async function getCurrentUser(): Promise<User | null> {
   await new Promise(resolve => setTimeout(resolve, MOCK_DELAY));
   // In a real app, this would check the authentication token
   return users[0]; // Default to first user for demo
+}
+
+// Document related API functions
+export async function fetchDocuments(clientId?: string, projectId?: string): Promise<Document[]> {
+  await new Promise(resolve => setTimeout(resolve, MOCK_DELAY));
+  let filteredDocs = [...documents];
+  
+  if (clientId) {
+    filteredDocs = filteredDocs.filter(doc => doc.clientId === clientId);
+  }
+  
+  if (projectId) {
+    filteredDocs = filteredDocs.filter(doc => doc.projectId === projectId);
+  }
+  
+  return filteredDocs;
+}
+
+export async function fetchDocument(id: string): Promise<Document | undefined> {
+  await new Promise(resolve => setTimeout(resolve, MOCK_DELAY));
+  return documents.find(doc => doc.id === id);
+}
+
+export async function fetchDocumentVersions(documentId: string): Promise<DocumentVersion[]> {
+  await new Promise(resolve => setTimeout(resolve, MOCK_DELAY));
+  const document = documents.find(doc => doc.id === documentId);
+  return document ? document.versions : [];
+}
+
+export async function uploadDocument(document: Omit<Document, 'id' | 'versions'>): Promise<Document> {
+  await new Promise(resolve => setTimeout(resolve, MOCK_DELAY));
+  const newDocument = {
+    ...document,
+    id: `doc-${documents.length + 1}`,
+    versions: [{
+      id: `v1-doc-${documents.length + 1}`,
+      documentId: `doc-${documents.length + 1}`,
+      number: 1,
+      uploadedBy: document.uploadedBy,
+      uploadDate: document.uploadDate,
+      size: document.size,
+      notes: "Initial version",
+      fileUrl: `/documents/doc-${documents.length + 1}/v1`
+    }]
+  };
+  
+  documents.push(newDocument);
+  
+  toast({
+    title: "Document Uploaded",
+    description: `${newDocument.name} has been uploaded successfully.`
+  });
+  
+  return newDocument;
+}
+
+export async function uploadNewVersion(
+  documentId: string, 
+  version: Omit<DocumentVersion, 'id' | 'documentId' | 'number'>
+): Promise<DocumentVersion> {
+  await new Promise(resolve => setTimeout(resolve, MOCK_DELAY));
+  const documentIndex = documents.findIndex(doc => doc.id === documentId);
+  
+  if (documentIndex === -1) {
+    throw new Error("Document not found");
+  }
+  
+  // Calculate next version number
+  const nextVersionNumber = Math.max(...documents[documentIndex].versions.map(v => v.number)) + 1;
+  
+  const newVersion = {
+    ...version,
+    id: `v${nextVersionNumber}-${documentId}`,
+    documentId,
+    number: nextVersionNumber,
+    fileUrl: `/documents/${documentId}/v${nextVersionNumber}`
+  };
+  
+  // Update the document with new version
+  documents[documentIndex].versions.push(newVersion);
+  
+  // Update the document's metadata to reflect the newest version
+  documents[documentIndex].uploadDate = version.uploadDate;
+  documents[documentIndex].uploadedBy = version.uploadedBy;
+  documents[documentIndex].size = version.size;
+  
+  toast({
+    title: "New Version Uploaded",
+    description: `Version ${nextVersionNumber} of ${documents[documentIndex].name} has been uploaded.`
+  });
+  
+  return newVersion;
+}
+
+export async function downloadDocumentVersion(versionId: string): Promise<string> {
+  await new Promise(resolve => setTimeout(resolve, MOCK_DELAY));
+  
+  // Find the version
+  for (const doc of documents) {
+    const version = doc.versions.find(v => v.id === versionId);
+    if (version) {
+      toast({
+        title: "Document Downloaded",
+        description: `Version ${version.number} of ${doc.name} has been downloaded.`
+      });
+      return version.fileUrl;
+    }
+  }
+  
+  throw new Error("Document version not found");
 }

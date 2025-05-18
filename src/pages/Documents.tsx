@@ -9,7 +9,8 @@ import {
   Upload, 
   Filter, 
   ListFilter,
-  Download
+  Download,
+  History
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,8 +43,9 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import DocumentVersionsDialog from "@/components/documents/DocumentVersionsDialog";
 
-// Mock data for documents
+// Mock data for documents with versions
 const mockDocuments = [
   {
     id: "doc-1",
@@ -53,7 +55,33 @@ const mockDocuments = [
     uploadDate: "2024-05-10",
     size: "2.4 MB",
     tags: ["Client", "Proposal"],
-    type: "pdf"
+    type: "pdf",
+    versions: [
+      {
+        id: "v1-doc-1",
+        number: 1,
+        uploadedBy: "John Doe",
+        uploadDate: "2024-05-10",
+        size: "2.4 MB",
+        notes: "Initial draft"
+      },
+      {
+        id: "v2-doc-1",
+        number: 2,
+        uploadedBy: "Jane Smith",
+        uploadDate: "2024-05-12",
+        size: "2.5 MB",
+        notes: "Updated with client feedback"
+      },
+      {
+        id: "v3-doc-1",
+        number: 3,
+        uploadedBy: "John Doe",
+        uploadDate: "2024-05-15",
+        size: "2.4 MB",
+        notes: "Final version"
+      }
+    ]
   },
   {
     id: "doc-2",
@@ -63,7 +91,17 @@ const mockDocuments = [
     uploadDate: "2024-05-12",
     size: "1.8 MB",
     tags: ["Legal", "Contract"],
-    type: "docx"
+    type: "docx",
+    versions: [
+      {
+        id: "v1-doc-2",
+        number: 1,
+        uploadedBy: "Jane Smith",
+        uploadDate: "2024-05-12",
+        size: "1.8 MB",
+        notes: "Initial contract draft"
+      }
+    ]
   },
   {
     id: "doc-3",
@@ -73,7 +111,25 @@ const mockDocuments = [
     uploadDate: "2024-05-05",
     size: "3.2 MB",
     tags: ["Finance", "Report"],
-    type: "xlsx"
+    type: "xlsx",
+    versions: [
+      {
+        id: "v1-doc-3",
+        number: 1,
+        uploadedBy: "Robert Johnson",
+        uploadDate: "2024-05-02",
+        size: "3.0 MB",
+        notes: "Preliminary data"
+      },
+      {
+        id: "v2-doc-3",
+        number: 2,
+        uploadedBy: "Robert Johnson",
+        uploadDate: "2024-05-05",
+        size: "3.2 MB",
+        notes: "Updated with final numbers"
+      }
+    ]
   },
   {
     id: "doc-4",
@@ -83,7 +139,17 @@ const mockDocuments = [
     uploadDate: "2024-05-15",
     size: "0.9 MB",
     tags: ["Internal", "Meeting"],
-    type: "pdf"
+    type: "pdf",
+    versions: [
+      {
+        id: "v1-doc-4",
+        number: 1,
+        uploadedBy: "Sarah Williams",
+        uploadDate: "2024-05-15",
+        size: "0.9 MB",
+        notes: "Meeting notes"
+      }
+    ]
   },
   {
     id: "doc-5",
@@ -93,7 +159,25 @@ const mockDocuments = [
     uploadDate: "2024-05-08",
     size: "5.6 MB",
     tags: ["Marketing", "Strategy"],
-    type: "pptx"
+    type: "pptx",
+    versions: [
+      {
+        id: "v1-doc-5",
+        number: 1,
+        uploadedBy: "Michael Brown",
+        uploadDate: "2024-05-05",
+        size: "5.2 MB",
+        notes: "First draft"
+      },
+      {
+        id: "v2-doc-5",
+        number: 2,
+        uploadedBy: "Michael Brown",
+        uploadDate: "2024-05-08",
+        size: "5.6 MB",
+        notes: "Updated with new campaign data"
+      }
+    ]
   },
 ];
 
@@ -111,6 +195,8 @@ const categories = [
 const Documents = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All Documents");
+  const [selectedDocument, setSelectedDocument] = useState<any>(null);
+  const [isVersionsDialogOpen, setIsVersionsDialogOpen] = useState(false);
   const { toast } = useToast();
   
   // Fetch documents with React Query (using mock data for now)
@@ -145,6 +231,20 @@ const Documents = () => {
     toast({
       title: "Download initiated",
       description: `Downloading document ID: ${documentId}`,
+    });
+  };
+
+  // Handle showing version history
+  const handleViewVersions = (document: any) => {
+    setSelectedDocument(document);
+    setIsVersionsDialogOpen(true);
+  };
+
+  // Handle uploading new version
+  const handleNewVersion = (documentId: string) => {
+    toast({
+      title: "New version upload initiated",
+      description: `Uploading new version for document ID: ${documentId}`,
     });
   };
   
@@ -260,6 +360,7 @@ const Documents = () => {
                         <TableHead className="hidden md:table-cell">Uploaded By</TableHead>
                         <TableHead className="hidden md:table-cell">Date</TableHead>
                         <TableHead className="hidden md:table-cell">Size</TableHead>
+                        <TableHead className="hidden md:table-cell">Versions</TableHead>
                         <TableHead className="text-right">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
@@ -273,12 +374,13 @@ const Documents = () => {
                             <TableCell className="hidden md:table-cell"><Skeleton className="h-6 w-[100px]" /></TableCell>
                             <TableCell className="hidden md:table-cell"><Skeleton className="h-6 w-[80px]" /></TableCell>
                             <TableCell className="hidden md:table-cell"><Skeleton className="h-6 w-[50px]" /></TableCell>
+                            <TableCell className="hidden md:table-cell"><Skeleton className="h-6 w-[50px]" /></TableCell>
                             <TableCell className="text-right"><Skeleton className="h-6 w-[80px] ml-auto" /></TableCell>
                           </TableRow>
                         ))
                       ) : filteredDocuments?.length === 0 ? (
                         <TableRow>
-                          <TableCell colSpan={6} className="text-center py-8">
+                          <TableCell colSpan={7} className="text-center py-8">
                             No documents found. Try a different search term or category.
                           </TableCell>
                         </TableRow>
@@ -293,16 +395,39 @@ const Documents = () => {
                             <TableCell className="hidden md:table-cell">{doc.uploadedBy}</TableCell>
                             <TableCell className="hidden md:table-cell">{doc.uploadDate}</TableCell>
                             <TableCell className="hidden md:table-cell">{doc.size}</TableCell>
+                            <TableCell className="hidden md:table-cell">
+                              <Badge variant="outline">{doc.versions.length}</Badge>
+                            </TableCell>
                             <TableCell className="text-right">
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => handleDownload(doc.id)}
-                                className="flex items-center gap-1"
-                              >
-                                <Download className="h-4 w-4" />
-                                <span className="sr-only md:not-sr-only">Download</span>
-                              </Button>
+                              <div className="flex justify-end gap-2">
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => handleViewVersions(doc)}
+                                  className="flex items-center gap-1"
+                                >
+                                  <History className="h-4 w-4" />
+                                  <span className="sr-only md:not-sr-only">Versions</span>
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => handleNewVersion(doc.id)}
+                                  className="flex items-center gap-1"
+                                >
+                                  <Upload className="h-4 w-4" />
+                                  <span className="sr-only md:not-sr-only">New Version</span>
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => handleDownload(doc.id)}
+                                  className="flex items-center gap-1"
+                                >
+                                  <Download className="h-4 w-4" />
+                                  <span className="sr-only md:not-sr-only">Download</span>
+                                </Button>
+                              </div>
                             </TableCell>
                           </TableRow>
                         ))
@@ -352,18 +477,33 @@ const Documents = () => {
                             </Badge>
                           ))}
                         </div>
+                        <div className="mt-2">
+                          <Badge variant="secondary" className="text-xs">
+                            {doc.versions.length} {doc.versions.length === 1 ? 'version' : 'versions'}
+                          </Badge>
+                        </div>
                       </CardContent>
-                      <CardFooter className="p-4 pt-0 flex justify-between">
+                      <CardFooter className="p-4 pt-0 flex justify-between items-center">
                         <p className="text-xs text-muted-foreground">{doc.size}</p>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleDownload(doc.id)}
-                          className="flex items-center gap-1"
-                        >
-                          <Download className="h-4 w-4" />
-                          Download
-                        </Button>
+                        <div className="flex gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleViewVersions(doc)}
+                            className="flex items-center gap-1"
+                          >
+                            <History className="h-4 w-4" />
+                            Versions
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleDownload(doc.id)}
+                            className="flex items-center gap-1"
+                          >
+                            <Download className="h-4 w-4" />
+                          </Button>
+                        </div>
                       </CardFooter>
                     </Card>
                   ))
@@ -373,6 +513,17 @@ const Documents = () => {
           </Tabs>
         </div>
       </div>
+
+      {/* Document Versions Dialog */}
+      {selectedDocument && (
+        <DocumentVersionsDialog
+          open={isVersionsDialogOpen}
+          onClose={() => setIsVersionsDialogOpen(false)}
+          document={selectedDocument}
+          onDownload={handleDownload}
+          onNewVersion={() => handleNewVersion(selectedDocument.id)}
+        />
+      )}
     </div>
   );
 };
