@@ -10,7 +10,7 @@ import CreateTaskDialog from "@/components/tasks/CreateTaskDialog";
 
 const Tasks = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterProjectId, setFilterProjectId] = useState("");
+  const [filterProjectId, setFilterProjectId] = useState("all");
   const [filterStatus, setFilterStatus] = useState("");
   const [activeTab, setActiveTab] = useState("all");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
@@ -52,7 +52,7 @@ const Tasks = () => {
   const filteredTasks = tasks
     ? filterTasksByTab(tasks).filter(task => {
         const matchesSearch = task.description.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesProject = filterProjectId ? task.projectId === filterProjectId : true;
+        const matchesProject = filterProjectId === "all" ? true : task.projectId === filterProjectId;
         const matchesStatus = filterStatus ? task.status === filterStatus : true;
         return matchesSearch && matchesProject && matchesStatus;
       })
