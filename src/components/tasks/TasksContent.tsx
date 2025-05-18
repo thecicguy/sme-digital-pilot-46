@@ -17,6 +17,7 @@ interface TasksContentProps {
   getProjectName: (projectId: string) => string;
   getClientName: (projectId: string) => string;
   onCreateTask: () => void;
+  onTaskStatusChange?: (taskId: string, newStatus: string) => void;
 }
 
 const TasksContent = ({
@@ -25,7 +26,8 @@ const TasksContent = ({
   view,
   getProjectName,
   getClientName,
-  onCreateTask
+  onCreateTask,
+  onTaskStatusChange
 }: TasksContentProps) => {
   if (isLoading) {
     return <TasksLoadingSkeleton view={view} />;
@@ -41,6 +43,7 @@ const TasksContent = ({
         tasks={tasks}
         getProjectName={getProjectName}
         getClientName={getClientName}
+        onTaskStatusChange={onTaskStatusChange}
       />
     );
   }

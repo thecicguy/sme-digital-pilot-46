@@ -1,12 +1,13 @@
 
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { fetchTasks, fetchClients, fetchProjects } from "@/lib/api";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { fetchTasks, fetchClients, fetchProjects, updateTask } from "@/lib/api";
 import TasksHeader from "@/components/tasks/TasksHeader";
 import TaskStatusTabs from "@/components/tasks/TaskStatusTabs";
 import TaskFilters from "@/components/tasks/TaskFilters";
 import TasksContent from "@/components/tasks/TasksContent";
 import CreateTaskDialog from "@/components/tasks/CreateTaskDialog";
+import { toast } from "sonner";
 
 const Tasks = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -15,6 +16,8 @@ const Tasks = () => {
   const [activeTab, setActiveTab] = useState("all");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [view, setView] = useState<"grid" | "list" | "kanban">("kanban");
+
+  const queryClient = useQueryClient();
 
   const { data: tasks, isLoading: isTasksLoading } = useQuery({
     queryKey: ["tasks"],
@@ -30,6 +33,22 @@ const Tasks = () => {
     queryKey: ["projects"],
     queryFn: () => fetchProjects(),
   });
+
+  const updateTaskMutation = useMutation({
+    mutationFn: (data: { taskId: string; status: string }) => 
+      updateTask(data.taskId, { status: data.status }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      toast.success("Task status updated successfully");
+    },
+    onError: () => {
+      toast.error("Failed to update task status");
+    }
+  });
+
+  const handleTaskStatusChange = (taskId: string, newStatus: string) => {
+    updateTaskMutation.mutate({ taskId, status: newStatus });
+  };
 
   const getClientName = (projectId: string) => {
     const project = projects?.find(p => p.id === projectId);
@@ -87,6 +106,7 @@ const Tasks = () => {
         getProjectName={getProjectName}
         getClientName={getClientName}
         onCreateTask={() => setIsCreateDialogOpen(true)}
+        onTaskStatusChange={handleTaskStatusChange}
       />
 
       <CreateTaskDialog
