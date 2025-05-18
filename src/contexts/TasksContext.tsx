@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetchTasks, fetchClients, fetchProjects, updateTask } from "@/lib/api";
@@ -15,8 +14,6 @@ interface TasksContextType {
   setSearchTerm: (term: string) => void;
   filterProjectId: string;
   setFilterProjectId: (id: string) => void;
-  filterStatus: string;
-  setFilterStatus: (status: string) => void;
   activeTab: string;
   setActiveTab: (tab: string) => void;
   view: "grid" | "list" | "kanban";
@@ -31,9 +28,9 @@ interface TasksContextType {
 const TasksContext = createContext<TasksContextType | undefined>(undefined);
 
 export const TasksProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // We'll keep these state variables for potential future use
   const [searchTerm, setSearchTerm] = useState("");
   const [filterProjectId, setFilterProjectId] = useState("all");
-  const [filterStatus, setFilterStatus] = useState("");
   const [activeTab, setActiveTab] = useState("all");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [view, setView] = useState<"grid" | "list" | "kanban">("kanban");
@@ -89,14 +86,8 @@ export const TasksProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     return tasks.filter(task => task.status === activeTab);
   };
 
-  const filteredTasks = tasks
-    ? filterTasksByTab(tasks).filter(task => {
-        const matchesSearch = task.description.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesProject = filterProjectId === "all" ? true : task.projectId === filterProjectId;
-        const matchesStatus = filterStatus ? task.status === filterStatus : true;
-        return matchesSearch && matchesProject && matchesStatus;
-      })
-    : [];
+  // We're still keeping the filteredTasks logic but it will now only filter by tab
+  const filteredTasks = tasks ? filterTasksByTab(tasks) : [];
 
   const value = {
     tasks,
@@ -108,8 +99,6 @@ export const TasksProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setSearchTerm,
     filterProjectId,
     setFilterProjectId,
-    filterStatus,
-    setFilterStatus,
     activeTab,
     setActiveTab,
     view,
