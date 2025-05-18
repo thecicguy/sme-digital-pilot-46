@@ -21,17 +21,17 @@ import {
 const Dashboard = () => {
   const { data: clients, isLoading: isClientsLoading } = useQuery({
     queryKey: ["clients"],
-    queryFn: fetchClients,
+    queryFn: () => fetchClients(),
   });
 
   const { data: projects, isLoading: isProjectsLoading } = useQuery({
     queryKey: ["projects"],
-    queryFn: fetchProjects,
+    queryFn: () => fetchProjects(),
   });
 
   const { data: tasks, isLoading: isTasksLoading } = useQuery({
     queryKey: ["tasks"],
-    queryFn: fetchTasks,
+    queryFn: () => fetchTasks(),
   });
 
   // Filter tasks due today or tomorrow
