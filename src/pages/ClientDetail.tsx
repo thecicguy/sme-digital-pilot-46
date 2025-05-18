@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -21,7 +20,8 @@ import {
   Mail,
   Phone,
   File,
-  MessageSquare
+  MessageSquare,
+  Upload
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { Button } from "@/components/ui/button";
@@ -29,6 +29,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { useToast } from "@/hooks/use-toast";
 import CreateContactDialog from "@/components/clients/CreateContactDialog";
 import CreateProjectDialog from "@/components/projects/CreateProjectDialog";
 import CreateNoteDialog from "@/components/notes/CreateNoteDialog";
@@ -39,6 +40,7 @@ const ClientDetail = () => {
   const [isContactDialogOpen, setIsContactDialogOpen] = useState(false);
   const [isProjectDialogOpen, setIsProjectDialogOpen] = useState(false);
   const [isNoteDialogOpen, setIsNoteDialogOpen] = useState(false);
+  const { toast } = useToast();
 
   const { data: client, isLoading: isClientLoading } = useQuery({
     queryKey: ["client", clientId],
@@ -63,6 +65,13 @@ const ClientDetail = () => {
     queryFn: () => clientId ? fetchNotes(clientId) : [],
     enabled: !!clientId
   });
+
+  const handleUploadDocument = () => {
+    toast({
+      title: "Upload initiated",
+      description: "Document upload feature will be implemented soon."
+    });
+  };
 
   if (isClientLoading) {
     return (
@@ -320,10 +329,16 @@ const ClientDetail = () => {
 
       {/* Document Store Section */}
       <div className="space-y-4">
-        <h2 className="text-xl font-semibold flex items-center gap-2">
-          <File className="h-5 w-5" />
-          Document Store
-        </h2>
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold flex items-center gap-2">
+            <File className="h-5 w-5" />
+            Document Store
+          </h2>
+          <Button size="sm" onClick={handleUploadDocument}>
+            <Upload className="mr-2 h-4 w-4" />
+            Add Document
+          </Button>
+        </div>
         
         <Card>
           <CardContent className="p-6 text-center">
@@ -332,6 +347,10 @@ const ClientDetail = () => {
             <p className="text-sm text-muted-foreground">
               Documents related to this client will appear here
             </p>
+            <Button className="mt-4" onClick={handleUploadDocument}>
+              <Upload className="mr-2 h-4 w-4" />
+              Upload Document
+            </Button>
           </CardContent>
         </Card>
       </div>

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -12,7 +11,8 @@ import {
   User,
   FileText,
   Mail,
-  Book
+  Book,
+  Upload
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { Button } from "@/components/ui/button";
@@ -21,6 +21,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { useToast } from "@/hooks/use-toast";
 import { Contact } from "@/types";
 import CreateNoteDialog from "@/components/notes/CreateNoteDialog";
 
@@ -29,6 +30,7 @@ const ProjectDetail = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("overview");
   const [isCreateNoteDialogOpen, setIsCreateNoteDialogOpen] = useState(false);
+  const { toast } = useToast();
 
   const { data: project, isLoading: isProjectLoading } = useQuery({
     queryKey: ["project", projectId],
@@ -59,6 +61,13 @@ const ProjectDetail = () => {
     queryFn: () => projectId ? fetchNotes(undefined, projectId) : [],
     enabled: !!projectId
   });
+
+  const handleUploadDocument = () => {
+    toast({
+      title: "Upload initiated",
+      description: "Document upload feature will be implemented soon."
+    });
+  };
 
   if (isProjectLoading) {
     return (
@@ -421,16 +430,21 @@ const ProjectDetail = () => {
 
       {/* Document Store Section */}
       <Card>
-        <CardHeader>
+        <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Document Store</CardTitle>
+          <Button size="sm" onClick={handleUploadDocument}>
+            <Upload className="mr-1 h-4 w-4" />
+            Add Document
+          </Button>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col items-center justify-center py-8 text-center">
             <FileText className="mb-2 h-8 w-8 text-muted-foreground" />
-            <h3 className="text-lg font-medium">No documents yet</h3>
+            <h3 className="mt-2 text-lg font-medium">No documents yet</h3>
             <p className="mt-1 text-sm text-muted-foreground">Upload project documents to keep them organized.</p>
-            <Button className="mt-4" variant="outline">
-              <Plus className="mr-1 h-4 w-4" /> Upload Document
+            <Button className="mt-4" onClick={handleUploadDocument}>
+              <Upload className="mr-1 h-4 w-4" />
+              Upload Document
             </Button>
           </div>
         </CardContent>
