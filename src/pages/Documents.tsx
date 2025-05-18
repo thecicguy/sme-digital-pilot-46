@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { 
@@ -44,6 +45,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import DocumentVersionsDialog from "@/components/documents/DocumentVersionsDialog";
+import DocumentTemplates from "@/components/documents/DocumentTemplates";
 
 // Mock data for documents with versions
 const mockDocuments = [
@@ -274,6 +276,7 @@ const Documents = () => {
           </p>
         </div>
         <div className="flex gap-2">
+          <DocumentTemplates />
           <Button onClick={handleUpload} className="flex items-center gap-2">
             <Upload className="h-4 w-4" />
             Upload Document

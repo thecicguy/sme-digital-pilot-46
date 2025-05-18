@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,6 +9,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogDescription, 
+  DialogFooter, 
+  DialogHeader, 
+  DialogTitle,
+  DialogTrigger
+} from "@/components/ui/dialog";
+import { Download } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 // Define the interfaces consistent with the settings page
 interface ReportTypeInfo {
@@ -22,10 +32,19 @@ interface StatusInfo {
   colorScheme: string;
 }
 
+interface ReportTemplate {
+  id: string;
+  name: string;
+  description: string;
+  type: string;
+  thumbnail: string;
+}
+
 const Reports = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
+  const { toast } = useToast();
   
   // Updated report types with presentation type
   const reportTypes: ReportTypeInfo[] = [
@@ -43,6 +62,45 @@ const Reports = () => {
     { name: "completed", colorScheme: "green" },
     { name: "in_progress", colorScheme: "blue" },
     { name: "draft", colorScheme: "orange" },
+  ];
+  
+  // Report templates
+  const reportTemplates: ReportTemplate[] = [
+    {
+      id: "template1",
+      name: "Client Onboarding",
+      description: "Standard template for onboarding new clients",
+      type: "Proposal",
+      thumbnail: "client-onboarding.png"
+    },
+    {
+      id: "template2",
+      name: "Weekly Progress",
+      description: "Template for weekly project updates",
+      type: "Update",
+      thumbnail: "weekly-progress.png"
+    },
+    {
+      id: "template3",
+      name: "Project Kickoff",
+      description: "Comprehensive template for starting new projects",
+      type: "KickOff",
+      thumbnail: "project-kickoff.png"
+    },
+    {
+      id: "template4",
+      name: "Executive Summary",
+      description: "Brief overview template for executives",
+      type: "Standup",
+      thumbnail: "executive-summary.png"
+    },
+    {
+      id: "template5",
+      name: "Final Delivery",
+      description: "Template for project completion and handover",
+      type: "Lessons Learnt",
+      thumbnail: "final-delivery.png"
+    }
   ];
   
   // Updated reports with the new structure
@@ -150,6 +208,17 @@ const Reports = () => {
     }
   };
 
+  // Function to handle template download
+  const handleTemplateDownload = (templateId: string) => {
+    const template = reportTemplates.find(t => t.id === templateId);
+    if (template) {
+      toast({
+        title: "Template Downloaded",
+        description: `Downloaded "${template.name}" template successfully.`,
+      });
+    }
+  };
+
   return (
     <div>
       <div className="mb-8 flex items-center justify-between">
@@ -157,7 +226,58 @@ const Reports = () => {
           <h1 className="text-3xl font-bold">Reports</h1>
           <p className="text-muted-foreground">Generate and manage AI-powered client reports</p>
         </div>
-        <Button>Generate New Report</Button>
+        <div className="flex gap-2">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" className="flex items-center gap-2">
+                <Download className="h-4 w-4" />
+                Templates
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[600px]">
+              <DialogHeader>
+                <DialogTitle>Report Templates</DialogTitle>
+                <DialogDescription>
+                  Choose from our collection of professional templates to get started quickly.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4">
+                {reportTemplates.map((template) => (
+                  <Card key={template.id} className="overflow-hidden">
+                    <CardHeader className="p-3 pb-0">
+                      <CardTitle className="text-md">{template.name}</CardTitle>
+                      <CardDescription className="text-xs">{template.description}</CardDescription>
+                    </CardHeader>
+                    <CardContent className="p-3">
+                      <div className="aspect-video bg-muted rounded-md flex items-center justify-center mb-2">
+                        <span className="text-xs text-muted-foreground">Template Preview</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className={`rounded-full px-2 py-1 text-xs ${getPresentationTypeBadgeClasses(getPresentationType(template.type))}`}>
+                          {template.type}
+                        </span>
+                        <Button 
+                          size="sm" 
+                          variant="outline" 
+                          onClick={() => handleTemplateDownload(template.id)}
+                          className="text-xs"
+                        >
+                          Download
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+              <DialogFooter>
+                <Button variant="outline" type="button">
+                  Cancel
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+          <Button>Generate New Report</Button>
+        </div>
       </div>
       
       <div className="mb-6 flex flex-col space-y-4 sm:flex-row sm:items-center sm:space-x-4 sm:space-y-0">
