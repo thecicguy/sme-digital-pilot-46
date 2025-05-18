@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -20,6 +19,7 @@ import EmailTemplatesContent from "./EmailTemplates";
 import ReportTypesContent from "@/components/settings/ReportTypesContent";
 import StatusesContent from "@/components/settings/StatusesContent";
 import ReportSettingsContent from "@/components/settings/ReportSettingsContent";
+import WhitelabelContent from "@/components/settings/WhitelabelContent";
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState("profile");
@@ -104,6 +104,7 @@ const Settings = () => {
           <TabsTrigger value="team">Team Management</TabsTrigger>
           <TabsTrigger value="email-templates">Email Templates</TabsTrigger>
           <TabsTrigger value="report-settings">Report Settings</TabsTrigger>
+          <TabsTrigger value="whitelabel">Whitelabel</TabsTrigger>
         </TabsList>
         
         <TabsContent value="profile">
@@ -438,6 +439,10 @@ const Settings = () => {
         
         <TabsContent value="report-settings">
           <ReportSettingsContent />
+        </TabsContent>
+        
+        <TabsContent value="whitelabel">
+          <WhitelabelContent />
         </TabsContent>
       </Tabs>
     </div>
