@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,10 +11,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-// Define the report type interface consistent with the settings page
+// Define the interfaces consistent with the settings page
 interface ReportTypeInfo {
   name: string;
   presentationType: string;
+}
+
+interface StatusInfo {
+  name: string;
+  colorScheme: string;
 }
 
 const Reports = () => {
@@ -30,6 +36,13 @@ const Reports = () => {
     { name: "Kanban", presentationType: "board" },
     { name: "KickOff", presentationType: "meeting" },
     { name: "Lessons Learnt", presentationType: "document" },
+  ];
+  
+  // Define statuses consistent with status settings
+  const statuses: StatusInfo[] = [
+    { name: "completed", colorScheme: "green" },
+    { name: "in_progress", colorScheme: "blue" },
+    { name: "draft", colorScheme: "orange" },
   ];
   
   // Updated reports with the new structure
@@ -89,30 +102,34 @@ const Reports = () => {
     return matchesSearch && matchesStatus && matchesType;
   });
   
-  const getStatusBadgeClasses = (status: string) => {
-    switch (status) {
-      case "completed":
+  const getStatusBadgeClasses = (statusName: string) => {
+    const status = statuses.find(s => s.name === statusName);
+    if (!status) return "bg-gray-100 text-gray-800";
+    
+    switch (status.colorScheme) {
+      case "green":
         return "bg-green-100 text-green-800";
-      case "in_progress":
+      case "blue":
         return "bg-blue-100 text-blue-800";
-      case "draft":
+      case "orange":
         return "bg-orange-100 text-orange-800";
+      case "red":
+        return "bg-red-100 text-red-800";
+      case "purple":
+        return "bg-purple-100 text-purple-800";
+      case "yellow":
+        return "bg-yellow-100 text-yellow-800";
+      case "gray":
       default:
         return "bg-gray-100 text-gray-800";
     }
   };
   
-  const getStatusLabel = (status: string) => {
-    switch (status) {
-      case "completed":
-        return "Completed";
-      case "in_progress":
-        return "In Progress";
-      case "draft":
-        return "Draft";
-      default:
-        return status;
-    }
+  const getStatusLabel = (statusName: string) => {
+    // Capitalize status name for display
+    return statusName.split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
   };
 
   // Function to get presentation type badge classes
@@ -159,9 +176,11 @@ const Reports = () => {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Status</SelectItem>
-            <SelectItem value="completed">Completed</SelectItem>
-            <SelectItem value="in_progress">In Progress</SelectItem>
-            <SelectItem value="draft">Draft</SelectItem>
+            {statuses.map((status) => (
+              <SelectItem key={status.name} value={status.name}>
+                {getStatusLabel(status.name)}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
         
