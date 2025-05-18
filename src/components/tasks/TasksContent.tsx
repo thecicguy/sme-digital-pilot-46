@@ -10,14 +10,14 @@ import KanbanBoard from "@/components/tasks/KanbanBoard";
 import { statusIcons, statusLabels } from "./taskUtils";
 import { Task } from "@/types";
 
-const TasksContentProps = {
+interface TasksContentProps {
   isLoading: boolean;
   tasks: Task[];
   view: "grid" | "list" | "kanban";
   getProjectName: (projectId: string) => string;
   getClientName: (projectId: string) => string;
   onCreateTask: () => void;
-};
+}
 
 const TasksContent = ({
   isLoading,
