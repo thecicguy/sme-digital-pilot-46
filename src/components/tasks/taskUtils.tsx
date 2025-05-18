@@ -10,7 +10,7 @@ export const statusIcons = {
 };
 
 export const statusLabels = {
-  "doing": "In Progress",
+  "doing": "In Progress", 
   "done": "Completed", 
   "for_review": "For Review",
   "deferred": "Deferred"
