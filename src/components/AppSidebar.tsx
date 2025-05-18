@@ -1,7 +1,9 @@
+
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
-import { Book, BookmarkCheck, Building, Calendar, Contact, Info, Mail, Settings, Shield, Users, FileText, Home } from "lucide-react";
+import { Book, BookmarkCheck, Building, Calendar, Contact, Mail, Settings, Users, FileText, Home } from "lucide-react";
+
 const AppSidebar = () => {
   const {
     user,
@@ -32,25 +34,8 @@ const AppSidebar = () => {
     name: "Settings",
     path: "/settings",
     icon: <Settings className="h-5 w-5" />
-  }, {
-    divider: true
-  }, {
-    name: "About",
-    path: "/about",
-    icon: <Info className="h-5 w-5" />
-  }, {
-    name: "Contact",
-    path: "/contact",
-    icon: <Contact className="h-5 w-5" />
-  }, {
-    name: "Book Consultation",
-    path: "/booking",
-    icon: <Calendar className="h-5 w-5" />
-  }, {
-    name: "Data Privacy",
-    path: "/legal/data-privacy",
-    icon: <Shield className="h-5 w-5" />
   }];
+  
   return <aside className="fixed left-0 top-0 z-30 flex h-screen w-64 flex-col border-r border-border bg-background transition-all duration-300">
       <div className="flex h-16 items-center border-b border-border px-6">
         <Link to="/" className="flex items-center gap-2 font-bold text-xl">
@@ -61,12 +46,14 @@ const AppSidebar = () => {
 
       <nav className="flex-1 overflow-auto p-6">
         <ul className="space-y-2">
-          {navItems.map((item, index) => item.divider ? <li key={`divider-${index}`} className="my-4 border-t border-border"></li> : <li key={item.path}>
-                <Link to={item.path} className={cn("flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:bg-accent hover:text-accent-foreground", location.pathname === item.path && "bg-accent text-accent-foreground font-medium")}>
-                  {item.icon}
-                  <span>{item.name}</span>
-                </Link>
-              </li>)}
+          {navItems.map((item, index) => (
+            <li key={item.path}>
+              <Link to={item.path} className={cn("flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:bg-accent hover:text-accent-foreground", location.pathname === item.path && "bg-accent text-accent-foreground font-medium")}>
+                {item.icon}
+                <span>{item.name}</span>
+              </Link>
+            </li>
+          ))}
         </ul>
       </nav>
 
@@ -86,4 +73,5 @@ const AppSidebar = () => {
         </div>}
     </aside>;
 };
+
 export default AppSidebar;
