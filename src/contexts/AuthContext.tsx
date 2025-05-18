@@ -1,6 +1,6 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { User } from "@/types";
+import { User, Role } from "@/types";
 import { getCurrentUser, authenticateUser } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 
@@ -23,7 +23,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       try {
         // Check if there is a logged in user
         const currentUser = await getCurrentUser();
-        setUser(currentUser);
+        setUser(currentUser as User);
       } catch (error) {
         console.error("Authentication error:", error);
       } finally {
@@ -40,7 +40,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const authenticatedUser = await authenticateUser(email, password);
       
       if (authenticatedUser) {
-        setUser(authenticatedUser);
+        setUser(authenticatedUser as User);
         toast({
           title: "Login Successful",
           description: `Welcome back, ${authenticatedUser.name}!`,

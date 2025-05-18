@@ -1,6 +1,8 @@
-import { Client, Contact, Note, Project, Task, TaskStatus } from "@/types";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000";
+import { Client, Contact, Note, Project, Task, TaskStatus, Role } from "@/types";
+
+// Changed from process.env to import.meta.env for Vite compatibility
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
 
 // Helper function to handle API requests
 const apiRequest = async (url: string, method: string = 'GET', body: any = null) => {
@@ -43,7 +45,7 @@ export const tasks: Task[] = [
     assigneeId: "user-1",
     projectId: "project-1",
     dueDate: new Date(new Date().setDate(new Date().getDate() + 1)), // Tomorrow
-    status: "doing",
+    status: "doing" as TaskStatus,
     createdAt: new Date()
   },
   {
@@ -52,7 +54,7 @@ export const tasks: Task[] = [
     assigneeId: "user-1",
     projectId: "project-2",
     dueDate: new Date(), // Today
-    status: "for_review",
+    status: "for_review" as TaskStatus,
     createdAt: new Date(new Date().setDate(new Date().getDate() - 2))
   }
 ];
@@ -117,7 +119,7 @@ export const getCurrentUser = async () => {
     id: "user-1",
     name: "Demo User",
     email: "demo@example.com",
-    role: "service_provider",
+    role: "service_provider" as Role,
     createdAt: new Date()
   };
 };
@@ -129,7 +131,7 @@ export const authenticateUser = async (email: string, password: string) => {
       id: "user-1",
       name: "Demo User",
       email: "demo@example.com",
-      role: "service_provider" as const,
+      role: "service_provider" as Role,
       createdAt: new Date()
     };
   }
