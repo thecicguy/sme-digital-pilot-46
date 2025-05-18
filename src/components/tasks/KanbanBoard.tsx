@@ -1,5 +1,5 @@
 
-import { Task } from "@/types";
+import { Task, TaskStatus } from "@/types";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -15,7 +15,7 @@ interface KanbanColumnProps {
   icon: React.ReactNode;
   getProjectName: (projectId: string) => string;
   getClientName: (projectId: string) => string;
-  columnId: string;
+  columnId: TaskStatus | "all";
 }
 
 const KanbanColumn = ({ title, tasks, icon, getProjectName, getClientName, columnId }: KanbanColumnProps) => (
@@ -90,7 +90,7 @@ interface KanbanBoardProps {
   tasks: Task[];
   getProjectName: (projectId: string) => string;
   getClientName: (projectId: string) => string;
-  onTaskStatusChange?: (taskId: string, newStatus: string) => void;
+  onTaskStatusChange?: (taskId: string, newStatus: TaskStatus) => void;
 }
 
 const KanbanBoard = ({ tasks, getProjectName, getClientName, onTaskStatusChange }: KanbanBoardProps) => {
@@ -107,9 +107,16 @@ const KanbanBoard = ({ tasks, getProjectName, getClientName, onTaskStatusChange 
       return;
     }
 
-    // Call the callback with the task id and new status
-    if (onTaskStatusChange) {
-      onTaskStatusChange(draggableId, destination.droppableId);
+    // Validate that destination.droppableId is a valid TaskStatus before proceeding
+    if (destination.droppableId === "doing" || 
+        destination.droppableId === "for_review" || 
+        destination.droppableId === "done" || 
+        destination.droppableId === "deferred") {
+
+      // Call the callback with the task id and new status
+      if (onTaskStatusChange) {
+        onTaskStatusChange(draggableId, destination.droppableId as TaskStatus);
+      }
     }
   };
 

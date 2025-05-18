@@ -8,6 +8,7 @@ import TaskFilters from "@/components/tasks/TaskFilters";
 import TasksContent from "@/components/tasks/TasksContent";
 import CreateTaskDialog from "@/components/tasks/CreateTaskDialog";
 import { toast } from "sonner";
+import { TaskStatus } from "@/types";
 
 const Tasks = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -35,7 +36,7 @@ const Tasks = () => {
   });
 
   const updateTaskMutation = useMutation({
-    mutationFn: (data: { taskId: string; status: string }) => 
+    mutationFn: (data: { taskId: string; status: TaskStatus }) => 
       updateTask(data.taskId, { status: data.status }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
@@ -46,7 +47,7 @@ const Tasks = () => {
     }
   });
 
-  const handleTaskStatusChange = (taskId: string, newStatus: string) => {
+  const handleTaskStatusChange = (taskId: string, newStatus: TaskStatus) => {
     updateTaskMutation.mutate({ taskId, status: newStatus });
   };
 
