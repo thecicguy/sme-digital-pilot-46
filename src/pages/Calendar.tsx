@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { addDays, format, startOfToday } from "date-fns";
 import { fetchProjects, fetchTasks, fetchClients } from "@/lib/api";
@@ -9,7 +9,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { User, Building, BookmarkCheck } from "lucide-react";
+import { User, Building, BookmarkCheck, CalendarPlus } from "lucide-react";
+import { CreateEventDialog } from "@/components/calendar/CreateEventDialog";
 
 interface EventType {
   id: string;
@@ -22,6 +23,13 @@ interface EventType {
 const Calendar = () => {
   const [date, setDate] = useState<Date | undefined>(startOfToday());
   const [view, setView] = useState<"all" | "projects" | "tasks" | "meetings" | "other">("all");
+  const [customEvents, setCustomEvents] = useState<EventType[]>(() => {
+    const savedEvents = localStorage.getItem("calendar_events");
+    return savedEvents ? JSON.parse(savedEvents, (key, value) => {
+      if (key === "date") return new Date(value);
+      return value;
+    }) : [];
+  });
   
   const { data: projects } = useQuery({
     queryKey: ["projects"],
@@ -37,6 +45,11 @@ const Calendar = () => {
     queryKey: ["clients"],
     queryFn: () => fetchClients(),
   });
+
+  // Save custom events to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem("calendar_events", JSON.stringify(customEvents));
+  }, [customEvents]);
 
   // Create demo events for demonstration purposes
   const projectEvents: EventType[] = projects?.map((project: Project) => ({
@@ -70,7 +83,8 @@ const Calendar = () => {
       date: addDays(new Date(), 5),
       type: "meeting",
       color: "bg-green-500"
-    }
+    },
+    ...customEvents.filter(event => event.type === "meeting")
   ];
 
   const otherEvents: EventType[] = [
@@ -87,10 +101,23 @@ const Calendar = () => {
       date: addDays(new Date(), 10),
       type: "other",
       color: "bg-pink-500"
-    }
+    },
+    ...customEvents.filter(event => event.type === "other")
   ];
 
-  const allEvents = [...projectEvents, ...taskEvents, ...meetingEvents, ...otherEvents];
+  // Add custom events to the respective event types
+  const customProjectEvents = customEvents.filter(event => event.type === "project");
+  const customTaskEvents = customEvents.filter(event => event.type === "task");
+
+  const allEvents = [
+    ...projectEvents, 
+    ...customProjectEvents,
+    ...taskEvents, 
+    ...customTaskEvents,
+    ...meetingEvents.filter(e => e.id.startsWith("meeting-")), 
+    ...otherEvents.filter(e => e.id.startsWith("other-")),
+    ...customEvents
+  ];
   
   const filteredEvents = allEvents.filter(event => 
     view === "all" || event.type === view
@@ -115,13 +142,21 @@ const Calendar = () => {
     hasEvents: "relative after:absolute after:bottom-1 after:left-1/2 after:-translate-x-1/2 after:h-1 after:w-1 after:rounded-full after:bg-primary",
   };
 
+  // Handle new event creation
+  const handleEventCreated = (newEvent: EventType) => {
+    setCustomEvents(prev => [...prev, newEvent]);
+  };
+
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Calendar</h1>
-        <p className="text-muted-foreground">
-          Track your project deadlines, task deadlines, client meetings, and other events
-        </p>
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Calendar</h1>
+          <p className="text-muted-foreground">
+            Track your project deadlines, task deadlines, client meetings, and other events
+          </p>
+        </div>
+        <CreateEventDialog onEventCreated={handleEventCreated} />
       </div>
 
       <div className="grid gap-6 md:grid-cols-[300px_1fr]">
