@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -115,11 +116,11 @@ const ClientDetail = () => {
         </div>
       </div>
 
-      {/* Company Details Section */}
+      {/* Business Details Section - Changed from Company Details */}
       <div className="space-y-4">
         <h2 className="text-xl font-semibold flex items-center gap-2">
           <Building className="h-5 w-5" />
-          Company Details
+          Business Details
         </h2>
         <Card>
           <CardContent className="pt-6">
