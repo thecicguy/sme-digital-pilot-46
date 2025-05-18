@@ -46,6 +46,20 @@ const AppSidebar = () => {
     icon: <Settings className="h-5 w-5" />
   }];
   
+  // Helper function to check if a path is active
+  const isActive = (path: string) => {
+    // Exact match for dashboard
+    if (path === "/" && location.pathname === "/") {
+      return true;
+    }
+    // For other pages, check if the pathname starts with the path
+    // This handles sub-routes like /clients/123
+    if (path !== "/" && location.pathname.startsWith(path)) {
+      return true;
+    }
+    return false;
+  };
+
   return <aside className="fixed left-0 top-0 z-30 flex h-screen w-64 flex-col border-r border-border bg-background transition-all duration-300">
       <div className="flex h-16 items-center border-b border-border px-6">
         <Link to="/" className="flex items-center gap-2 font-bold text-xl">
@@ -56,9 +70,17 @@ const AppSidebar = () => {
 
       <nav className="flex-1 overflow-auto p-6">
         <ul className="space-y-2">
-          {navItems.map((item, index) => (
+          {navItems.map((item) => (
             <li key={item.path}>
-              <Link to={item.path} className={cn("flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:bg-accent hover:text-accent-foreground", location.pathname === item.path && "bg-accent text-accent-foreground font-medium")}>
+              <Link 
+                to={item.path} 
+                className={cn(
+                  "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:bg-accent hover:text-accent-foreground",
+                  isActive(item.path) 
+                    ? "bg-primary/10 text-primary font-medium border-l-4 border-primary" 
+                    : "text-muted-foreground"
+                )}
+              >
                 {item.icon}
                 <span>{item.name}</span>
               </Link>
