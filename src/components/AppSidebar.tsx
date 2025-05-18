@@ -2,7 +2,9 @@
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
-import { Book, BookmarkCheck, Building, Calendar, Home, Settings, Users, FileText } from "lucide-react";
+import { Book, BookmarkCheck, Building, Calendar, Home, Settings, Users, FileText, HelpCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 const AppSidebar = () => {
   const {
@@ -62,6 +64,35 @@ const AppSidebar = () => {
       </nav>
 
       {user && <div className="mt-auto border-t border-border p-6">
+          {/* Access Support Button */}
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline" className="w-full mb-4 bg-primary/10 hover:bg-primary/20 text-primary flex items-center gap-2">
+                <HelpCircle className="h-4 w-4" />
+                Access Support
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="p-4">
+              <div className="space-y-2">
+                <h4 className="font-medium">Need Help?</h4>
+                <p className="text-sm text-muted-foreground">Contact our support team or check our knowledge base</p>
+                <div className="space-y-2 mt-3">
+                  <Button variant="outline" className="w-full text-sm" onClick={() => window.open('mailto:support@crm4smes.com')}>
+                    Email Support
+                  </Button>
+                  <Button variant="outline" className="w-full text-sm" onClick={() => window.open('tel:+18005551234')}>
+                    Call Us
+                  </Button>
+                  <Link to="/knowledge-base" className="inline-block w-full">
+                    <Button variant="outline" className="w-full text-sm">
+                      Knowledge Base
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </PopoverContent>
+          </Popover>
+
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white">
               {user.name.charAt(0).toUpperCase()}
