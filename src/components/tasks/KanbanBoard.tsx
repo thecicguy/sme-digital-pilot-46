@@ -1,90 +1,9 @@
 
+import React from "react";
 import { Task, TaskStatus } from "@/types";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "lucide-react";
-import { format } from "date-fns";
-import { Link } from "react-router-dom";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import KanbanColumn from "./KanbanColumn";
 import { statusIcons } from "./taskUtils";
-import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
-
-interface KanbanColumnProps {
-  title: string;
-  tasks: Task[];
-  icon: React.ReactNode;
-  getProjectName: (projectId: string) => string;
-  getClientName: (projectId: string) => string;
-  columnId: TaskStatus | "all";
-}
-
-const KanbanColumn = ({ title, tasks, icon, getProjectName, getClientName, columnId }: KanbanColumnProps) => (
-  <div className="flex flex-col min-w-[280px] max-w-[280px] bg-muted/40 rounded-lg p-3">
-    <div className="flex items-center mb-3 gap-2">
-      {icon}
-      <h3 className="font-semibold">{title}</h3>
-      <Badge variant="outline" className="ml-auto">{tasks.length}</Badge>
-    </div>
-    
-    <Droppable droppableId={columnId}>
-      {(provided) => (
-        <div 
-          ref={provided.innerRef}
-          {...provided.droppableProps}
-          className="flex flex-col gap-2 overflow-y-auto max-h-[calc(100vh-270px)]"
-        >
-          {tasks.map((task, index) => (
-            <Draggable key={task.id} draggableId={task.id} index={index}>
-              {(provided) => (
-                <div
-                  ref={provided.innerRef}
-                  {...provided.draggableProps}
-                  {...provided.dragHandleProps}
-                >
-                  <Card className="shadow-sm hover:shadow-md transition-all">
-                    <CardHeader className="p-3 pb-1">
-                      <CardTitle className="text-sm font-medium">{task.description}</CardTitle>
-                      <CardDescription className="text-xs">
-                        {getProjectName(task.projectId)} - {getClientName(task.projectId)}
-                      </CardDescription>
-                    </CardHeader>
-                    {task.references && (
-                      <CardContent className="p-3 pt-1 pb-1 text-xs">
-                        <div className="rounded-md bg-background p-1">
-                          <span className="font-semibold">Refs: </span>
-                          {task.references.length > 30 ? `${task.references.substring(0, 30)}...` : task.references}
-                        </div>
-                      </CardContent>
-                    )}
-                    <CardFooter className="p-3 pt-1 flex justify-between items-center">
-                      {task.dueDate ? (
-                        <div className="flex items-center text-xs text-muted-foreground">
-                          <Calendar className="mr-1 h-3 w-3" />
-                          {format(new Date(task.dueDate), "MMM d")}
-                        </div>
-                      ) : (
-                        <span></span>
-                      )}
-                      <Button asChild size="sm" variant="outline" className="h-7 text-xs">
-                        <Link to={`/tasks/${task.id}`}>View</Link>
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                </div>
-              )}
-            </Draggable>
-          ))}
-          {provided.placeholder}
-          {tasks.length === 0 && (
-            <div className="bg-background p-3 rounded-lg border border-dashed border-border text-center text-sm text-muted-foreground">
-              No tasks
-            </div>
-          )}
-        </div>
-      )}
-    </Droppable>
-  </div>
-);
 
 interface KanbanBoardProps {
   tasks: Task[];
@@ -93,7 +12,12 @@ interface KanbanBoardProps {
   onTaskStatusChange?: (taskId: string, newStatus: TaskStatus) => void;
 }
 
-const KanbanBoard = ({ tasks, getProjectName, getClientName, onTaskStatusChange }: KanbanBoardProps) => {
+const KanbanBoard: React.FC<KanbanBoardProps> = ({ 
+  tasks, 
+  getProjectName, 
+  getClientName, 
+  onTaskStatusChange 
+}) => {
   const doingTasks = tasks.filter(task => task.status === "doing");
   const forReviewTasks = tasks.filter(task => task.status === "for_review");
   const doneTasks = tasks.filter(task => task.status === "done");
