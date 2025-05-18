@@ -18,6 +18,7 @@ import { toast } from "@/hooks/use-toast";
 import EmailTemplatesContent from "./EmailTemplates";
 import ReportTypesContent from "@/components/settings/ReportTypesContent";
 import StatusesContent from "@/components/settings/StatusesContent";
+import ReportSettingsContent from "@/components/settings/ReportSettingsContent";
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState("profile");
@@ -101,8 +102,7 @@ const Settings = () => {
           <TabsTrigger value="ai-settings">AI Settings</TabsTrigger>
           <TabsTrigger value="team">Team Management</TabsTrigger>
           <TabsTrigger value="email-templates">Email Templates</TabsTrigger>
-          <TabsTrigger value="report-types">Report Types</TabsTrigger>
-          <TabsTrigger value="statuses">Report Statuses</TabsTrigger>
+          <TabsTrigger value="report-settings">Report Settings</TabsTrigger>
         </TabsList>
         
         <TabsContent value="profile">
@@ -429,12 +429,8 @@ const Settings = () => {
           <EmailTemplatesContent />
         </TabsContent>
         
-        <TabsContent value="report-types">
-          <ReportTypesContent />
-        </TabsContent>
-        
-        <TabsContent value="statuses">
-          <StatusesContent />
+        <TabsContent value="report-settings">
+          <ReportSettingsContent />
         </TabsContent>
       </Tabs>
     </div>
