@@ -3,9 +3,10 @@ import { Task } from "@/types";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, CheckCircle, Clock, AlertCircle, PauseCircle } from "lucide-react";
+import { Calendar } from "lucide-react";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
+import { statusIcons } from "./taskUtils";
 
 interface KanbanColumnProps {
   title: string;
@@ -81,28 +82,28 @@ const KanbanBoard = ({ tasks, getProjectName, getClientName }: KanbanBoardProps)
       <KanbanColumn 
         title="In Progress"
         tasks={doingTasks} 
-        icon={<Clock className="h-4 w-4 text-crm-blue" />}
+        icon={statusIcons.doing}
         getProjectName={getProjectName}
         getClientName={getClientName}
       />
       <KanbanColumn 
         title="For Review" 
         tasks={forReviewTasks} 
-        icon={<AlertCircle className="h-4 w-4 text-amber-500" />}
+        icon={statusIcons.for_review}
         getProjectName={getProjectName}
         getClientName={getClientName}
       />
       <KanbanColumn 
         title="Completed" 
         tasks={doneTasks} 
-        icon={<CheckCircle className="h-4 w-4 text-green-500" />}
+        icon={statusIcons.done}
         getProjectName={getProjectName}
         getClientName={getClientName}
       />
       <KanbanColumn 
         title="Deferred" 
         tasks={deferredTasks} 
-        icon={<PauseCircle className="h-4 w-4 text-gray-500" />}
+        icon={statusIcons.deferred}
         getProjectName={getProjectName}
         getClientName={getClientName}
       />
