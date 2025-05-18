@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -14,8 +15,9 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { toast } from "@/hooks/use-toast";
 
-// Import the email templates content
+// Import the email templates content and report types content
 import EmailTemplatesContent from "./EmailTemplates";
+import ReportTypesContent from "@/components/settings/ReportTypesContent";
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState("profile");
@@ -99,6 +101,7 @@ const Settings = () => {
           <TabsTrigger value="ai-settings">AI Settings</TabsTrigger>
           <TabsTrigger value="team">Team Management</TabsTrigger>
           <TabsTrigger value="email-templates">Email Templates</TabsTrigger>
+          <TabsTrigger value="report-types">Report Types</TabsTrigger>
         </TabsList>
         
         <TabsContent value="profile">
@@ -423,6 +426,10 @@ const Settings = () => {
         
         <TabsContent value="email-templates">
           <EmailTemplatesContent />
+        </TabsContent>
+        
+        <TabsContent value="report-types">
+          <ReportTypesContent />
         </TabsContent>
       </Tabs>
     </div>

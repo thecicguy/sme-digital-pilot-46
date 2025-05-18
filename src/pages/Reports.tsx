@@ -14,6 +14,17 @@ import {
 const Reports = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [typeFilter, setTypeFilter] = useState("all");
+  
+  const reportTypes = [
+    "Update Slidedeck",
+    "Pitch Slidedeck",
+    "Standup Slidedeck",
+    "Proposal Slidedeck",
+    "Kanban Slidedeck",
+    "KickOff Slidedeck",
+    "Lessons Learnt Slidedeck",
+  ];
   
   const reports = [
     {
@@ -23,6 +34,7 @@ const Reports = () => {
       generatedAt: new Date("2023-06-15"),
       status: "completed",
       aiModel: "GPT-4",
+      type: "Proposal Slidedeck",
     },
     {
       id: "report2",
@@ -31,6 +43,7 @@ const Reports = () => {
       generatedAt: new Date("2023-05-28"),
       status: "completed",
       aiModel: "GPT-4",
+      type: "Pitch Slidedeck",
     },
     {
       id: "report3",
@@ -39,6 +52,7 @@ const Reports = () => {
       generatedAt: new Date("2023-06-10"),
       status: "draft",
       aiModel: "Claude",
+      type: "Update Slidedeck",
     },
     {
       id: "report4",
@@ -47,6 +61,7 @@ const Reports = () => {
       generatedAt: new Date("2023-06-20"),
       status: "in_progress",
       aiModel: "GPT-4",
+      type: "Standup Slidedeck",
     },
   ];
   
@@ -56,8 +71,9 @@ const Reports = () => {
       report.clientName.toLowerCase().includes(searchTerm.toLowerCase());
       
     const matchesStatus = statusFilter === "all" || report.status === statusFilter;
+    const matchesType = typeFilter === "all" || report.type === typeFilter;
     
-    return matchesSearch && matchesStatus;
+    return matchesSearch && matchesStatus && matchesType;
   });
   
   const getStatusBadgeClasses = (status: string) => {
@@ -117,6 +133,21 @@ const Reports = () => {
             <SelectItem value="draft">Draft</SelectItem>
           </SelectContent>
         </Select>
+        
+        <Select
+          value={typeFilter}
+          onValueChange={setTypeFilter}
+        >
+          <SelectTrigger className="w-[200px]">
+            <SelectValue placeholder="Filter by report type" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Report Types</SelectItem>
+            {reportTypes.map((type) => (
+              <SelectItem key={type} value={type}>{type}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
       
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
@@ -133,6 +164,10 @@ const Reports = () => {
                   <span className={`rounded-full px-2 py-1 text-xs font-medium ${getStatusBadgeClasses(report.status)}`}>
                     {getStatusLabel(report.status)}
                   </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Type</span>
+                  <span className="text-sm font-medium">{report.type}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">Generated</span>
