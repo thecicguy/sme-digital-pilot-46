@@ -17,7 +17,7 @@ import CreateProjectDialog from "@/components/projects/CreateProjectDialog";
 
 const Projects = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterClientId, setFilterClientId] = useState("");
+  const [filterClientId, setFilterClientId] = useState("all");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [view, setView] = useState<"grid" | "list">("grid");
 
@@ -33,7 +33,7 @@ const Projects = () => {
 
   const filteredProjects = projects?.filter((project) => {
     const matchesSearch = project.type.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesClient = filterClientId ? project.clientId === filterClientId : true;
+    const matchesClient = filterClientId === "all" ? true : project.clientId === filterClientId;
     return matchesSearch && matchesClient;
   });
 
@@ -69,7 +69,7 @@ const Projects = () => {
             <SelectValue placeholder="Filter by client" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Clients</SelectItem>
+            <SelectItem value="all">All Clients</SelectItem>
             {clients?.map((client) => (
               <SelectItem key={client.id} value={client.id}>
                 {client.businessName}
