@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -120,11 +119,6 @@ const Clients = () => {
               <CardHeader className="p-4 pb-2">
                 <CardTitle className="flex items-center justify-between">
                   <span className="truncate text-lg font-bold">{client.businessName}</span>
-                  {client.potentialName && (
-                    <Badge variant="outline" className="ml-2">
-                      {client.potentialName}
-                    </Badge>
-                  )}
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-4 pt-1">
@@ -134,12 +128,6 @@ const Clients = () => {
                     <div className="flex items-center text-sm">
                       <MapPin className="mr-2 h-4 w-4 text-muted-foreground flex-shrink-0" />
                       <span className="truncate">{client.location}</span>
-                    </div>
-                  )}
-                  {client.potentialName && (
-                    <div className="flex items-center text-sm">
-                      <Building className="mr-2 h-4 w-4 text-muted-foreground flex-shrink-0" />
-                      <span className="truncate">Potential Name: {client.potentialName}</span>
                     </div>
                   )}
                 </div>
@@ -157,7 +145,6 @@ const Clients = () => {
           <TableHeader>
             <TableRow>
               <TableHead>Business Name</TableHead>
-              <TableHead>Potential Name</TableHead>
               <TableHead>Description</TableHead>
               <TableHead>Location</TableHead>
               <TableHead className="text-right">Actions</TableHead>
@@ -167,7 +154,6 @@ const Clients = () => {
             {filteredClients?.map((client) => (
               <TableRow key={client.id} className="hover:bg-muted/50">
                 <TableCell className="font-medium">{client.businessName}</TableCell>
-                <TableCell>{client.potentialName || "—"}</TableCell>
                 <TableCell className="max-w-xs truncate">{client.description}</TableCell>
                 <TableCell>
                   {client.location ? (
