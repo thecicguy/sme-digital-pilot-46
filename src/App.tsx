@@ -22,6 +22,7 @@ import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
 import Dashboard from "./pages/Dashboard";
 import Calendar from "./pages/Calendar";
+import Documents from "./pages/Documents";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -56,6 +57,7 @@ const App = () => (
                   <Route path="/projects/:projectId" element={<ProjectDetail />} />
                   <Route path="/tasks" element={<Tasks />} />
                   <Route path="/calendar" element={<Calendar />} />
+                  <Route path="/documents" element={<Documents />} />
                   <Route path="/reports" element={<Reports />} />
                   <Route path="/settings" element={<Settings />} />
                 </Route>
