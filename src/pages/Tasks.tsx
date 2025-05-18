@@ -25,6 +25,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ViewToggle } from "@/components/common/ViewToggle";
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import CreateTaskDialog from "@/components/tasks/CreateTaskDialog";
 
 const statusIcons = {
@@ -47,6 +49,7 @@ const Tasks = () => {
   const [filterStatus, setFilterStatus] = useState("");
   const [activeTab, setActiveTab] = useState("all");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [view, setView] = useState<"grid" | "list">("grid");
 
   const { data: tasks, isLoading: isTasksLoading } = useQuery({
     queryKey: ["tasks"],
@@ -112,7 +115,7 @@ const Tasks = () => {
         </TabsList>
       </Tabs>
 
-      <div className="flex flex-col gap-3 md:flex-row">
+      <div className="flex flex-col gap-3 md:flex-row md:items-center">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
@@ -127,7 +130,7 @@ const Tasks = () => {
             <SelectValue placeholder="Filter by project" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Projects</SelectItem>
+            <SelectItem value="">All Projects</SelectItem>
             {projects?.map((project) => (
               <SelectItem key={project.id} value={project.id}>
                 {getProjectName(project.id)} - {getClientName(project.id)}
@@ -135,26 +138,52 @@ const Tasks = () => {
             ))}
           </SelectContent>
         </Select>
+        <ViewToggle view={view} onViewChange={setView} />
       </div>
 
       {isTasksLoading ? (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {[1, 2, 3].map((i) => (
-            <Card key={i}>
-              <CardHeader>
-                <Skeleton className="h-5 w-3/4" />
-                <Skeleton className="h-4 w-1/2" />
-              </CardHeader>
-              <CardContent>
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="mt-2 h-4 w-2/3" />
-              </CardContent>
-              <CardFooter>
-                <Skeleton className="h-8 w-full" />
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
+        view === "grid" ? (
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {[1, 2, 3].map((i) => (
+              <Card key={i}>
+                <CardHeader>
+                  <Skeleton className="h-5 w-3/4" />
+                  <Skeleton className="h-4 w-1/2" />
+                </CardHeader>
+                <CardContent>
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="mt-2 h-4 w-2/3" />
+                </CardContent>
+                <CardFooter>
+                  <Skeleton className="h-8 w-full" />
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Description</TableHead>
+                <TableHead>Project</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Due Date</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {[1, 2, 3].map((i) => (
+                <TableRow key={i}>
+                  <TableCell><Skeleton className="h-5 w-full" /></TableCell>
+                  <TableCell><Skeleton className="h-5 w-full" /></TableCell>
+                  <TableCell><Skeleton className="h-5 w-24" /></TableCell>
+                  <TableCell><Skeleton className="h-5 w-24" /></TableCell>
+                  <TableCell className="text-right"><Skeleton className="h-9 w-20 ml-auto" /></TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )
       ) : filteredTasks.length === 0 ? (
         <div className="rounded-lg border border-border bg-background p-8 text-center">
           <h3 className="mb-2 text-lg font-medium">No tasks found</h3>
@@ -170,7 +199,7 @@ const Tasks = () => {
             </Button>
           )}
         </div>
-      ) : (
+      ) : view === "grid" ? (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {filteredTasks.map((task) => (
             <Card key={task.id} className="transition-all hover:shadow-md">
@@ -208,6 +237,42 @@ const Tasks = () => {
             </Card>
           ))}
         </div>
+      ) : (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Description</TableHead>
+              <TableHead>Project</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Due Date</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filteredTasks.map((task) => (
+              <TableRow key={task.id} className="hover:bg-muted/50">
+                <TableCell className="font-medium">{task.description}</TableCell>
+                <TableCell>
+                  {getProjectName(task.projectId)} - {getClientName(task.projectId)}
+                </TableCell>
+                <TableCell>
+                  <Badge variant="outline" className="flex items-center w-fit gap-1 capitalize">
+                    {statusIcons[task.status]}
+                    {statusLabels[task.status]}
+                  </Badge>
+                </TableCell>
+                <TableCell>
+                  {task.dueDate ? format(new Date(task.dueDate), "MMM d, yyyy") : "-"}
+                </TableCell>
+                <TableCell className="text-right">
+                  <Button asChild size="sm" variant="outline">
+                    <Link to={`/tasks/${task.id}`}>View</Link>
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       )}
 
       <CreateTaskDialog

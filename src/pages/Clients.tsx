@@ -9,11 +9,14 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ViewToggle } from "@/components/common/ViewToggle";
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import CreateClientDialog from "@/components/clients/CreateClientDialog";
 
 const Clients = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [view, setView] = useState<"grid" | "list">("grid");
 
   const { data: clients, isLoading, error } = useQuery({
     queryKey: ["clients"],
@@ -39,34 +42,60 @@ const Clients = () => {
         </Button>
       </div>
 
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          placeholder="Search clients..."
-          className="pl-10"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+      <div className="flex flex-col gap-3 md:flex-row md:items-center">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            placeholder="Search clients..."
+            className="pl-10"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+        <ViewToggle view={view} onViewChange={setView} />
       </div>
 
       {isLoading ? (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {[1, 2, 3].map((i) => (
-            <Card key={i} className="overflow-hidden">
-              <CardHeader className="p-4">
-                <Skeleton className="h-6 w-3/4" />
-              </CardHeader>
-              <CardContent className="p-4">
-                <Skeleton className="mb-2 h-4 w-full" />
-                <Skeleton className="mb-2 h-4 w-2/3" />
-                <Skeleton className="h-4 w-1/2" />
-              </CardContent>
-              <CardFooter className="p-4">
-                <Skeleton className="h-9 w-full" />
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
+        view === "grid" ? (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {[1, 2, 3].map((i) => (
+              <Card key={i} className="overflow-hidden">
+                <CardHeader className="p-4">
+                  <Skeleton className="h-6 w-3/4" />
+                </CardHeader>
+                <CardContent className="p-4">
+                  <Skeleton className="mb-2 h-4 w-full" />
+                  <Skeleton className="mb-2 h-4 w-2/3" />
+                  <Skeleton className="h-4 w-1/2" />
+                </CardContent>
+                <CardFooter className="p-4">
+                  <Skeleton className="h-9 w-full" />
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Business Name</TableHead>
+                <TableHead>Description</TableHead>
+                <TableHead>Location</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {[1, 2, 3].map((i) => (
+                <TableRow key={i}>
+                  <TableCell><Skeleton className="h-5 w-full" /></TableCell>
+                  <TableCell><Skeleton className="h-5 w-full" /></TableCell>
+                  <TableCell><Skeleton className="h-5 w-1/2" /></TableCell>
+                  <TableCell className="text-right"><Skeleton className="h-9 w-20 ml-auto" /></TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )
       ) : error ? (
         <div className="rounded-lg border border-destructive bg-destructive/10 p-4 text-destructive">
           Error loading clients. Please try again later.
@@ -84,7 +113,7 @@ const Clients = () => {
             </Button>
           )}
         </div>
-      ) : (
+      ) : view === "grid" ? (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filteredClients?.map((client) => (
             <Card key={client.id} className="overflow-hidden transition-all hover:shadow-md">
@@ -116,6 +145,38 @@ const Clients = () => {
             </Card>
           ))}
         </div>
+      ) : (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Business Name</TableHead>
+              <TableHead>Description</TableHead>
+              <TableHead>Location</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filteredClients?.map((client) => (
+              <TableRow key={client.id} className="hover:bg-muted/50">
+                <TableCell className="font-medium">{client.businessName}</TableCell>
+                <TableCell className="max-w-xs truncate">{client.description}</TableCell>
+                <TableCell>
+                  {client.location && (
+                    <Badge variant="outline" className="flex items-center w-fit">
+                      <MapPin className="mr-1 h-3 w-3" />
+                      {client.location}
+                    </Badge>
+                  )}
+                </TableCell>
+                <TableCell className="text-right">
+                  <Button asChild size="sm" variant="outline">
+                    <Link to={`/clients/${client.id}`}>View</Link>
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       )}
 
       <CreateClientDialog

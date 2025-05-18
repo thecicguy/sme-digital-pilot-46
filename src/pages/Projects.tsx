@@ -10,13 +10,16 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ViewToggle } from "@/components/common/ViewToggle";
 import CreateProjectDialog from "@/components/projects/CreateProjectDialog";
 
 const Projects = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterClientId, setFilterClientId] = useState("");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [view, setView] = useState<"grid" | "list">("grid");
 
   const { data: projects, isLoading, error } = useQuery({
     queryKey: ["projects"],
@@ -51,7 +54,7 @@ const Projects = () => {
         </Button>
       </div>
 
-      <div className="flex flex-col gap-3 md:flex-row">
+      <div className="flex flex-col gap-3 md:flex-row md:items-center">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
@@ -66,7 +69,7 @@ const Projects = () => {
             <SelectValue placeholder="Filter by client" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Clients</SelectItem>
+            <SelectItem value="">All Clients</SelectItem>
             {clients?.map((client) => (
               <SelectItem key={client.id} value={client.id}>
                 {client.businessName}
@@ -74,25 +77,51 @@ const Projects = () => {
             ))}
           </SelectContent>
         </Select>
+        <ViewToggle view={view} onViewChange={setView} />
       </div>
 
       {isLoading ? (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {[1, 2, 3].map((i) => (
-            <Card key={i} className="overflow-hidden">
-              <CardHeader className="p-4">
-                <Skeleton className="h-6 w-3/4" />
-              </CardHeader>
-              <CardContent className="p-4">
-                <Skeleton className="mb-2 h-4 w-full" />
-                <Skeleton className="h-4 w-2/3" />
-              </CardContent>
-              <CardFooter className="p-4">
-                <Skeleton className="h-9 w-full" />
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
+        view === "grid" ? (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {[1, 2, 3].map((i) => (
+              <Card key={i} className="overflow-hidden">
+                <CardHeader className="p-4">
+                  <Skeleton className="h-6 w-3/4" />
+                </CardHeader>
+                <CardContent className="p-4">
+                  <Skeleton className="mb-2 h-4 w-full" />
+                  <Skeleton className="h-4 w-2/3" />
+                </CardContent>
+                <CardFooter className="p-4">
+                  <Skeleton className="h-9 w-full" />
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Project Type</TableHead>
+                <TableHead>Client</TableHead>
+                <TableHead>Created</TableHead>
+                <TableHead>Days Allocated</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {[1, 2, 3].map((i) => (
+                <TableRow key={i}>
+                  <TableCell><Skeleton className="h-5 w-full" /></TableCell>
+                  <TableCell><Skeleton className="h-5 w-full" /></TableCell>
+                  <TableCell><Skeleton className="h-5 w-1/2" /></TableCell>
+                  <TableCell><Skeleton className="h-5 w-12" /></TableCell>
+                  <TableCell className="text-right"><Skeleton className="h-9 w-20 ml-auto" /></TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )
       ) : error ? (
         <div className="rounded-lg border border-destructive bg-destructive/10 p-4 text-destructive">
           Error loading projects. Please try again later.
@@ -110,7 +139,7 @@ const Projects = () => {
             </Button>
           )}
         </div>
-      ) : (
+      ) : view === "grid" ? (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filteredProjects?.map((project) => (
             <Card key={project.id} className="overflow-hidden transition-all hover:shadow-md">
@@ -138,6 +167,33 @@ const Projects = () => {
             </Card>
           ))}
         </div>
+      ) : (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Project Type</TableHead>
+              <TableHead>Client</TableHead>
+              <TableHead>Created</TableHead>
+              <TableHead>Days Allocated</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filteredProjects?.map((project) => (
+              <TableRow key={project.id} className="hover:bg-muted/50">
+                <TableCell className="font-medium capitalize">{project.type}</TableCell>
+                <TableCell>{getClientName(project.clientId)}</TableCell>
+                <TableCell>{formatDistanceToNow(new Date(project.createdAt), { addSuffix: true })}</TableCell>
+                <TableCell>{project.daysAllocated} days</TableCell>
+                <TableCell className="text-right">
+                  <Button asChild size="sm" variant="outline">
+                    <Link to={`/projects/${project.id}`}>View</Link>
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       )}
 
       <CreateProjectDialog
