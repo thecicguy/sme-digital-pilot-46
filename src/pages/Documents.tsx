@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { 
@@ -10,7 +9,8 @@ import {
   Filter, 
   ListFilter,
   Download,
-  History
+  History,
+  FileBarChart
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -233,7 +233,7 @@ const Documents = () => {
       description: `Downloading document ID: ${documentId}`,
     });
   };
-
+  
   // Handle showing version history
   const handleViewVersions = (document: any) => {
     setSelectedDocument(document);

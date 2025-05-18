@@ -1,5 +1,5 @@
 
-import { Download, Upload, Compare, File, X } from "lucide-react";
+import { Download, Upload, FileBarChart, File, X } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -174,7 +174,7 @@ const DocumentVersionsDialog = ({
                                 alert(`Compare with current version would be implemented here`);
                               }}
                             >
-                              <Compare className="h-4 w-4" />
+                              <FileBarChart className="h-4 w-4" />
                               <span className="sr-only md:not-sr-only">Compare</span>
                             </Button>
                           )}
