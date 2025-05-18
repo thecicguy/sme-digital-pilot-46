@@ -17,13 +17,13 @@ const Reports = () => {
   const [typeFilter, setTypeFilter] = useState("all");
   
   const reportTypes = [
-    "Update Slidedeck",
-    "Pitch Slidedeck",
-    "Standup Slidedeck",
-    "Proposal Slidedeck",
-    "Kanban Slidedeck",
-    "KickOff Slidedeck",
-    "Lessons Learnt Slidedeck",
+    "Update",
+    "Pitch",
+    "Standup",
+    "Proposal",
+    "Kanban",
+    "KickOff",
+    "Lessons Learnt",
   ];
   
   const reports = [
@@ -34,7 +34,7 @@ const Reports = () => {
       generatedAt: new Date("2023-06-15"),
       status: "completed",
       aiModel: "GPT-4",
-      type: "Proposal Slidedeck",
+      type: "Proposal",
     },
     {
       id: "report2",
@@ -43,7 +43,7 @@ const Reports = () => {
       generatedAt: new Date("2023-05-28"),
       status: "completed",
       aiModel: "GPT-4",
-      type: "Pitch Slidedeck",
+      type: "Pitch",
     },
     {
       id: "report3",
@@ -52,7 +52,7 @@ const Reports = () => {
       generatedAt: new Date("2023-06-10"),
       status: "draft",
       aiModel: "Claude",
-      type: "Update Slidedeck",
+      type: "Update",
     },
     {
       id: "report4",
@@ -61,7 +61,7 @@ const Reports = () => {
       generatedAt: new Date("2023-06-20"),
       status: "in_progress",
       aiModel: "GPT-4",
-      type: "Standup Slidedeck",
+      type: "Standup",
     },
   ];
   

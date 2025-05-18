@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,13 +7,13 @@ import { X, Edit, Check } from "lucide-react";
 
 const ReportTypesContent = () => {
   const [reportTypes, setReportTypes] = useState([
-    "Update Slidedeck",
-    "Pitch Slidedeck",
-    "Standup Slidedeck",
-    "Proposal Slidedeck",
-    "Kanban Slidedeck",
-    "KickOff Slidedeck",
-    "Lessons Learnt Slidedeck"
+    "Update",
+    "Pitch",
+    "Standup",
+    "Proposal",
+    "Kanban",
+    "KickOff",
+    "Lessons Learnt"
   ]);
   const [newReportType, setNewReportType] = useState("");
   const [editIndex, setEditIndex] = useState<number | null>(null);
