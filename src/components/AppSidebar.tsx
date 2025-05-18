@@ -2,7 +2,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
-import { Book, BookmarkCheck, Building, Calendar, Home, Mail, Settings, Users, FileText } from "lucide-react";
+import { Book, BookmarkCheck, Building, Calendar, Home, Settings, Users, FileText } from "lucide-react";
 
 const AppSidebar = () => {
   const {
@@ -26,10 +26,6 @@ const AppSidebar = () => {
     name: "Tasks",
     path: "/tasks",
     icon: <BookmarkCheck className="h-5 w-5" />
-  }, {
-    name: "Email Templates",
-    path: "/email-templates",
-    icon: <Mail className="h-5 w-5" />
   }, {
     name: "Reports",
     path: "/reports",

@@ -26,7 +26,6 @@ import ProjectDetail from "./pages/ProjectDetail";
 import Tasks from "./pages/Tasks";
 import NotFound from "./pages/NotFound";
 import Reports from "./pages/Reports";
-import EmailTemplates from "./pages/EmailTemplates";
 import Settings from "./pages/Settings";
 import Dashboard from "./pages/Dashboard";
 
@@ -62,7 +61,6 @@ const App = () => (
                   <Route path="/projects" element={<Projects />} />
                   <Route path="/projects/:projectId" element={<ProjectDetail />} />
                   <Route path="/tasks" element={<Tasks />} />
-                  <Route path="/email-templates" element={<EmailTemplates />} />
                   <Route path="/reports" element={<Reports />} />
                   <Route path="/settings" element={<Settings />} />
                   <Route path="/about" element={<About />} />
@@ -78,7 +76,6 @@ const App = () => (
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </div>
-            {/* Footer removed from here */}
           </div>
         </BrowserRouter>
       </TooltipProvider>
