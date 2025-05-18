@@ -1,37 +1,23 @@
-
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
-import { Calendar, CheckCircle, Clock, AlertCircle, PauseCircle } from "lucide-react";
+import { Calendar, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import KanbanBoard from "@/components/tasks/KanbanBoard";
+import { statusIcons, statusLabels } from "./taskUtils";
 import { Task } from "@/types";
 
-const statusIcons = {
-  "doing": <Clock className="h-4 w-4 text-crm-blue" />,
-  "done": <CheckCircle className="h-4 w-4 text-green-500" />,
-  "for_review": <AlertCircle className="h-4 w-4 text-amber-500" />,
-  "deferred": <PauseCircle className="h-4 w-4 text-gray-500" />
-};
-
-const statusLabels = {
-  "doing": "In Progress",
-  "done": "Completed",
-  "for_review": "For Review",
-  "deferred": "Deferred"
-};
-
-interface TasksContentProps {
+const TasksContentProps = {
   isLoading: boolean;
   tasks: Task[];
   view: "grid" | "list" | "kanban";
   getProjectName: (projectId: string) => string;
   getClientName: (projectId: string) => string;
   onCreateTask: () => void;
-}
+};
 
 const TasksContent = ({
   isLoading,
