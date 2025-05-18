@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -77,7 +76,14 @@ const Projects = () => {
             ))}
           </SelectContent>
         </Select>
-        <ViewToggle view={view} onViewChange={setView} />
+        <ViewToggle 
+          view={view} 
+          onViewChange={(newView) => {
+            if (newView === "grid" || newView === "list") {
+              setView(newView);
+            }
+          }} 
+        />
       </div>
 
       {isLoading ? (

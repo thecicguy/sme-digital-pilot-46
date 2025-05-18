@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -131,7 +130,7 @@ const Tasks = () => {
             <SelectValue placeholder="Filter by project" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Projects</SelectItem>
+            <SelectItem value="">All Projects</SelectItem>
             {projects?.map((project) => (
               <SelectItem key={project.id} value={project.id}>
                 {getProjectName(project.id)} - {getClientName(project.id)}
@@ -139,7 +138,7 @@ const Tasks = () => {
             ))}
           </SelectContent>
         </Select>
-        <ViewToggle view={view} onViewChange={setView} />
+        <ViewToggle view={view} onViewChange={setView} showKanban={true} />
       </div>
 
       {isTasksLoading ? (

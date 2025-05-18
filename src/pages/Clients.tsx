@@ -51,7 +51,14 @@ const Clients = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <ViewToggle view={view} onViewChange={setView} />
+        <ViewToggle 
+          view={view} 
+          onViewChange={(newView) => {
+            if (newView === "grid" || newView === "list") {
+              setView(newView);
+            }
+          }} 
+        />
       </div>
 
       {isLoading ? (
