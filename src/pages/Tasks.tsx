@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -93,6 +94,13 @@ const Tasks = () => {
       })
     : [];
 
+  // Handler for view changes that works with the updated ViewToggle component
+  const handleViewChange = (newView: string) => {
+    if (newView === "grid" || newView === "list" || newView === "kanban") {
+      setView(newView);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
@@ -138,7 +146,7 @@ const Tasks = () => {
             ))}
           </SelectContent>
         </Select>
-        <ViewToggle view={view} onViewChange={setView} showKanban={true} />
+        <ViewToggle view={view} onViewChange={handleViewChange} showKanban={true} />
       </div>
 
       {isTasksLoading ? (
