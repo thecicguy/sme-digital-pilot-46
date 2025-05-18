@@ -19,6 +19,7 @@ const WhitelabelContent = () => {
     footerText: "© 2025 ConsultLink. All rights reserved.",
     favicon: "/favicon.ico",
     customCss: "",
+    platformUrl: "app.consultlink.com",
     showPoweredBy: true
   });
   
@@ -88,6 +89,23 @@ const WhitelabelContent = () => {
                   onChange={handleChange}
                   placeholder="Application Name"
                 />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="platformUrl">Platform URL</Label>
+                <div className="flex items-center">
+                  <span className="bg-muted px-3 py-2 text-sm border border-r-0 border-input rounded-l-md">
+                    https://
+                  </span>
+                  <Input 
+                    id="platformUrl" 
+                    name="platformUrl" 
+                    value={form.platformUrl}
+                    onChange={handleChange}
+                    className="rounded-l-none"
+                    placeholder="app.yourdomain.com"
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground">The domain where your application will be hosted</p>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="logoUrl">Logo URL</Label>
