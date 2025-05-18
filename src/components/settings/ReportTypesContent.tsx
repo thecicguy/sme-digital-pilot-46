@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,29 +14,32 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 
-// Define a report type interface with name and presentation type
+// Define a report type interface with name, presentation type, and AI model
 interface ReportTypeInfo {
   name: string;
   presentationType: string;
+  aiModel?: string;
 }
 
 const ReportTypesContent = () => {
-  // Updated to use objects with name and presentationType properties
+  // Updated to include aiModel property
   const [reportTypes, setReportTypes] = useState<ReportTypeInfo[]>([
-    { name: "Update", presentationType: "meeting" },
-    { name: "Pitch", presentationType: "slidedeck" },
-    { name: "Standup", presentationType: "meeting" },
-    { name: "Proposal", presentationType: "document" },
-    { name: "Kanban", presentationType: "board" },
-    { name: "KickOff", presentationType: "meeting" },
-    { name: "Lessons Learnt", presentationType: "document" }
+    { name: "Update", presentationType: "meeting", aiModel: "gpt-4" },
+    { name: "Pitch", presentationType: "slidedeck", aiModel: "claude" },
+    { name: "Standup", presentationType: "meeting", aiModel: "gpt-4" },
+    { name: "Proposal", presentationType: "document", aiModel: "palm" },
+    { name: "Kanban", presentationType: "board", aiModel: "gpt-4" },
+    { name: "KickOff", presentationType: "meeting", aiModel: "claude" },
+    { name: "Lessons Learnt", presentationType: "document", aiModel: "llama" }
   ]);
   
   const [newReportType, setNewReportType] = useState("");
   const [newPresentationType, setNewPresentationType] = useState("slidedeck");
+  const [newAiModel, setNewAiModel] = useState("gpt-4");
   const [editIndex, setEditIndex] = useState<number | null>(null);
   const [editName, setEditName] = useState("");
   const [editPresentationType, setEditPresentationType] = useState("");
+  const [editAiModel, setEditAiModel] = useState("");
   
   // Available presentation types
   const presentationTypes = [
@@ -44,6 +48,14 @@ const ReportTypesContent = () => {
     "document",
     "board",
     "update"
+  ];
+  
+  // Available AI models
+  const aiModels = [
+    "gpt-4",
+    "claude",
+    "palm",
+    "llama"
   ];
   
   const handleAddReportType = () => {
@@ -67,10 +79,12 @@ const ReportTypesContent = () => {
     
     setReportTypes([...reportTypes, { 
       name: newReportType.trim(), 
-      presentationType: newPresentationType 
+      presentationType: newPresentationType,
+      aiModel: newAiModel
     }]);
     setNewReportType("");
     setNewPresentationType("slidedeck"); // Reset to default
+    setNewAiModel("gpt-4"); // Reset to default
     
     toast({
       title: "Report Type Added",
@@ -94,6 +108,7 @@ const ReportTypesContent = () => {
     setEditIndex(index);
     setEditName(reportTypes[index].name);
     setEditPresentationType(reportTypes[index].presentationType);
+    setEditAiModel(reportTypes[index].aiModel || "gpt-4");
   };
   
   const handleSaveEdit = () => {
@@ -125,7 +140,8 @@ const ReportTypesContent = () => {
     const oldValue = updatedTypes[editIndex].name;
     updatedTypes[editIndex] = { 
       name: editName.trim(), 
-      presentationType: editPresentationType 
+      presentationType: editPresentationType,
+      aiModel: editAiModel 
     };
     setReportTypes(updatedTypes);
     setEditIndex(null);
@@ -143,7 +159,7 @@ const ReportTypesContent = () => {
   return (
     <div className="space-y-6">
       <div className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <Label htmlFor="new-report-type">Report Type Name</Label>
             <Input
@@ -172,6 +188,24 @@ const ReportTypesContent = () => {
               </SelectContent>
             </Select>
           </div>
+          <div>
+            <Label htmlFor="new-ai-model">AI Model</Label>
+            <Select 
+              value={newAiModel} 
+              onValueChange={setNewAiModel}
+            >
+              <SelectTrigger id="new-ai-model" className="mt-1">
+                <SelectValue placeholder="Select AI model" />
+              </SelectTrigger>
+              <SelectContent>
+                {aiModels.map((model) => (
+                  <SelectItem key={model} value={model}>
+                    {model.toUpperCase()}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
         <div className="flex justify-end">
           <Button onClick={handleAddReportType}>Add Type</Button>
@@ -184,7 +218,7 @@ const ReportTypesContent = () => {
             {reportTypes.map((type, index) => (
               <li key={index} className="p-3 flex items-center justify-between">
                 {editIndex === index ? (
-                  <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                       <Input
                         value={editName}
@@ -193,7 +227,7 @@ const ReportTypesContent = () => {
                         className="max-w-full"
                       />
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div>
                       <Select 
                         value={editPresentationType} 
                         onValueChange={setEditPresentationType}
@@ -205,6 +239,23 @@ const ReportTypesContent = () => {
                           {presentationTypes.map((type) => (
                             <SelectItem key={type} value={type}>
                               {type.charAt(0).toUpperCase() + type.slice(1)}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Select 
+                        value={editAiModel} 
+                        onValueChange={setEditAiModel}
+                      >
+                        <SelectTrigger className="max-w-full">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {aiModels.map((model) => (
+                            <SelectItem key={model} value={model}>
+                              {model.toUpperCase()}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -221,11 +272,14 @@ const ReportTypesContent = () => {
                   </div>
                 ) : (
                   <>
-                    <div className="flex flex-1 flex-col sm:flex-row sm:justify-between">
+                    <div className="flex flex-1 flex-col sm:flex-row sm:items-center sm:justify-between">
                       <span className="font-medium">{type.name}</span>
-                      <span className="text-sm text-muted-foreground">
-                        {type.presentationType.charAt(0).toUpperCase() + type.presentationType.slice(1)}
-                      </span>
+                      <div className="flex flex-col sm:flex-row sm:gap-4 text-sm text-muted-foreground">
+                        <span>{type.presentationType.charAt(0).toUpperCase() + type.presentationType.slice(1)}</span>
+                        <span className="bg-muted px-2 py-1 rounded text-xs font-medium">
+                          {type.aiModel?.toUpperCase() || 'GPT-4'}
+                        </span>
+                      </div>
                     </div>
                     <div className="flex space-x-1">
                       <Button size="sm" variant="ghost" onClick={() => handleEditClick(index)}>

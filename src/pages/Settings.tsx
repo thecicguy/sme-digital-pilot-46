@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -279,13 +280,16 @@ const Settings = () => {
             <CardHeader>
               <CardTitle>AI Configuration</CardTitle>
               <CardDescription>
-                Configure AI settings for report generation and analysis
+                Configure default AI settings for report generation and analysis
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="default-model">Default AI Model</Label>
+                  <p className="text-sm text-muted-foreground mb-1">
+                    This model will be used for reports without a specific model assignment
+                  </p>
                   <Select
                     value={aiSettingsForm.defaultModel}
                     onValueChange={(value) =>
@@ -302,6 +306,9 @@ const Settings = () => {
                       <SelectItem value="llama">Llama</SelectItem>
                     </SelectContent>
                   </Select>
+                  <p className="text-sm text-muted-foreground mt-2">
+                    Note: You can assign specific models to individual report types in the Report Settings tab.
+                  </p>
                 </div>
                 
                 <div className="space-y-2">
