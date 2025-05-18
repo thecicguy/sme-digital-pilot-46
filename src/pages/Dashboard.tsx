@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -17,6 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import NotificationBell from "@/components/notifications/NotificationBell";
 
 const Dashboard = () => {
   const { data: clients, isLoading: isClientsLoading } = useQuery({
@@ -51,9 +51,14 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
-        <p className="text-muted-foreground">Welcome to your CRM dashboard</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
+          <p className="text-muted-foreground">Welcome to your CRM dashboard</p>
+        </div>
+        <div>
+          <NotificationBell />
+        </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
