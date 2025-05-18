@@ -2,7 +2,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
-import { Book, BookmarkCheck, Building, Calendar, Home, Settings, Users, FileText, HelpCircle } from "lucide-react";
+import { Book, BookmarkCheck, Building, Calendar, Briefcase, Settings, Users, FileText, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
@@ -15,7 +15,7 @@ const AppSidebar = () => {
   const navItems = [{
     name: "Dashboard",
     path: "/",
-    icon: <Home className="h-5 w-5" />
+    icon: <Briefcase className="h-5 w-5" />
   }, {
     name: "Clients",
     path: "/clients",
@@ -49,8 +49,8 @@ const AppSidebar = () => {
   return <aside className="fixed left-0 top-0 z-30 flex h-screen w-64 flex-col border-r border-border bg-background transition-all duration-300">
       <div className="flex h-16 items-center border-b border-border px-6">
         <Link to="/" className="flex items-center gap-2 font-bold text-xl">
-          <Home className="h-5 w-5 text-primary" />
-          <span className="text-primary">CRM4SMEs</span>
+          <Briefcase className="h-5 w-5 text-primary" />
+          <span className="text-primary">ConsultLink</span>
         </Link>
       </div>
 
@@ -81,7 +81,7 @@ const AppSidebar = () => {
                 <h4 className="font-medium">Need Help?</h4>
                 <p className="text-sm text-muted-foreground">Contact our support team or check our knowledge base</p>
                 <div className="space-y-2 mt-3">
-                  <Button variant="outline" className="w-full text-sm" onClick={() => window.open('mailto:support@crm4smes.com')}>
+                  <Button variant="outline" className="w-full text-sm" onClick={() => window.open('mailto:support@consultlink.com')}>
                     Email Support
                   </Button>
                   <Button variant="outline" className="w-full text-sm" onClick={() => window.open('tel:+18005551234')}>
