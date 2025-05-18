@@ -28,6 +28,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ViewToggle } from "@/components/common/ViewToggle";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import CreateTaskDialog from "@/components/tasks/CreateTaskDialog";
+import KanbanBoard from "@/components/tasks/KanbanBoard";
 
 const statusIcons = {
   "doing": <Clock className="h-4 w-4 text-crm-blue" />,
@@ -49,7 +50,7 @@ const Tasks = () => {
   const [filterStatus, setFilterStatus] = useState("");
   const [activeTab, setActiveTab] = useState("all");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-  const [view, setView] = useState<"grid" | "list">("grid");
+  const [view, setView] = useState<"grid" | "list" | "kanban">("kanban");
 
   const { data: tasks, isLoading: isTasksLoading } = useQuery({
     queryKey: ["tasks"],
@@ -142,7 +143,26 @@ const Tasks = () => {
       </div>
 
       {isTasksLoading ? (
-        view === "grid" ? (
+        view === "kanban" ? (
+          <div className="flex gap-4">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="bg-muted/40 rounded-lg p-3 min-w-[280px]">
+                <Skeleton className="h-6 w-24 mb-3" />
+                {[1, 2].map((j) => (
+                  <Card key={j} className="mb-2">
+                    <CardHeader className="p-3 pb-1">
+                      <Skeleton className="h-4 w-full" />
+                      <Skeleton className="h-3 w-2/3 mt-2" />
+                    </CardHeader>
+                    <CardFooter className="p-3 pt-1">
+                      <Skeleton className="h-7 w-16 ml-auto" />
+                    </CardFooter>
+                  </Card>
+                ))}
+              </div>
+            ))}
+          </div>
+        ) : view === "grid" ? (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {[1, 2, 3].map((i) => (
               <Card key={i}>
@@ -199,6 +219,12 @@ const Tasks = () => {
             </Button>
           )}
         </div>
+      ) : view === "kanban" ? (
+        <KanbanBoard 
+          tasks={filteredTasks} 
+          getProjectName={getProjectName} 
+          getClientName={getClientName} 
+        />
       ) : view === "grid" ? (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {filteredTasks.map((task) => (

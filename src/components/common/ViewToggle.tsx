@@ -1,16 +1,16 @@
 
-import { ListIcon, Grid2X2Icon } from "lucide-react";
+import { ListIcon, Grid2X2Icon, Kanban } from "lucide-react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 interface ViewToggleProps {
-  view: "list" | "grid";
-  onViewChange: (view: "list" | "grid") => void;
+  view: "list" | "grid" | "kanban";
+  onViewChange: (view: "list" | "grid" | "kanban") => void;
 }
 
 export function ViewToggle({ view, onViewChange }: ViewToggleProps) {
   return (
     <ToggleGroup type="single" value={view} onValueChange={(value) => {
-      if (value === "list" || value === "grid") {
+      if (value === "list" || value === "grid" || value === "kanban") {
         onViewChange(value);
       }
     }}>
@@ -19,6 +19,9 @@ export function ViewToggle({ view, onViewChange }: ViewToggleProps) {
       </ToggleGroupItem>
       <ToggleGroupItem value="grid" aria-label="Grid view">
         <Grid2X2Icon className="h-4 w-4" />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="kanban" aria-label="Kanban view">
+        <Kanban className="h-4 w-4" />
       </ToggleGroupItem>
     </ToggleGroup>
   );
