@@ -1,23 +1,51 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardContent, CardTitle, CardDescription } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
 import { X, Edit, Check } from "lucide-react";
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+
+// Define a report type interface with name and presentation type
+interface ReportTypeInfo {
+  name: string;
+  presentationType: string;
+}
 
 const ReportTypesContent = () => {
-  const [reportTypes, setReportTypes] = useState([
-    "Update",
-    "Pitch",
-    "Standup",
-    "Proposal",
-    "Kanban",
-    "KickOff",
-    "Lessons Learnt"
+  // Updated to use objects with name and presentationType properties
+  const [reportTypes, setReportTypes] = useState<ReportTypeInfo[]>([
+    { name: "Update", presentationType: "meeting" },
+    { name: "Pitch", presentationType: "slidedeck" },
+    { name: "Standup", presentationType: "meeting" },
+    { name: "Proposal", presentationType: "document" },
+    { name: "Kanban", presentationType: "board" },
+    { name: "KickOff", presentationType: "meeting" },
+    { name: "Lessons Learnt", presentationType: "document" }
   ]);
+  
   const [newReportType, setNewReportType] = useState("");
+  const [newPresentationType, setNewPresentationType] = useState("slidedeck");
   const [editIndex, setEditIndex] = useState<number | null>(null);
-  const [editValue, setEditValue] = useState("");
+  const [editName, setEditName] = useState("");
+  const [editPresentationType, setEditPresentationType] = useState("");
+  
+  // Available presentation types
+  const presentationTypes = [
+    "slidedeck",
+    "meeting",
+    "document",
+    "board",
+    "update"
+  ];
   
   const handleAddReportType = () => {
     if (!newReportType.trim()) {
@@ -29,7 +57,7 @@ const ReportTypesContent = () => {
       return;
     }
     
-    if (reportTypes.includes(newReportType.trim())) {
+    if (reportTypes.some(type => type.name.toLowerCase() === newReportType.trim().toLowerCase())) {
       toast({
         title: "Error",
         description: "This report type already exists",
@@ -38,8 +66,12 @@ const ReportTypesContent = () => {
       return;
     }
     
-    setReportTypes([...reportTypes, newReportType.trim()]);
+    setReportTypes([...reportTypes, { 
+      name: newReportType.trim(), 
+      presentationType: newPresentationType 
+    }]);
     setNewReportType("");
+    setNewPresentationType("slidedeck"); // Reset to default
     
     toast({
       title: "Report Type Added",
@@ -49,7 +81,7 @@ const ReportTypesContent = () => {
   
   const handleDeleteReportType = (index: number) => {
     const updatedTypes = [...reportTypes];
-    const deletedType = updatedTypes[index];
+    const deletedType = updatedTypes[index].name;
     updatedTypes.splice(index, 1);
     setReportTypes(updatedTypes);
     
@@ -61,39 +93,47 @@ const ReportTypesContent = () => {
   
   const handleEditClick = (index: number) => {
     setEditIndex(index);
-    setEditValue(reportTypes[index]);
+    setEditName(reportTypes[index].name);
+    setEditPresentationType(reportTypes[index].presentationType);
   };
   
   const handleSaveEdit = () => {
     if (editIndex === null) return;
     
-    if (!editValue.trim()) {
+    if (!editName.trim()) {
       toast({
         title: "Error",
-        description: "Report type cannot be empty",
+        description: "Report type name cannot be empty",
         variant: "destructive",
       });
       return;
     }
     
-    if (reportTypes.includes(editValue.trim()) && editValue.trim() !== reportTypes[editIndex]) {
+    const nameExists = reportTypes.some(
+      (type, i) => i !== editIndex && type.name.toLowerCase() === editName.trim().toLowerCase()
+    );
+    
+    if (nameExists) {
       toast({
         title: "Error",
-        description: "This report type already exists",
+        description: "This report type name already exists",
         variant: "destructive",
       });
       return;
     }
     
     const updatedTypes = [...reportTypes];
-    const oldValue = updatedTypes[editIndex];
-    updatedTypes[editIndex] = editValue.trim();
+    const oldValue = updatedTypes[editIndex].name;
+    updatedTypes[editIndex] = { 
+      name: editName.trim(), 
+      presentationType: editPresentationType 
+    };
     setReportTypes(updatedTypes);
     setEditIndex(null);
     
     toast({
       title: "Report Type Updated",
-      description: `"${oldValue}" has been updated to "${editValue.trim()}"`,
+      description: `"${oldValue}" has been updated to "${editName.trim()}"`,
     });
   };
   
@@ -111,14 +151,40 @@ const ReportTypesContent = () => {
       </CardHeader>
       <CardContent>
         <div className="space-y-6">
-          <div className="flex space-x-2">
-            <Input
-              placeholder="Add new report type..."
-              value={newReportType}
-              onChange={(e) => setNewReportType(e.target.value)}
-              className="max-w-md"
-            />
-            <Button onClick={handleAddReportType}>Add Type</Button>
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="new-report-type">Report Type Name</Label>
+                <Input
+                  id="new-report-type"
+                  placeholder="Add new report type..."
+                  value={newReportType}
+                  onChange={(e) => setNewReportType(e.target.value)}
+                  className="mt-1"
+                />
+              </div>
+              <div>
+                <Label htmlFor="new-presentation-type">Presentation Type</Label>
+                <Select 
+                  value={newPresentationType} 
+                  onValueChange={setNewPresentationType}
+                >
+                  <SelectTrigger id="new-presentation-type" className="mt-1">
+                    <SelectValue placeholder="Select presentation type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {presentationTypes.map((type) => (
+                      <SelectItem key={type} value={type}>
+                        {type.charAt(0).toUpperCase() + type.slice(1)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <div className="flex justify-end">
+              <Button onClick={handleAddReportType}>Add Type</Button>
+            </div>
           </div>
           
           <div className="border rounded-md">
@@ -127,25 +193,49 @@ const ReportTypesContent = () => {
                 {reportTypes.map((type, index) => (
                   <li key={index} className="p-3 flex items-center justify-between">
                     {editIndex === index ? (
-                      <div className="flex-1 flex items-center space-x-2">
-                        <Input
-                          value={editValue}
-                          onChange={(e) => setEditValue(e.target.value)}
-                          autoFocus
-                          className="max-w-md"
-                        />
-                        <div className="flex space-x-1">
-                          <Button size="sm" variant="ghost" onClick={handleSaveEdit}>
-                            <Check className="h-4 w-4" />
-                          </Button>
-                          <Button size="sm" variant="ghost" onClick={handleCancelEdit}>
-                            <X className="h-4 w-4" />
-                          </Button>
+                      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <Input
+                            value={editName}
+                            onChange={(e) => setEditName(e.target.value)}
+                            autoFocus
+                            className="max-w-full"
+                          />
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Select 
+                            value={editPresentationType} 
+                            onValueChange={setEditPresentationType}
+                          >
+                            <SelectTrigger className="max-w-full">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {presentationTypes.map((type) => (
+                                <SelectItem key={type} value={type}>
+                                  {type.charAt(0).toUpperCase() + type.slice(1)}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <div className="flex space-x-1">
+                            <Button size="sm" variant="ghost" onClick={handleSaveEdit}>
+                              <Check className="h-4 w-4" />
+                            </Button>
+                            <Button size="sm" variant="ghost" onClick={handleCancelEdit}>
+                              <X className="h-4 w-4" />
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     ) : (
                       <>
-                        <span>{type}</span>
+                        <div className="flex flex-1 flex-col sm:flex-row sm:justify-between">
+                          <span className="font-medium">{type.name}</span>
+                          <span className="text-sm text-muted-foreground">
+                            {type.presentationType.charAt(0).toUpperCase() + type.presentationType.slice(1)}
+                          </span>
+                        </div>
                         <div className="flex space-x-1">
                           <Button size="sm" variant="ghost" onClick={() => handleEditClick(index)}>
                             <Edit className="h-4 w-4" />

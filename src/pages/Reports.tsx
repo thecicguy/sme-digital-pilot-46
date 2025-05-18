@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,21 +10,29 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+// Define the report type interface consistent with the settings page
+interface ReportTypeInfo {
+  name: string;
+  presentationType: string;
+}
+
 const Reports = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
   
-  const reportTypes = [
-    "Update",
-    "Pitch",
-    "Standup",
-    "Proposal",
-    "Kanban",
-    "KickOff",
-    "Lessons Learnt",
+  // Updated report types with presentation type
+  const reportTypes: ReportTypeInfo[] = [
+    { name: "Update", presentationType: "meeting" },
+    { name: "Pitch", presentationType: "slidedeck" },
+    { name: "Standup", presentationType: "meeting" },
+    { name: "Proposal", presentationType: "document" },
+    { name: "Kanban", presentationType: "board" },
+    { name: "KickOff", presentationType: "meeting" },
+    { name: "Lessons Learnt", presentationType: "document" },
   ];
   
+  // Updated reports with the new structure
   const reports = [
     {
       id: "report1",
@@ -65,6 +72,12 @@ const Reports = () => {
     },
   ];
   
+  // Function to get presentation type by report type name
+  const getPresentationType = (typeName: string): string => {
+    const reportType = reportTypes.find(type => type.name === typeName);
+    return reportType?.presentationType || "unknown";
+  };
+  
   const filteredReports = reports.filter(report => {
     const matchesSearch = 
       report.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -99,6 +112,24 @@ const Reports = () => {
         return "Draft";
       default:
         return status;
+    }
+  };
+
+  // Function to get presentation type badge classes
+  const getPresentationTypeBadgeClasses = (presentationType: string) => {
+    switch (presentationType) {
+      case "slidedeck":
+        return "bg-purple-100 text-purple-800";
+      case "meeting":
+        return "bg-blue-100 text-blue-800";
+      case "document":
+        return "bg-green-100 text-green-800";
+      case "board":
+        return "bg-yellow-100 text-yellow-800";
+      case "update":
+        return "bg-gray-100 text-gray-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
@@ -144,7 +175,7 @@ const Reports = () => {
           <SelectContent>
             <SelectItem value="all">All Report Types</SelectItem>
             {reportTypes.map((type) => (
-              <SelectItem key={type} value={type}>{type}</SelectItem>
+              <SelectItem key={type.name} value={type.name}>{type.name}</SelectItem>
             ))}
           </SelectContent>
         </Select>
@@ -167,7 +198,12 @@ const Reports = () => {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">Type</span>
-                  <span className="text-sm font-medium">{report.type}</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-medium">{report.type}</span>
+                    <span className={`rounded-full px-2 py-1 text-xs ${getPresentationTypeBadgeClasses(getPresentationType(report.type))}`}>
+                      {getPresentationType(report.type)}
+                    </span>
+                  </div>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">Generated</span>
