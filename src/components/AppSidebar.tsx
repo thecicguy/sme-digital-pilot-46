@@ -2,7 +2,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
-import { Book, BookmarkCheck, Building, Calendar, Contact, Mail, Settings, Users, FileText, Home } from "lucide-react";
+import { Book, BookmarkCheck, Building, Calendar, Home, Mail, Settings, Users, FileText } from "lucide-react";
 
 const AppSidebar = () => {
   const {
@@ -11,6 +11,10 @@ const AppSidebar = () => {
   } = useAuth();
   const location = useLocation();
   const navItems = [{
+    name: "Dashboard",
+    path: "/",
+    icon: <Home className="h-5 w-5" />
+  }, {
     name: "Clients",
     path: "/clients",
     icon: <Users className="h-5 w-5" />

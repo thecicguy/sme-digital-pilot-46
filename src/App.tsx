@@ -28,6 +28,7 @@ import NotFound from "./pages/NotFound";
 import Reports from "./pages/Reports";
 import EmailTemplates from "./pages/EmailTemplates";
 import Settings from "./pages/Settings";
+import Dashboard from "./pages/Dashboard";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -55,7 +56,7 @@ const App = () => (
                     <AppLayout />
                   </ProtectedRoute>
                 }>
-                  <Route path="/" element={<Clients />} />
+                  <Route path="/" element={<Dashboard />} />
                   <Route path="/clients" element={<Clients />} />
                   <Route path="/clients/:clientId" element={<ClientDetail />} />
                   <Route path="/projects" element={<Projects />} />
