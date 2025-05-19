@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { addDays, format, startOfToday } from "date-fns";
@@ -161,17 +162,17 @@ const Calendar = () => {
       </div>
 
       <div className="flex flex-col flex-1 overflow-hidden">
-        {/* Calendar section on top */}
-        <div className="p-4 border-b">
-          <div className="grid grid-cols-1 lg:grid-cols-7 gap-4">
-            <div className="lg:col-span-5">
-              <Card className="h-full">
-                <CardContent className="p-6">
+        {/* Calendar section on top - making it larger */}
+        <div className="p-4 border-b flex-grow-0 flex-shrink-0" style={{ height: "60%" }}>
+          <div className="grid grid-cols-1 lg:grid-cols-7 gap-4 h-full">
+            <div className="lg:col-span-5 h-full">
+              <Card className="h-full flex flex-col">
+                <CardContent className="p-6 flex-1 flex items-center justify-center">
                   <CalendarComponent
                     mode="single"
                     selected={date}
                     onSelect={setDate}
-                    className="mx-auto"
+                    className="mx-auto w-full h-full max-h-96"
                     modifiers={modifiers}
                     modifiersClassNames={modifiersClassNames}
                     showOutsideDays={true}
@@ -206,7 +207,7 @@ const Calendar = () => {
         </div>
         
         {/* Events section below */}
-        <div className="flex-1 overflow-y-auto p-4">
+        <div className="overflow-y-auto p-4" style={{ height: "40%" }}>
           <Card>
             <CardHeader>
               <CardTitle>
