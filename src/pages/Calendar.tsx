@@ -149,7 +149,7 @@ const Calendar = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col -mx-6 -my-6 overflow-hidden">
+    <div className="flex flex-col h-screen -mx-6 -my-6 overflow-hidden">
       <div className="flex justify-between items-center px-6 py-4 bg-background sticky top-0 z-10 border-b">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Calendar</h1>
@@ -160,25 +160,28 @@ const Calendar = () => {
         <CreateEventDialog onEventCreated={handleEventCreated} />
       </div>
 
-      <div className="flex flex-1 overflow-hidden">
-        {!isMobile && (
-          <div className="w-80 border-r p-4 overflow-y-auto flex-shrink-0">
-            <div className="space-y-6">
-              <Card>
-                <CardContent className="p-3">
+      <div className="flex flex-col flex-1 overflow-hidden">
+        {/* Calendar section on top */}
+        <div className="p-4 border-b">
+          <div className="grid grid-cols-1 lg:grid-cols-7 gap-4">
+            <div className="lg:col-span-5">
+              <Card className="h-full">
+                <CardContent className="p-6">
                   <CalendarComponent
                     mode="single"
                     selected={date}
                     onSelect={setDate}
-                    className="p-0"
+                    className="mx-auto"
                     modifiers={modifiers}
                     modifiersClassNames={modifiersClassNames}
                     showOutsideDays={true}
                   />
                 </CardContent>
               </Card>
-
-              <Card>
+            </div>
+            
+            <div className="lg:col-span-2">
+              <Card className="h-full">
                 <CardHeader>
                   <CardTitle className="text-lg">Event Filters</CardTitle>
                 </CardHeader>
@@ -200,28 +203,11 @@ const Calendar = () => {
               </Card>
             </div>
           </div>
-        )}
-
-        <div className="flex-1 p-4 overflow-y-auto">
-          {isMobile && (
-            <div className="mb-4">
-              <Card>
-                <CardContent className="p-3">
-                  <CalendarComponent
-                    mode="single"
-                    selected={date}
-                    onSelect={setDate}
-                    className="p-0"
-                    modifiers={modifiers}
-                    modifiersClassNames={modifiersClassNames}
-                    showOutsideDays={true}
-                  />
-                </CardContent>
-              </Card>
-            </div>
-          )}
-
-          <Card className="h-full">
+        </div>
+        
+        {/* Events section below */}
+        <div className="flex-1 overflow-y-auto p-4">
+          <Card>
             <CardHeader>
               <CardTitle>
                 {date ? (
@@ -231,7 +217,7 @@ const Calendar = () => {
                 )}
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent>
               {selectedDateEvents.length === 0 ? (
                 <p className="text-muted-foreground text-center py-8">No events for this date</p>
               ) : (
@@ -245,10 +231,11 @@ const Calendar = () => {
                       </div>
                     </div>
                   ))}
-                  <Separator />
                 </div>
               )}
-
+              
+              <Separator className="my-4" />
+              
               <div>
                 <h3 className="font-medium mb-4">Legend</h3>
                 <div className="grid grid-cols-2 gap-2">
