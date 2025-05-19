@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { addDays, format, startOfToday } from "date-fns";
@@ -11,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { User, Building, BookmarkCheck, CalendarPlus } from "lucide-react";
 import { CreateEventDialog } from "@/components/calendar/CreateEventDialog";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface EventType {
   id: string;
@@ -30,6 +30,7 @@ const Calendar = () => {
       return value;
     }) : [];
   });
+  const isMobile = useIsMobile();
   
   const { data: projects } = useQuery({
     queryKey: ["projects"],
@@ -148,8 +149,8 @@ const Calendar = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="h-screen flex flex-col -mx-6 -my-6 overflow-hidden">
+      <div className="flex justify-between items-center px-6 py-4 bg-background sticky top-0 z-10 border-b">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Calendar</h1>
           <p className="text-muted-foreground">
@@ -159,95 +160,119 @@ const Calendar = () => {
         <CreateEventDialog onEventCreated={handleEventCreated} />
       </div>
 
-      <div className="grid gap-6 md:grid-cols-[300px_1fr]">
-        <div className="space-y-6">
-          <Card>
-            <CardContent className="p-3">
-              <CalendarComponent
-                mode="single"
-                selected={date}
-                onSelect={setDate}
-                className="p-0"
-                modifiers={modifiers}
-                modifiersClassNames={modifiersClassNames}
-                showOutsideDays={true}
-              />
-            </CardContent>
-          </Card>
+      <div className="flex flex-1 overflow-hidden">
+        {!isMobile && (
+          <div className="w-80 border-r p-4 overflow-y-auto flex-shrink-0">
+            <div className="space-y-6">
+              <Card>
+                <CardContent className="p-3">
+                  <CalendarComponent
+                    mode="single"
+                    selected={date}
+                    onSelect={setDate}
+                    className="p-0"
+                    modifiers={modifiers}
+                    modifiersClassNames={modifiersClassNames}
+                    showOutsideDays={true}
+                  />
+                </CardContent>
+              </Card>
 
-          <Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Event Filters</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Tabs value={view} onValueChange={(value) => setView(value as any)}>
+                    <TabsList className="grid w-full grid-cols-2 mb-2">
+                      <TabsTrigger value="all">All</TabsTrigger>
+                      <TabsTrigger value="projects">Projects</TabsTrigger>
+                    </TabsList>
+                    <TabsList className="grid w-full grid-cols-2">
+                      <TabsTrigger value="tasks">Tasks</TabsTrigger>
+                      <TabsTrigger value="meetings">Meetings</TabsTrigger>
+                    </TabsList>
+                    <TabsList className="grid w-full grid-cols-1 mt-2">
+                      <TabsTrigger value="other">Other</TabsTrigger>
+                    </TabsList>
+                  </Tabs>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        )}
+
+        <div className="flex-1 p-4 overflow-y-auto">
+          {isMobile && (
+            <div className="mb-4">
+              <Card>
+                <CardContent className="p-3">
+                  <CalendarComponent
+                    mode="single"
+                    selected={date}
+                    onSelect={setDate}
+                    className="p-0"
+                    modifiers={modifiers}
+                    modifiersClassNames={modifiersClassNames}
+                    showOutsideDays={true}
+                  />
+                </CardContent>
+              </Card>
+            </div>
+          )}
+
+          <Card className="h-full">
             <CardHeader>
-              <CardTitle className="text-lg">Event Filters</CardTitle>
+              <CardTitle>
+                {date ? (
+                  <>Events for {format(date, 'PPP')}</>
+                ) : (
+                  <>All Upcoming Events</>
+                )}
+              </CardTitle>
             </CardHeader>
-            <CardContent>
-              <Tabs value={view} onValueChange={(value) => setView(value as any)}>
-                <TabsList className="grid w-full grid-cols-2 mb-2">
-                  <TabsTrigger value="all">All</TabsTrigger>
-                  <TabsTrigger value="projects">Projects</TabsTrigger>
-                </TabsList>
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="tasks">Tasks</TabsTrigger>
-                  <TabsTrigger value="meetings">Meetings</TabsTrigger>
-                </TabsList>
-                <TabsList className="grid w-full grid-cols-1 mt-2">
-                  <TabsTrigger value="other">Other</TabsTrigger>
-                </TabsList>
-              </Tabs>
+            <CardContent className="space-y-4">
+              {selectedDateEvents.length === 0 ? (
+                <p className="text-muted-foreground text-center py-8">No events for this date</p>
+              ) : (
+                <div className="space-y-4">
+                  {date && selectedDateEvents.map(event => (
+                    <div key={event.id} className="flex items-center space-x-3">
+                      <div className={`${event.color} rounded-full w-3 h-3 flex-shrink-0`}></div>
+                      <div className="flex-1">
+                        <p className="font-medium">{event.title}</p>
+                        <p className="text-sm text-muted-foreground capitalize">{event.type}</p>
+                      </div>
+                    </div>
+                  ))}
+                  <Separator />
+                </div>
+              )}
+
+              <div>
+                <h3 className="font-medium mb-4">Legend</h3>
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="flex items-center gap-2">
+                    <div className="bg-blue-500 rounded-full w-3 h-3"></div>
+                    <span className="text-sm">Projects</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="bg-amber-500 rounded-full w-3 h-3"></div>
+                    <span className="text-sm">Tasks</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="bg-green-500 rounded-full w-3 h-3"></div>
+                    <span className="text-sm">Meetings</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="bg-purple-500 rounded-full w-3 h-3"></div>
+                    <span className="text-sm">Other</span>
+                  </div>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </div>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>
-              {date ? (
-                <>Events for {format(date, 'PPP')}</>
-              ) : (
-                <>All Upcoming Events</>
-              )}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {selectedDateEvents.length === 0 ? (
-              <p className="text-muted-foreground text-center py-8">No events for this date</p>
-            ) : (
-              <div className="space-y-4">
-                {date && selectedDateEvents.map(event => (
-                  <div key={event.id} className="flex items-center space-x-3">
-                    <div className={`${event.color} rounded-full w-3 h-3 flex-shrink-0`}></div>
-                    <div className="flex-1">
-                      <p className="font-medium">{event.title}</p>
-                      <p className="text-sm text-muted-foreground capitalize">{event.type}</p>
-                    </div>
-                  </div>
-                ))}
-                <Separator />
-              </div>
-            )}
-
-            <div>
-              <h3 className="font-medium mb-4">Legend</h3>
-              <div className="grid grid-cols-2 gap-2">
-                <div className="flex items-center gap-2">
-                  <div className="bg-blue-500 rounded-full w-3 h-3"></div>
-                  <span className="text-sm">Projects</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="bg-amber-500 rounded-full w-3 h-3"></div>
-                  <span className="text-sm">Tasks</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="bg-green-500 rounded-full w-3 h-3"></div>
-                  <span className="text-sm">Meetings</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="bg-purple-500 rounded-full w-3 h-3"></div>
-                  <span className="text-sm">Other</span>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );
