@@ -42,13 +42,13 @@ const ProjectDetail = () => {
     enabled: !!projectId
   });
 
-  const { data: tasks, isLoading: isTasksLoading } = useQuery({
+  const { data: tasks = [], isLoading: isTasksLoading } = useQuery({
     queryKey: ["projectTasks", projectId],
     queryFn: () => fetchTasks(),
     enabled: !!projectId
   });
 
-  const { data: notes, isLoading: isNotesLoading } = useQuery({
+  const { data: notes = [], isLoading: isNotesLoading } = useQuery({
     queryKey: ["projectNotes", projectId],
     queryFn: () => fetchNotes(),
     enabled: !!projectId
@@ -62,10 +62,13 @@ const ProjectDetail = () => {
   };
 
   // Filter tasks for this project
-  const projectTasks = tasks?.filter(task => task.projectId === projectId) || [];
+  const projectTasks = tasks.filter(task => task.projectId === projectId) || [];
   
   // Filter notes for this project
-  const projectNotes = notes?.filter(note => note.projectId === projectId) || [];
+  // Ensure notes is an array before filtering
+  const projectNotes = Array.isArray(notes) 
+    ? notes.filter(note => note.projectId === projectId) 
+    : [];
 
   if (isProjectLoading) {
     return (
