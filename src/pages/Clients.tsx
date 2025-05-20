@@ -15,7 +15,7 @@ import CreateClientDialog from "@/components/clients/CreateClientDialog";
 const Clients = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-  const [view, setView] = useState<"grid" | "list">("grid");
+  const [view, setView] = useState<"list">("list");
 
   const { data: clients, isLoading, error } = useQuery({
     queryKey: ["clients"],
@@ -54,54 +54,35 @@ const Clients = () => {
         <ViewToggle 
           view={view} 
           onViewChange={(newView) => {
-            if (newView === "grid" || newView === "list") {
+            if (newView === "list") {
               setView(newView);
             }
           }} 
+          hideGrid={true}
         />
       </div>
 
       {isLoading ? (
-        view === "grid" ? (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Business Name</TableHead>
+              <TableHead>Description</TableHead>
+              <TableHead>Location</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {[1, 2, 3].map((i) => (
-              <Card key={i} className="overflow-hidden">
-                <CardHeader className="p-4">
-                  <Skeleton className="h-6 w-3/4" />
-                </CardHeader>
-                <CardContent className="p-4">
-                  <Skeleton className="mb-2 h-4 w-full" />
-                  <Skeleton className="mb-2 h-4 w-2/3" />
-                  <Skeleton className="h-4 w-1/2" />
-                </CardContent>
-                <CardFooter className="p-4">
-                  <Skeleton className="h-9 w-full" />
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
-        ) : (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Business Name</TableHead>
-                <TableHead>Description</TableHead>
-                <TableHead>Location</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+              <TableRow key={i}>
+                <TableCell><Skeleton className="h-5 w-full" /></TableCell>
+                <TableCell><Skeleton className="h-5 w-full" /></TableCell>
+                <TableCell><Skeleton className="h-5 w-1/2" /></TableCell>
+                <TableCell className="text-right"><Skeleton className="h-9 w-20 ml-auto" /></TableCell>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {[1, 2, 3].map((i) => (
-                <TableRow key={i}>
-                  <TableCell><Skeleton className="h-5 w-full" /></TableCell>
-                  <TableCell><Skeleton className="h-5 w-full" /></TableCell>
-                  <TableCell><Skeleton className="h-5 w-1/2" /></TableCell>
-                  <TableCell className="text-right"><Skeleton className="h-9 w-20 ml-auto" /></TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        )
+            ))}
+          </TableBody>
+        </Table>
       ) : error ? (
         <div className="rounded-lg border border-destructive bg-destructive/10 p-4 text-destructive">
           Error loading clients. Please try again later.
@@ -118,34 +99,6 @@ const Clients = () => {
               Add Client
             </Button>
           )}
-        </div>
-      ) : view === "grid" ? (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {filteredClients?.map((client) => (
-            <Card key={client.id} className="overflow-hidden transition-all hover:shadow-md">
-              <CardHeader className="p-4 pb-2">
-                <CardTitle className="flex items-center justify-between">
-                  <span className="truncate text-lg font-bold">{client.businessName}</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-4 pt-1">
-                <p className="mb-3 text-sm text-muted-foreground line-clamp-2">{client.description}</p>
-                <div className="space-y-2">
-                  {client.location && (
-                    <div className="flex items-center text-sm">
-                      <MapPin className="mr-2 h-4 w-4 text-muted-foreground flex-shrink-0" />
-                      <span className="truncate">{client.location}</span>
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-              <CardFooter className="p-4">
-                <Button asChild className="w-full">
-                  <Link to={`/clients/${client.id}`}>View Details</Link>
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
         </div>
       ) : (
         <Table>

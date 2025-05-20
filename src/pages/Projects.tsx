@@ -18,7 +18,7 @@ const Projects = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterClientId, setFilterClientId] = useState("all");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-  const [view, setView] = useState<"grid" | "list">("grid");
+  const [view, setView] = useState<"list">("list");
 
   const { data: projects, isLoading, error } = useQuery({
     queryKey: ["projects"],
@@ -79,55 +79,37 @@ const Projects = () => {
         <ViewToggle 
           view={view} 
           onViewChange={(newView) => {
-            if (newView === "grid" || newView === "list") {
+            if (newView === "list") {
               setView(newView);
             }
           }} 
+          hideGrid={true}
         />
       </div>
 
       {isLoading ? (
-        view === "grid" ? (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Project Type</TableHead>
+              <TableHead>Client</TableHead>
+              <TableHead>Created</TableHead>
+              <TableHead>Days Allocated</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {[1, 2, 3].map((i) => (
-              <Card key={i} className="overflow-hidden">
-                <CardHeader className="p-4">
-                  <Skeleton className="h-6 w-3/4" />
-                </CardHeader>
-                <CardContent className="p-4">
-                  <Skeleton className="mb-2 h-4 w-full" />
-                  <Skeleton className="h-4 w-2/3" />
-                </CardContent>
-                <CardFooter className="p-4">
-                  <Skeleton className="h-9 w-full" />
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
-        ) : (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Project Type</TableHead>
-                <TableHead>Client</TableHead>
-                <TableHead>Created</TableHead>
-                <TableHead>Days Allocated</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+              <TableRow key={i}>
+                <TableCell><Skeleton className="h-5 w-full" /></TableCell>
+                <TableCell><Skeleton className="h-5 w-full" /></TableCell>
+                <TableCell><Skeleton className="h-5 w-1/2" /></TableCell>
+                <TableCell><Skeleton className="h-5 w-12" /></TableCell>
+                <TableCell className="text-right"><Skeleton className="h-9 w-20 ml-auto" /></TableCell>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {[1, 2, 3].map((i) => (
-                <TableRow key={i}>
-                  <TableCell><Skeleton className="h-5 w-full" /></TableCell>
-                  <TableCell><Skeleton className="h-5 w-full" /></TableCell>
-                  <TableCell><Skeleton className="h-5 w-1/2" /></TableCell>
-                  <TableCell><Skeleton className="h-5 w-12" /></TableCell>
-                  <TableCell className="text-right"><Skeleton className="h-9 w-20 ml-auto" /></TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        )
+            ))}
+          </TableBody>
+        </Table>
       ) : error ? (
         <div className="rounded-lg border border-destructive bg-destructive/10 p-4 text-destructive">
           Error loading projects. Please try again later.
@@ -144,34 +126,6 @@ const Projects = () => {
               New Project
             </Button>
           )}
-        </div>
-      ) : view === "grid" ? (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {filteredProjects?.map((project) => (
-            <Card key={project.id} className="overflow-hidden transition-all hover:shadow-md">
-              <CardHeader className="p-4">
-                <CardTitle className="flex items-center justify-between text-lg capitalize">
-                  <span>{project.type}</span>
-                  <Badge>{project.daysAllocated} days</Badge>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-4 pt-0 text-sm">
-                <div className="mb-2 flex items-center text-muted-foreground">
-                  <User className="mr-1 h-4 w-4" />
-                  <span>{getClientName(project.clientId)}</span>
-                </div>
-                <div className="flex items-center text-muted-foreground">
-                  <Calendar className="mr-1 h-4 w-4" />
-                  <span>{formatDistanceToNow(new Date(project.createdAt), { addSuffix: true })}</span>
-                </div>
-              </CardContent>
-              <CardFooter className="p-4">
-                <Button asChild className="w-full">
-                  <Link to={`/projects/${project.id}`}>View Details</Link>
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
         </div>
       ) : (
         <Table>

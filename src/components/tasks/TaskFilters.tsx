@@ -14,6 +14,7 @@ interface TaskFiltersProps {
   getClientName: (projectId: string) => string;
   view: "grid" | "list" | "kanban";
   onViewChange: (view: string) => void;
+  hideGrid?: boolean;
 }
 
 const TaskFilters = ({
@@ -25,7 +26,8 @@ const TaskFilters = ({
   getProjectName,
   getClientName,
   view,
-  onViewChange
+  onViewChange,
+  hideGrid = false
 }: TaskFiltersProps) => {
   // Handler for view changes that works with the updated ViewToggle component
   const handleViewChange = (newView: string) => {
@@ -58,7 +60,12 @@ const TaskFilters = ({
           ))}
         </SelectContent>
       </Select>
-      <ViewToggle view={view} onViewChange={handleViewChange} showKanban={true} />
+      <ViewToggle 
+        view={view} 
+        onViewChange={handleViewChange} 
+        showKanban={true} 
+        hideGrid={hideGrid} 
+      />
     </div>
   );
 };
