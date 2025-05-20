@@ -1,12 +1,133 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardHeader, CardContent, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Video, Calendar, Mail, MessageCircle, CreditCard, CalendarDays, FileText, Brain, Bot, Settings } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { toast } from "@/hooks/use-toast";
 
 const IntegrationsContent = () => {
+  const [saving, setSaving] = useState(false);
+  const [aiSettingsForm, setAiSettingsForm] = useState({
+    defaultModel: "gpt-4",
+    confidenceThreshold: "medium",
+    includeDeliverableContext: true,
+    includePreviousReports: true,
+  });
+
+  const handleSaveAiSettings = () => {
+    setSaving(true);
+    
+    // Simulate API call
+    setTimeout(() => {
+      setSaving(false);
+      toast({
+        title: "AI Settings Updated",
+        description: "Your AI settings have been saved successfully.",
+      });
+    }, 1000);
+  };
+
   return (
     <div className="space-y-8">
+      {/* AI Configuration */}
+      <Card>
+        <CardHeader>
+          <CardTitle>AI Configuration</CardTitle>
+          <CardDescription>
+            Configure default AI settings for report generation and analysis
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="default-model">Default AI Model</Label>
+              <p className="text-sm text-muted-foreground mb-1">
+                This model will be used for reports without a specific model assignment
+              </p>
+              <Select
+                value={aiSettingsForm.defaultModel}
+                onValueChange={(value) =>
+                  setAiSettingsForm({ ...aiSettingsForm, defaultModel: value })
+                }
+              >
+                <SelectTrigger id="default-model">
+                  <SelectValue placeholder="Select model" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="gpt-4">GPT-4</SelectItem>
+                  <SelectItem value="claude">Claude</SelectItem>
+                  <SelectItem value="palm">PaLM</SelectItem>
+                  <SelectItem value="llama">Llama</SelectItem>
+                </SelectContent>
+              </Select>
+              <p className="text-sm text-muted-foreground mt-2">
+                Note: You can assign specific models to individual report types in the Report Settings tab.
+              </p>
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="confidence-threshold">Confidence Threshold</Label>
+              <Select
+                value={aiSettingsForm.confidenceThreshold}
+                onValueChange={(value) =>
+                  setAiSettingsForm({ ...aiSettingsForm, confidenceThreshold: value })
+                }
+              >
+                <SelectTrigger id="confidence-threshold">
+                  <SelectValue placeholder="Select threshold" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="low">Low (More suggestions, less accuracy)</SelectItem>
+                  <SelectItem value="medium">Medium (Balanced)</SelectItem>
+                  <SelectItem value="high">High (Fewer suggestions, more accuracy)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div className="space-y-4 pt-4">
+              <h3 className="text-lg font-medium">Context Settings</h3>
+              
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label htmlFor="include-deliverable-context">Include Deliverable Context</Label>
+                  <p className="text-sm text-muted-foreground">Include deliverable content in AI analysis</p>
+                </div>
+                <Switch
+                  id="include-deliverable-context"
+                  checked={aiSettingsForm.includeDeliverableContext}
+                  onCheckedChange={(checked) =>
+                    setAiSettingsForm({ ...aiSettingsForm, includeDeliverableContext: checked })
+                  }
+                />
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label htmlFor="include-previous-reports">Include Previous Reports</Label>
+                  <p className="text-sm text-muted-foreground">Reference previous reports in new analyses</p>
+                </div>
+                <Switch
+                  id="include-previous-reports"
+                  checked={aiSettingsForm.includePreviousReports}
+                  onCheckedChange={(checked) =>
+                    setAiSettingsForm({ ...aiSettingsForm, includePreviousReports: checked })
+                  }
+                />
+              </div>
+            </div>
+          </div>
+          
+          <div className="flex justify-end">
+            <Button onClick={handleSaveAiSettings} disabled={saving}>
+              {saving ? 'Saving...' : 'Save Changes'}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* AI Integrations */}
       <Card>
         <CardHeader>
