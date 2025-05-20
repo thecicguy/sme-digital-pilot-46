@@ -2,11 +2,63 @@
 import React from "react";
 import { Card, CardHeader, CardContent, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Video, Calendar, Mail, MessageCircle, CreditCard, CalendarDays, FileText } from "lucide-react";
+import { Video, Calendar, Mail, MessageCircle, CreditCard, CalendarDays, FileText, Brain, Bot, Settings } from "lucide-react";
 
 const IntegrationsContent = () => {
   return (
     <div className="space-y-8">
+      {/* AI Integrations */}
+      <Card>
+        <CardHeader>
+          <CardTitle>AI Integrations</CardTitle>
+          <CardDescription>
+            Connect your AI services and language models
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid gap-6 md:grid-cols-3">
+            <div className="flex items-center justify-between p-4 border rounded-lg">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 flex items-center justify-center bg-purple-100 rounded-full">
+                  <Brain className="h-6 w-6 text-purple-600" />
+                </div>
+                <div>
+                  <p className="font-medium">OpenAI</p>
+                  <p className="text-sm text-muted-foreground">Not connected</p>
+                </div>
+              </div>
+              <Button variant="outline">Connect</Button>
+            </div>
+            
+            <div className="flex items-center justify-between p-4 border rounded-lg">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 flex items-center justify-center bg-blue-100 rounded-full">
+                  <Bot className="h-6 w-6 text-blue-600" />
+                </div>
+                <div>
+                  <p className="font-medium">Claude AI</p>
+                  <p className="text-sm text-muted-foreground">Not connected</p>
+                </div>
+              </div>
+              <Button variant="outline">Connect</Button>
+            </div>
+            
+            <div className="flex items-center justify-between p-4 border rounded-lg">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 flex items-center justify-center bg-green-100 rounded-full">
+                  <Settings className="h-6 w-6 text-green-600" />
+                </div>
+                <div>
+                  <p className="font-medium">Perplexity</p>
+                  <p className="text-sm text-muted-foreground">Not connected</p>
+                </div>
+              </div>
+              <Button variant="outline">Connect</Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Video Conference Integrations */}
       <Card>
         <CardHeader>
