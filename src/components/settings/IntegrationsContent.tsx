@@ -2,7 +2,7 @@
 import React from "react";
 import { Card, CardHeader, CardContent, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Video, Calendar, Mail, MessageCircle, CreditCard, CalendarDays } from "lucide-react";
+import { Video, Calendar, Mail, MessageCircle, CreditCard, CalendarDays, FileText } from "lucide-react";
 
 const IntegrationsContent = () => {
   return (
@@ -102,6 +102,136 @@ const IntegrationsContent = () => {
                 </div>
                 <div>
                   <p className="font-medium">Discord</p>
+                  <p className="text-sm text-muted-foreground">Not connected</p>
+                </div>
+              </div>
+              <Button variant="outline">Connect</Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Accounting & CRM Integrations */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Accounting & CRM Integrations</CardTitle>
+          <CardDescription>
+            Connect your accounting and customer relationship management systems
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid gap-6 md:grid-cols-3">
+            <div className="flex items-center justify-between p-4 border rounded-lg">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 flex items-center justify-center bg-green-100 rounded-full">
+                  <FileText className="h-6 w-6 text-green-600" />
+                </div>
+                <div>
+                  <p className="font-medium">QuickBooks</p>
+                  <p className="text-sm text-muted-foreground">Not connected</p>
+                </div>
+              </div>
+              <Button variant="outline">Connect</Button>
+            </div>
+            
+            <div className="flex items-center justify-between p-4 border rounded-lg">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 flex items-center justify-center bg-blue-100 rounded-full">
+                  <FileText className="h-6 w-6 text-blue-600" />
+                </div>
+                <div>
+                  <p className="font-medium">Xero</p>
+                  <p className="text-sm text-muted-foreground">Not connected</p>
+                </div>
+              </div>
+              <Button variant="outline">Connect</Button>
+            </div>
+            
+            <div className="flex items-center justify-between p-4 border rounded-lg">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 flex items-center justify-center bg-red-100 rounded-full">
+                  <FileText className="h-6 w-6 text-red-600" />
+                </div>
+                <div>
+                  <p className="font-medium">Zoho</p>
+                  <p className="text-sm text-muted-foreground">Not connected</p>
+                </div>
+              </div>
+              <Button variant="outline">Connect</Button>
+            </div>
+            
+            <div className="flex items-center justify-between p-4 border rounded-lg">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 flex items-center justify-center bg-amber-100 rounded-full">
+                  <FileText className="h-6 w-6 text-amber-600" />
+                </div>
+                <div>
+                  <p className="font-medium">Harvest</p>
+                  <p className="text-sm text-muted-foreground">Not connected</p>
+                </div>
+              </div>
+              <Button variant="outline">Connect</Button>
+            </div>
+            
+            <div className="flex items-center justify-between p-4 border rounded-lg">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 flex items-center justify-center bg-orange-100 rounded-full">
+                  <MessageCircle className="h-6 w-6 text-orange-600" />
+                </div>
+                <div>
+                  <p className="font-medium">HubSpot</p>
+                  <p className="text-sm text-muted-foreground">Not connected</p>
+                </div>
+              </div>
+              <Button variant="outline">Connect</Button>
+            </div>
+            
+            <div className="flex items-center justify-between p-4 border rounded-lg">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 flex items-center justify-center bg-indigo-100 rounded-full">
+                  <FileText className="h-6 w-6 text-indigo-600" />
+                </div>
+                <div>
+                  <p className="font-medium">SuiteDash</p>
+                  <p className="text-sm text-muted-foreground">Not connected</p>
+                </div>
+              </div>
+              <Button variant="outline">Connect</Button>
+            </div>
+            
+            <div className="flex items-center justify-between p-4 border rounded-lg">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 flex items-center justify-center bg-teal-100 rounded-full">
+                  <FileText className="h-6 w-6 text-teal-600" />
+                </div>
+                <div>
+                  <p className="font-medium">KashFlow</p>
+                  <p className="text-sm text-muted-foreground">Not connected</p>
+                </div>
+              </div>
+              <Button variant="outline">Connect</Button>
+            </div>
+            
+            <div className="flex items-center justify-between p-4 border rounded-lg">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 flex items-center justify-center bg-blue-100 rounded-full">
+                  <MessageCircle className="h-6 w-6 text-blue-600" />
+                </div>
+                <div>
+                  <p className="font-medium">Salesforce</p>
+                  <p className="text-sm text-muted-foreground">Not connected</p>
+                </div>
+              </div>
+              <Button variant="outline">Connect</Button>
+            </div>
+            
+            <div className="flex items-center justify-between p-4 border rounded-lg">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 flex items-center justify-center bg-pink-100 rounded-full">
+                  <MessageCircle className="h-6 w-6 text-pink-600" />
+                </div>
+                <div>
+                  <p className="font-medium">Capsule</p>
                   <p className="text-sm text-muted-foreground">Not connected</p>
                 </div>
               </div>
