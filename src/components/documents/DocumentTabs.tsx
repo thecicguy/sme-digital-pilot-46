@@ -35,17 +35,19 @@ const DocumentTabs = ({
 }: DocumentTabsProps) => {
   return (
     <Tabs defaultValue="list" className="w-full">
-      <TabsList className="bg-slate-100 dark:bg-slate-800 p-1">
-        <TabsTrigger value="list" className="data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700">
-          List View
-        </TabsTrigger>
-        <TabsTrigger value="grid" className="data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700">
-          Grid View
-        </TabsTrigger>
-      </TabsList>
+      <div className="border-b mb-4">
+        <TabsList className="bg-transparent">
+          <TabsTrigger value="list" className="text-sm py-2 px-4 data-[state=active]:border-b-2 data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 rounded-none">
+            List View
+          </TabsTrigger>
+          <TabsTrigger value="grid" className="text-sm py-2 px-4 data-[state=active]:border-b-2 data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 rounded-none">
+            Grid View
+          </TabsTrigger>
+        </TabsList>
+      </div>
       
-      <TabsContent value="list" className="mt-4">
-        <Card className="shadow-md border-slate-200 dark:border-slate-700">
+      <TabsContent value="list" className="mt-0">
+        <Card className="border-0 shadow-none">
           <CardContent className="p-0">
             <DocumentListView
               isLoading={isLoading}
@@ -59,7 +61,7 @@ const DocumentTabs = ({
         </Card>
       </TabsContent>
       
-      <TabsContent value="grid" className="mt-4">
+      <TabsContent value="grid" className="mt-0">
         <DocumentGridView
           isLoading={isLoading}
           filteredDocuments={filteredDocuments}

@@ -1,5 +1,5 @@
 
-import { Book } from "lucide-react";
+import { FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { 
   Card, 
@@ -20,10 +20,10 @@ const DocumentSidebar = ({
   setSelectedCategory
 }: DocumentSidebarProps) => {
   return (
-    <Card className="shadow-md border-slate-200 dark:border-slate-700">
-      <CardHeader className="bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
-        <CardTitle className="flex items-center gap-2">
-          <Book className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+    <Card className="border shadow-none">
+      <CardHeader className="pb-2">
+        <CardTitle className="flex items-center gap-2 text-base text-slate-700 dark:text-slate-300">
+          <FileText className="h-5 w-5" />
           Categories
         </CardTitle>
       </CardHeader>
@@ -32,10 +32,10 @@ const DocumentSidebar = ({
           {categories.map((category) => (
             <li key={category}>
               <Button
-                variant={selectedCategory === category ? "secondary" : "ghost"}
-                className={`w-full justify-start ${
+                variant="ghost"
+                className={`w-full justify-start text-sm font-normal ${
                   selectedCategory === category 
-                    ? "bg-indigo-100 text-indigo-800 hover:bg-indigo-200 dark:bg-indigo-900 dark:text-indigo-200" 
+                    ? "bg-blue-50 text-blue-700 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-300" 
                     : ""
                 }`}
                 onClick={() => setSelectedCategory(category)}
