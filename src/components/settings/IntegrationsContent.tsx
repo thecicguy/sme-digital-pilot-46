@@ -2,7 +2,7 @@
 import React from "react";
 import { Card, CardHeader, CardContent, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Webcam, Calendar, Microsoft, Slack, Discord, Teams, Paypal, Stripe } from "lucide-react";
+import { Video, Calendar, Mail, MessageCircle, CreditCard, CalendarDays } from "lucide-react";
 
 const IntegrationsContent = () => {
   return (
@@ -20,7 +20,7 @@ const IntegrationsContent = () => {
             <div className="flex items-center justify-between p-4 border rounded-lg">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 flex items-center justify-center bg-blue-100 rounded-full">
-                  <Webcam className="h-6 w-6 text-blue-600" />
+                  <Video className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
                   <p className="font-medium">Zoom</p>
@@ -33,7 +33,7 @@ const IntegrationsContent = () => {
             <div className="flex items-center justify-between p-4 border rounded-lg">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 flex items-center justify-center bg-blue-100 rounded-full">
-                  <Webcam className="h-6 w-6 text-blue-600" />
+                  <Video className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
                   <p className="font-medium">GoTo Meeting</p>
@@ -46,7 +46,7 @@ const IntegrationsContent = () => {
             <div className="flex items-center justify-between p-4 border rounded-lg">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 flex items-center justify-center bg-blue-100 rounded-full">
-                  <Webcam className="h-6 w-6 text-blue-600" />
+                  <Video className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
                   <p className="font-medium">WebEx</p>
@@ -59,7 +59,7 @@ const IntegrationsContent = () => {
             <div className="flex items-center justify-between p-4 border rounded-lg">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 flex items-center justify-center bg-blue-100 rounded-full">
-                  <Teams className="h-6 w-6 text-blue-600" />
+                  <Video className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
                   <p className="font-medium">Microsoft Teams</p>
@@ -85,7 +85,7 @@ const IntegrationsContent = () => {
             <div className="flex items-center justify-between p-4 border rounded-lg">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 flex items-center justify-center bg-purple-100 rounded-full">
-                  <Slack className="h-6 w-6 text-purple-600" />
+                  <MessageCircle className="h-6 w-6 text-purple-600" />
                 </div>
                 <div>
                   <p className="font-medium">Slack</p>
@@ -98,7 +98,7 @@ const IntegrationsContent = () => {
             <div className="flex items-center justify-between p-4 border rounded-lg">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 flex items-center justify-center bg-indigo-100 rounded-full">
-                  <Discord className="h-6 w-6 text-indigo-600" />
+                  <MessageCircle className="h-6 w-6 text-indigo-600" />
                 </div>
                 <div>
                   <p className="font-medium">Discord</p>
@@ -124,7 +124,7 @@ const IntegrationsContent = () => {
             <div className="flex items-center justify-between p-4 border rounded-lg">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 flex items-center justify-center bg-green-100 rounded-full">
-                  <Stripe className="h-6 w-6 text-green-600" />
+                  <CreditCard className="h-6 w-6 text-green-600" />
                 </div>
                 <div>
                   <p className="font-medium">Stripe</p>
@@ -137,7 +137,7 @@ const IntegrationsContent = () => {
             <div className="flex items-center justify-between p-4 border rounded-lg">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 flex items-center justify-center bg-blue-100 rounded-full">
-                  <Paypal className="h-6 w-6 text-blue-600" />
+                  <CreditCard className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
                   <p className="font-medium">PayPal</p>
@@ -176,7 +176,7 @@ const IntegrationsContent = () => {
             <div className="flex items-center justify-between p-4 border rounded-lg">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 flex items-center justify-center bg-red-100 rounded-full">
-                  <Calendar className="h-6 w-6 text-red-600" />
+                  <CalendarDays className="h-6 w-6 text-red-600" />
                 </div>
                 <div>
                   <p className="font-medium">Google Calendar</p>
@@ -189,7 +189,7 @@ const IntegrationsContent = () => {
             <div className="flex items-center justify-between p-4 border rounded-lg">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 flex items-center justify-center bg-blue-100 rounded-full">
-                  <Microsoft className="h-6 w-6 text-blue-600" />
+                  <Mail className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
                   <p className="font-medium">Microsoft Calendar</p>
