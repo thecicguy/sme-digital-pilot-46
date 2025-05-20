@@ -3,7 +3,7 @@
 // This maintains the same public API as before
 
 // Re-export mock data
-export { tasks, projects, clients, contacts, timeEntries } from './mockData';
+export { tasks, projects, clients, contacts } from './mockData';
 
 // Re-export auth functions
 export { getCurrentUser, authenticateUser } from './authApi';
@@ -22,14 +22,3 @@ export { fetchNotes, fetchNote, createNote, updateNote, deleteNote } from './not
 
 // Re-export task functions
 export { fetchTasks, fetchTask, createTask, updateTask } from './tasksApi';
-
-// Re-export time tracking functions
-export { 
-  fetchTimeEntries, 
-  fetchTimeEntry, 
-  createTimeEntry, 
-  updateTimeEntry, 
-  deleteTimeEntry,
-  startTimeEntry,
-  stopTimeEntry
-} from './timeEntriesApi';

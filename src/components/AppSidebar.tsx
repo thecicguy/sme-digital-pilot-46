@@ -1,167 +1,146 @@
 
-import React, { useState } from "react";
-import {
-  Home,
-  Users,
-  Briefcase,
-  CheckSquare,
-  Calendar as CalendarIcon,
-  BarChart3,
-  FolderArchive,
-  Settings,
-  Timer
-} from "lucide-react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
-import { useIsMobile } from "@/hooks/use-mobile";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet"
+import { Book, BookmarkCheck, Building, Calendar, Briefcase, Settings, Users, FileText, HelpCircle, FileIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
-const AppSidebar = ({ children }: { children: React.ReactNode }) => {
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
-  const { user } = useAuth();
-  const isMobile = useIsMobile();
-  const [isOpen, setIsOpen] = useState(false);
-
-  const navItems = [
-    {
-      href: "/dashboard",
-      label: "Dashboard",
-      icon: <Home className="h-5 w-5" />,
-      protected: true
-    },
-    {
-      href: "/clients",
-      label: "Clients",
-      icon: <Users className="h-5 w-5" />,
-      protected: true
-    },
-    {
-      href: "/projects",
-      label: "Projects",
-      icon: <Briefcase className="h-5 w-5" />,
-      protected: true
-    },
-    {
-      href: "/tasks",
-      label: "Tasks",
-      icon: <CheckSquare className="h-5 w-5" />,
-      protected: true
-    },
-    {
-      href: "/calendar",
-      label: "Calendar",
-      icon: <CalendarIcon className="h-5 w-5" />,
-      protected: true
-    },
-    {
-      href: "/timetracking",
-      label: "Time Tracking",
-      icon: <Timer className="h-5 w-5" />,
-      protected: true
-    },
-    {
-      href: "/reports",
-      label: "Reports",
-      icon: <BarChart3 className="h-5 w-5" />,
-      protected: true
-    },
-    {
-      href: "/documents",
-      label: "Document Store",
-      icon: <FolderArchive className="h-5 w-5" />,
-      protected: true
-    },
-    {
-      href: "/settings",
-      label: "Settings",
-      icon: <Settings className="h-5 w-5" />,
-      protected: true
+const AppSidebar = () => {
+  const {
+    user,
+    logout
+  } = useAuth();
+  const location = useLocation();
+  const navItems = [{
+    name: "Dashboard",
+    path: "/",
+    icon: <Briefcase className="h-5 w-5" />
+  }, {
+    name: "Clients",
+    path: "/clients",
+    icon: <Users className="h-5 w-5" />
+  }, {
+    name: "Projects",
+    path: "/projects",
+    icon: <Building className="h-5 w-5" />
+  }, {
+    name: "Tasks",
+    path: "/tasks",
+    icon: <BookmarkCheck className="h-5 w-5" />
+  }, {
+    name: "Calendar",
+    path: "/calendar",
+    icon: <Calendar className="h-5 w-5" />
+  }, {
+    name: "Document Store",
+    path: "/documents",
+    icon: <FileText className="h-5 w-5" />
+  }, {
+    name: "Reports",
+    path: "/reports",
+    icon: <FileText className="h-5 w-5" />
+  }, {
+    name: "Settings",
+    path: "/settings",
+    icon: <Settings className="h-5 w-5" />
+  }];
+  
+  // Helper function to check if a path is active
+  const isActive = (path: string) => {
+    // Exact match for dashboard
+    if (path === "/" && location.pathname === "/") {
+      return true;
     }
-  ];
-
-  const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    navigate("/login");
+    // For other pages, check if the pathname starts with the path
+    // This handles sub-routes like /clients/123
+    if (path !== "/" && location.pathname.startsWith(path)) {
+      return true;
+    }
+    return false;
   };
 
-  const renderNavItems = () => {
-    return navItems.map((item) => {
-      if (item.protected && !user) {
-        return null;
-      }
+  return <aside className="fixed left-0 top-0 z-30 flex h-screen w-64 flex-col border-r border-border bg-background transition-all duration-300">
+      <div className="flex h-16 items-center border-b border-border px-6">
+        <Link to="/" className="flex items-center gap-2 font-bold text-xl">
+          <Briefcase className="h-5 w-5 text-primary" />
+          <span className="text-primary">ConsultLink</span>
+        </Link>
+      </div>
 
-      return (
-        <li key={item.label}>
-          <Link
-            to={item.href}
-            className={`group flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground ${pathname === item.href ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'}`}
-          >
-            {item.icon}
-            <span className="ml-2">{item.label}</span>
+      <nav className="flex-1 overflow-auto p-6">
+        <ul className="space-y-2">
+          {navItems.map((item) => (
+            <li key={item.path}>
+              <Link 
+                to={item.path} 
+                className={cn(
+                  "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:bg-accent hover:text-accent-foreground",
+                  isActive(item.path) 
+                    ? "bg-primary/10 text-primary font-medium border-l-4 border-primary" 
+                    : "text-muted-foreground"
+                )}
+              >
+                {item.icon}
+                <span>{item.name}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      {user && <div className="mt-auto border-t border-border p-6">
+          {/* Template Store Button */}
+          <Link to="/template-store" className="block w-full mb-4">
+            <Button variant="outline" className="w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border-indigo-200 flex items-center gap-2 dark:bg-indigo-900/30 dark:hover:bg-indigo-900/50 dark:text-indigo-300 dark:border-indigo-800">
+              <FileIcon className="h-4 w-4" />
+              Template Store
+            </Button>
           </Link>
-        </li>
-      );
-    });
-  };
+          
+          {/* Access Support Button */}
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline" className="w-full mb-4 bg-primary/10 hover:bg-primary/20 text-primary flex items-center gap-2">
+                <HelpCircle className="h-4 w-4" />
+                Access Support
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="p-4">
+              <div className="space-y-2">
+                <h4 className="font-medium">Need Help?</h4>
+                <p className="text-sm text-muted-foreground">Contact our support team or check our knowledge base</p>
+                <div className="space-y-2 mt-3">
+                  <Button variant="outline" className="w-full text-sm" onClick={() => window.open('mailto:support@consultlink.com')}>
+                    Email Support
+                  </Button>
+                  <Button variant="outline" className="w-full text-sm" onClick={() => window.open('tel:+18005551234')}>
+                    Call Us
+                  </Button>
+                  <Link to="/knowledge-base" className="inline-block w-full">
+                    <Button variant="outline" className="w-full text-sm">
+                      Knowledge Base
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </PopoverContent>
+          </Popover>
 
-  const sidebarContent = (
-    <div className="flex h-full flex-col py-4">
-      <Link to="/" className="px-6 pb-4">
-        <h1 className="font-bold text-2xl">CRM</h1>
-      </Link>
-      <ul className="flex-1 space-y-1 px-2">
-        {renderNavItems()}
-      </ul>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="mt-auto flex items-center justify-start gap-2 rounded-md px-3 py-2 text-sm font-medium shadow-none hover:bg-secondary">
-            <Avatar className="h-8 w-8">
-              <AvatarImage src="https://github.com/shadcn.png" alt="Shadcn" />
-              <AvatarFallback>SC</AvatarFallback>
-            </Avatar>
-            <span>shadcn</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" forceMount>
-          <DropdownMenuItem onClick={() => navigate("/settings")}>Settings</DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
-  );
-
-  if (isMobile) {
-    return (
-      <Sheet open={isOpen} onOpenChange={setIsOpen}>
-        <SheetTrigger asChild>
-          {children}
-        </SheetTrigger>
-        <SheetContent side="left" className="w-3/4 sm:w-1/2 bg-white">
-          <SheetHeader className="text-left">
-            <SheetTitle>Menu</SheetTitle>
-          </SheetHeader>
-          {sidebarContent}
-        </SheetContent>
-      </Sheet>
-    )
-  }
-
-  return (
-    <div className="hidden border-r bg-gray-50 dark:bg-secondary/10 md:block w-60">
-      {sidebarContent}
-    </div>
-  );
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white">
+              {user.name.charAt(0).toUpperCase()}
+            </div>
+            <div className="overflow-hidden">
+              <p className="truncate font-medium">{user.name}</p>
+              <p className="truncate text-xs text-muted-foreground">{user.email}</p>
+            </div>
+          </div>
+          <button onClick={logout} className="mt-4 w-full rounded-lg border border-border bg-background px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground">
+            Sign Out
+          </button>
+        </div>}
+    </aside>;
 };
 
 export default AppSidebar;

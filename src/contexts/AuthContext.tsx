@@ -2,12 +2,11 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { User, Role } from "@/types";
 import { getCurrentUser, authenticateUser } from "@/lib/api";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/components/ui/toast";
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
 }
@@ -77,13 +76,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      loading, 
-      isAuthenticated: !!user, 
-      login, 
-      logout 
-    }}>
+    <AuthContext.Provider value={{ user, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,205 +1,80 @@
 
-import React from 'react';
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Navigate,
-} from "react-router-dom";
-import { useAuth, AuthProvider } from "./contexts/AuthContext";
-import AppLayout from './components/AppLayout';
-import { ThemeProvider } from "@/components/ui/theme-provider";
-import { Toaster } from "sonner";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { AuthProvider } from "@/contexts/AuthContext";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import AppLayout from "@/components/AppLayout";
+import ChatBot from "@/components/ChatBot";
 
 // Pages
-import Index from "@/pages/Index";
-import Login from "@/pages/Login";
-import Register from "@/pages/Register";
-import Dashboard from "@/pages/Dashboard";
-import Clients from "@/pages/Clients";
-import ClientDetail from "@/pages/ClientDetail";
-import Projects from "@/pages/Projects";
-import ProjectDetail from "@/pages/ProjectDetail";
-import Tasks from "@/pages/Tasks";
-import Calendar from "@/pages/Calendar";
-import Booking from "@/pages/Booking";
-import Reports from "@/pages/Reports";
-import Documents from "@/pages/Documents";
-import TimeTracking from "@/pages/TimeTracking";
-import Settings from "@/pages/Settings";
-import EmailTemplates from "@/pages/EmailTemplates";
-import TemplateStore from "@/pages/TemplateStore";
-import About from "@/pages/About";
-import Contact from "@/pages/Contact";
-import NotFound from "@/pages/NotFound";
-import Unauthorized from "@/pages/Unauthorized";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Unauthorized from "./pages/Unauthorized";
+import Clients from "./pages/Clients";
+import ClientDetail from "./pages/ClientDetail";
+import Projects from "./pages/Projects";
+import ProjectDetail from "./pages/ProjectDetail";
+import Tasks from "./pages/Tasks";
+import NotFound from "./pages/NotFound";
+import Reports from "./pages/Reports";
+import Settings from "./pages/Settings";
+import Dashboard from "./pages/Dashboard";
+import Calendar from "./pages/Calendar";
+import Documents from "./pages/Documents";
+import TemplateStore from "./pages/TemplateStore";
 
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated } = useAuth();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+    },
+  },
+});
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" />;
-  }
-
-  return <>{children}</>;
-};
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <AppLayout />,
-    errorElement: <NotFound />,
-    children: [
-      {
-        path: "",
-        element: <Index />
-      },
-      {
-        path: "login",
-        element: <Login />
-      },
-      {
-        path: "register",
-        element: <Register />
-      },
-      {
-        path: "dashboard",
-        element: (
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        )
-      },
-      {
-        path: "clients",
-        element: (
-          <ProtectedRoute>
-            <Clients />
-          </ProtectedRoute>
-        )
-      },
-      {
-        path: "clients/:clientId",
-        element: (
-          <ProtectedRoute>
-            <ClientDetail />
-          </ProtectedRoute>
-        )
-      },
-      {
-        path: "projects",
-        element: (
-          <ProtectedRoute>
-            <Projects />
-          </ProtectedRoute>
-        )
-      },
-      {
-        path: "projects/:projectId",
-        element: (
-          <ProtectedRoute>
-            <ProjectDetail />
-          </ProtectedRoute>
-        )
-      },
-      {
-        path: "tasks",
-        element: (
-          <ProtectedRoute>
-            <Tasks />
-          </ProtectedRoute>
-        )
-      },
-      {
-        path: "calendar",
-        element: (
-          <ProtectedRoute>
-            <Calendar />
-          </ProtectedRoute>
-        )
-      },
-      {
-        path: "booking",
-        element: (
-          <ProtectedRoute>
-            <Booking />
-          </ProtectedRoute>
-        )
-      },
-      {
-        path: "reports",
-        element: (
-          <ProtectedRoute>
-            <Reports />
-          </ProtectedRoute>
-        )
-      },
-      {
-        path: "documents",
-        element: (
-          <ProtectedRoute>
-            <Documents />
-          </ProtectedRoute>
-        )
-      },
-      {
-        path: "timetracking",
-        element: (
-          <ProtectedRoute>
-            <TimeTracking />
-          </ProtectedRoute>
-        )
-      },
-      {
-        path: "settings",
-        element: (
-          <ProtectedRoute>
-            <Settings />
-          </ProtectedRoute>
-        )
-      },
-      {
-        path: "email-templates",
-        element: (
-          <ProtectedRoute>
-            <EmailTemplates />
-          </ProtectedRoute>
-        )
-      },
-      {
-        path: "template-store",
-        element: (
-          <ProtectedRoute>
-            <TemplateStore />
-          </ProtectedRoute>
-        )
-      },
-      {
-        path: "about",
-        element: <About />
-      },
-      {
-        path: "contact",
-        element: <Contact />
-      },
-      {
-        path: "unauthorized",
-        element: <Unauthorized />
-      }
-    ]
-  }
-]);
-
-function AppWithProviders() {
-  return (
+const App = () => (
+  <QueryClientProvider client={queryClient}>
     <AuthProvider>
-      <ThemeProvider defaultTheme="system" storageKey="vite-react-theme">
-        <RouterProvider router={router} />
+      <TooltipProvider>
         <Toaster />
-      </ThemeProvider>
+        <Sonner />
+        <BrowserRouter>
+          <div className="flex min-h-screen flex-col">
+            <div className="flex-1">
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                
+                <Route element={
+                  <ProtectedRoute>
+                    <AppLayout />
+                  </ProtectedRoute>
+                }>
+                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/clients" element={<Clients />} />
+                  <Route path="/clients/:clientId" element={<ClientDetail />} />
+                  <Route path="/projects" element={<Projects />} />
+                  <Route path="/projects/:projectId" element={<ProjectDetail />} />
+                  <Route path="/tasks" element={<Tasks />} />
+                  <Route path="/calendar" element={<Calendar />} />
+                  <Route path="/documents" element={<Documents />} />
+                  <Route path="/reports" element={<Reports />} />
+                  <Route path="/settings" element={<Settings />} />
+                  <Route path="/template-store" element={<TemplateStore />} />
+                </Route>
+                
+                <Route path="/unauthorized" element={<Unauthorized />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </div>
+            <ChatBot />
+          </div>
+        </BrowserRouter>
+      </TooltipProvider>
     </AuthProvider>
-  );
-}
+  </QueryClientProvider>
+);
 
-export default function App() {
-  return <AppWithProviders />;
-}
+export default App;

@@ -3,8 +3,6 @@ import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import AppSidebar from "@/components/AppSidebar";
 import { cn } from "@/lib/utils";
-import { Menu } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 const AppLayout = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -23,12 +21,7 @@ const AppLayout = () => {
 
   return (
     <div className="flex min-h-screen bg-background">
-      <AppSidebar>
-        <Button variant="ghost" size="icon" className="md:hidden">
-          <Menu />
-        </Button>
-      </AppSidebar>
-      
+      <AppSidebar />
       <div className={cn(
         "flex-1 transition-all duration-300",
         sidebarCollapsed ? "ml-16" : "ml-64"

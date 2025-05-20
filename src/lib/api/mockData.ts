@@ -1,5 +1,5 @@
 
-import { Client, Contact, Note, Project, Task, TaskStatus, TimeEntry } from "@/types";
+import { Client, Contact, Note, Project, Task, TaskStatus } from "@/types";
 
 // Mock data for internal use
 // These would normally come from an API but are defined here for the notification bell component
@@ -75,33 +75,5 @@ export const contacts: Contact[] = [
     role: "web",
     clientId: "client-2",
     createdAt: new Date(new Date().setDate(new Date().getDate() - 1))
-  }
-];
-
-export const timeEntries: TimeEntry[] = [
-  {
-    id: "time-1",
-    description: "Initial consultation meeting",
-    duration: 60, // 60 minutes
-    startTime: new Date(new Date().setHours(new Date().getHours() - 3)),
-    endTime: new Date(new Date().setHours(new Date().getHours() - 2)),
-    isRunning: false,
-    userId: "user-1",
-    clientId: "client-1",
-    projectId: "project-1",
-    createdAt: new Date(new Date().setHours(new Date().getHours() - 3))
-  },
-  {
-    id: "time-2",
-    description: "Preparing project proposal",
-    duration: 90, // 90 minutes
-    startTime: new Date(new Date().setHours(new Date().getHours() - 24)),
-    endTime: new Date(new Date().setHours(new Date().getHours() - 22.5)),
-    isRunning: false,
-    userId: "user-1",
-    clientId: "client-1",
-    projectId: "project-1",
-    taskId: "task-1",
-    createdAt: new Date(new Date().setHours(new Date().getHours() - 24))
   }
 ];
