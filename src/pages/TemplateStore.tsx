@@ -1,11 +1,10 @@
-
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Download, FileText, Mail, Collection, Folder } from "lucide-react";
+import { Download, FileText, Mail, Folder, FolderOpen } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import DocumentTemplates from "@/components/documents/DocumentTemplates";
 
@@ -239,7 +238,7 @@ const TemplateStore = () => {
             Email Templates
           </TabsTrigger>
           <TabsTrigger value="collections" className="data-[state=active]:bg-white data-[state=active]:shadow-sm dark:data-[state=active]:bg-slate-700">
-            <Folder className="mr-2 h-4 w-4" />
+            <FolderOpen className="mr-2 h-4 w-4" />
             Collections
           </TabsTrigger>
         </TabsList>
