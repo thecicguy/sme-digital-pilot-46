@@ -21,6 +21,7 @@ import StatusesContent from "@/components/settings/StatusesContent";
 import ReportSettingsContent from "@/components/settings/ReportSettingsContent";
 import WhitelabelContent from "@/components/settings/WhitelabelContent";
 import IntegrationsContent from "@/components/settings/IntegrationsContent";
+import SubscriptionsContent from "@/components/settings/SubscriptionsContent";
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState("profile");
@@ -102,6 +103,7 @@ const Settings = () => {
           <TabsTrigger value="profile">Profile & Preferences</TabsTrigger>
           <TabsTrigger value="ai-settings">AI Settings</TabsTrigger>
           <TabsTrigger value="integrations">Integrations</TabsTrigger>
+          <TabsTrigger value="subscriptions">Subscriptions</TabsTrigger>
           <TabsTrigger value="team">Team Management</TabsTrigger>
           <TabsTrigger value="email-templates">Email Templates</TabsTrigger>
           <TabsTrigger value="report-settings">Report Settings</TabsTrigger>
@@ -374,6 +376,10 @@ const Settings = () => {
         
         <TabsContent value="integrations">
           <IntegrationsContent />
+        </TabsContent>
+        
+        <TabsContent value="subscriptions">
+          <SubscriptionsContent />
         </TabsContent>
         
         <TabsContent value="team">
