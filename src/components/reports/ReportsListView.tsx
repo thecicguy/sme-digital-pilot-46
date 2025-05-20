@@ -25,7 +25,6 @@ interface Report {
   clientName: string;
   generatedAt: Date;
   status: string;
-  aiModel: string;
   type: string;
 }
 
@@ -54,7 +53,6 @@ const ReportsListView = ({
             <TableHead>Type</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Generated</TableHead>
-            <TableHead>AI Model</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -77,7 +75,6 @@ const ReportsListView = ({
                 </span>
               </TableCell>
               <TableCell>{report.generatedAt.toLocaleDateString()}</TableCell>
-              <TableCell>{report.aiModel}</TableCell>
               <TableCell className="text-right">
                 <div className="flex justify-end gap-2">
                   <Button size="sm" variant="outline">View</Button>
@@ -88,7 +85,7 @@ const ReportsListView = ({
           ))}
           {reports.length === 0 && (
             <TableRow>
-              <TableCell colSpan={7} className="h-24 text-center">
+              <TableCell colSpan={6} className="h-24 text-center">
                 <div className="flex flex-col items-center justify-center">
                   <p className="text-lg font-medium">No reports found</p>
                   <p className="text-muted-foreground">Try adjusting your search filters or generate a new report</p>

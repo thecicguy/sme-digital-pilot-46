@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -48,7 +47,7 @@ const Reports = () => {
     { name: "draft", colorScheme: "orange" },
   ];
   
-  // Updated reports with the new structure
+  // Updated reports without the aiModel property
   const reports = [
     {
       id: "report1",
@@ -56,7 +55,6 @@ const Reports = () => {
       clientName: "City Boutique",
       generatedAt: new Date("2023-06-15"),
       status: "completed",
-      aiModel: "GPT-4",
       type: "Proposal",
     },
     {
@@ -65,7 +63,6 @@ const Reports = () => {
       clientName: "Gourmet Group",
       generatedAt: new Date("2023-05-28"),
       status: "completed",
-      aiModel: "GPT-4",
       type: "Pitch",
     },
     {
@@ -74,7 +71,6 @@ const Reports = () => {
       clientName: "Apex Consulting",
       generatedAt: new Date("2023-06-10"),
       status: "draft",
-      aiModel: "Claude",
       type: "Update",
     },
     {
@@ -83,7 +79,6 @@ const Reports = () => {
       clientName: "Tech Solutions",
       generatedAt: new Date("2023-06-20"),
       status: "in_progress",
-      aiModel: "GPT-4",
       type: "Standup",
     },
   ];
