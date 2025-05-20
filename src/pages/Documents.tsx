@@ -216,18 +216,16 @@ const Documents = () => {
       {/* Header */}
       <DocumentHeader handleUpload={handleUpload} />
       
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        {/* Sidebar with categories */}
-        <div className="lg:col-span-1">
-          <DocumentSidebar
-            categories={categories}
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
-          />
-        </div>
+      <div className="space-y-6">
+        {/* Categories at the top */}
+        <DocumentSidebar
+          categories={categories}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+        />
         
         {/* Main content area */}
-        <div className="lg:col-span-3 space-y-4">
+        <div className="space-y-4">
           {/* Search and filter bar */}
           <DocumentSearch
             searchTerm={searchTerm}

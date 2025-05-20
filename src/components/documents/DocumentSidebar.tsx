@@ -28,23 +28,22 @@ const DocumentSidebar = ({
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0">
-        <ul className="space-y-1 p-2">
+        <div className="flex flex-wrap gap-2 p-2">
           {categories.map((category) => (
-            <li key={category}>
-              <Button
-                variant="ghost"
-                className={`w-full justify-start text-sm font-normal ${
-                  selectedCategory === category 
-                    ? "bg-blue-50 text-blue-700 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-300" 
-                    : ""
-                }`}
-                onClick={() => setSelectedCategory(category)}
-              >
-                {category}
-              </Button>
-            </li>
+            <Button
+              key={category}
+              variant="ghost"
+              className={`text-sm font-normal ${
+                selectedCategory === category 
+                  ? "bg-blue-50 text-blue-700 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-300" 
+                  : ""
+              }`}
+              onClick={() => setSelectedCategory(category)}
+            >
+              {category}
+            </Button>
           ))}
-        </ul>
+        </div>
       </CardContent>
     </Card>
   );
