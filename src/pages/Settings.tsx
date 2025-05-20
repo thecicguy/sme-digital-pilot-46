@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -98,8 +99,7 @@ const Settings = () => {
       
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="mb-6">
-          <TabsTrigger value="profile">Profile</TabsTrigger>
-          <TabsTrigger value="preferences">Preferences</TabsTrigger>
+          <TabsTrigger value="profile">Profile & Preferences</TabsTrigger>
           <TabsTrigger value="ai-settings">AI Settings</TabsTrigger>
           <TabsTrigger value="team">Team Management</TabsTrigger>
           <TabsTrigger value="email-templates">Email Templates</TabsTrigger>
@@ -108,7 +108,7 @@ const Settings = () => {
         </TabsList>
         
         <TabsContent value="profile">
-          <Card>
+          <Card className="mb-6">
             <CardHeader>
               <CardTitle>Profile Information</CardTitle>
               <CardDescription>
@@ -157,45 +157,15 @@ const Settings = () => {
               </div>
               <div className="flex justify-end">
                 <Button onClick={handleSaveProfile} disabled={saving}>
-                  {saving ? 'Saving...' : 'Save Changes'}
+                  {saving ? 'Saving...' : 'Save Profile'}
                 </Button>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="mt-6">
+          <Card className="mb-6">
             <CardHeader>
-              <CardTitle>Change Password</CardTitle>
-              <CardDescription>
-                Update your account password
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="current-password">Current Password</Label>
-                  <Input id="current-password" type="password" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="new-password">New Password</Label>
-                  <Input id="new-password" type="password" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="confirm-password">Confirm New Password</Label>
-                  <Input id="confirm-password" type="password" />
-                </div>
-              </div>
-              <div className="flex justify-end">
-                <Button>Change Password</Button>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-        
-        <TabsContent value="preferences">
-          <Card>
-            <CardHeader>
-              <CardTitle>Interface Preferences</CardTitle>
+              <CardTitle>User Preferences</CardTitle>
               <CardDescription>
                 Customize how the application looks and behaves
               </CardDescription>
@@ -239,8 +209,8 @@ const Settings = () => {
                 </div>
                 
                 <div className="flex items-center justify-between">
+                  <Label htmlFor="reminder-notifications">Reminders</Label>
                   <div>
-                    <Label htmlFor="reminder-notifications">Reminders</Label>
                     <p className="text-sm text-muted-foreground">Receive task and meeting reminders</p>
                   </div>
                   <Switch
@@ -269,8 +239,36 @@ const Settings = () => {
               
               <div className="flex justify-end">
                 <Button onClick={handleSavePreferences} disabled={saving}>
-                  {saving ? 'Saving...' : 'Save Changes'}
+                  {saving ? 'Saving...' : 'Save Preferences'}
                 </Button>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <CardTitle>Change Password</CardTitle>
+              <CardDescription>
+                Update your account password
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="current-password">Current Password</Label>
+                  <Input id="current-password" type="password" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="new-password">New Password</Label>
+                  <Input id="new-password" type="password" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="confirm-password">Confirm New Password</Label>
+                  <Input id="confirm-password" type="password" />
+                </div>
+              </div>
+              <div className="flex justify-end">
+                <Button>Change Password</Button>
               </div>
             </CardContent>
           </Card>
