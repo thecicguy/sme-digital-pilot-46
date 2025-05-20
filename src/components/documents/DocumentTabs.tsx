@@ -2,7 +2,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DocumentListView from "./DocumentListView";
-import DocumentGridView from "./DocumentGridView";
 
 interface Document {
   id: string;
@@ -40,9 +39,6 @@ const DocumentTabs = ({
           <TabsTrigger value="list" className="text-sm py-2 px-4 data-[state=active]:border-b-2 data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 rounded-none">
             List View
           </TabsTrigger>
-          <TabsTrigger value="grid" className="text-sm py-2 px-4 data-[state=active]:border-b-2 data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 rounded-none">
-            Grid View
-          </TabsTrigger>
         </TabsList>
       </div>
       
@@ -59,16 +55,6 @@ const DocumentTabs = ({
             />
           </CardContent>
         </Card>
-      </TabsContent>
-      
-      <TabsContent value="grid" className="mt-0">
-        <DocumentGridView
-          isLoading={isLoading}
-          filteredDocuments={filteredDocuments}
-          handleViewVersions={handleViewVersions}
-          handleDownload={handleDownload}
-          getFileIcon={getFileIcon}
-        />
       </TabsContent>
     </Tabs>
   );
