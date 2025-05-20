@@ -30,7 +30,7 @@ export const TasksProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [searchTerm, setSearchTerm] = useState("");
   const [filterProjectId, setFilterProjectId] = useState("all");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-  const [view, setView] = useState<"grid" | "list" | "kanban">("kanban");
+  const [view, setView] = useState<"grid" | "list" | "kanban">("list");
 
   const queryClient = useQueryClient();
 

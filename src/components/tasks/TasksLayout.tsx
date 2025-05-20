@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import TasksHeader from "@/components/tasks/TasksHeader";
 import TasksContent from "@/components/tasks/TasksContent";
 import CreateTaskDialog from "@/components/tasks/CreateTaskDialog";
@@ -13,7 +13,9 @@ const TasksLayout: React.FC = () => {
     filteredTasks,
     getProjectName,
     getClientName,
-    handleTaskStatusChange
+    handleTaskStatusChange,
+    view,
+    setView
   } = useTasks();
 
   return (
@@ -23,7 +25,7 @@ const TasksLayout: React.FC = () => {
       <TasksContent
         isLoading={isTasksLoading}
         tasks={filteredTasks}
-        view="kanban"
+        view={view}
         getProjectName={getProjectName}
         getClientName={getClientName}
         onCreateTask={() => setIsCreateDialogOpen(true)}
