@@ -5,6 +5,7 @@ import { Card, CardHeader, CardContent, CardTitle, CardDescription } from "@/com
 import ReportTypesContent from "./ReportTypesContent";
 import StatusesContent from "./StatusesContent";
 import KanbanSettingsContent from "./KanbanSettingsContent";
+import CalendarSettingsContent from "./CalendarSettingsContent";
 
 const ReportSettingsContent = () => {
   const [activeTab, setActiveTab] = useState("types");
@@ -14,7 +15,7 @@ const ReportSettingsContent = () => {
       <CardHeader>
         <CardTitle>Configuration</CardTitle>
         <CardDescription>
-          Configure report types, statuses, and kanban settings for your organization
+          Configure report types, statuses, kanban, and calendar settings for your organization
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -23,6 +24,7 @@ const ReportSettingsContent = () => {
             <TabsTrigger value="types">Report Types</TabsTrigger>
             <TabsTrigger value="statuses">Report Statuses</TabsTrigger>
             <TabsTrigger value="kanban">Kanban Options</TabsTrigger>
+            <TabsTrigger value="calendar">Calendar Settings</TabsTrigger>
           </TabsList>
           
           <TabsContent value="types" className="mt-6">
@@ -35,6 +37,10 @@ const ReportSettingsContent = () => {
           
           <TabsContent value="kanban" className="mt-6">
             <KanbanSettingsContent />
+          </TabsContent>
+          
+          <TabsContent value="calendar" className="mt-6">
+            <CalendarSettingsContent />
           </TabsContent>
         </Tabs>
       </CardContent>

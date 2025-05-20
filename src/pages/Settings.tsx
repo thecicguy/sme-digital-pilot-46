@@ -87,7 +87,7 @@ const Settings = () => {
           <TabsTrigger value="team">Team Management</TabsTrigger>
           <TabsTrigger value="email-templates">Email Templates</TabsTrigger>
           <TabsTrigger value="report-settings">Configuration</TabsTrigger>
-          <TabsTrigger value="whitelabel">Whitelabel</TabsTrigger>
+          <TabsTrigger value="whitelabel" disabled className="opacity-50 cursor-not-allowed" title="Available on Pro Plan">Whitelabel</TabsTrigger>
         </TabsList>
         
         <TabsContent value="profile">
@@ -346,7 +346,28 @@ const Settings = () => {
         </TabsContent>
         
         <TabsContent value="whitelabel">
-          <WhitelabelContent />
+          <Card className="mb-6">
+            <CardHeader>
+              <CardTitle>Whitelabel Settings</CardTitle>
+              <CardDescription>
+                Customize the branding and appearance of your application
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col items-center justify-center py-8 text-center">
+                <div className="rounded-full bg-muted p-4 mb-4">
+                  <div className="h-12 w-12 rounded-full border-2 border-primary/20 border-dashed flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-muted-foreground"><path d="M19 11V9a1 1 0 0 0-1-1h-10"/><path d="M7 21h10a1 1 0 0 0 1-1v-2"/><path d="m9 5 4-4 4 4"/><path d="m9 19-4 4-4-4"/></svg>
+                  </div>
+                </div>
+                <h3 className="text-lg font-medium mb-2">Upgrade to Pro Plan</h3>
+                <p className="text-muted-foreground max-w-md">
+                  Whitelabel features are available exclusively on our Pro Plan. Upgrade now to remove branding and customize the application to match your company identity.
+                </p>
+                <Button className="mt-6">Upgrade to Pro</Button>
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
     </div>

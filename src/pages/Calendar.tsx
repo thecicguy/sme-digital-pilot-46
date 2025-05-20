@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { addDays, format, startOfToday } from "date-fns";
@@ -30,6 +31,13 @@ const Calendar = () => {
       return value;
     }) : [];
   });
+  const [eventTypes, setEventTypes] = useState<{id: string, name: string, color: string}[]>([
+    { id: "projects", name: "Projects", color: "bg-blue-500" },
+    { id: "tasks", name: "Tasks", color: "bg-amber-500" },
+    { id: "meetings", name: "Meetings", color: "bg-green-500" },
+    { id: "other", name: "Other", color: "bg-purple-500" }
+  ]);
+  
   const isMobile = useIsMobile();
   
   const { data: projects } = useQuery({
@@ -51,6 +59,28 @@ const Calendar = () => {
   useEffect(() => {
     localStorage.setItem("calendar_events", JSON.stringify(customEvents));
   }, [customEvents]);
+  
+  // Check for saved event types
+  useEffect(() => {
+    const savedEventTypes = localStorage.getItem("calendar_event_types");
+    if (savedEventTypes) {
+      try {
+        const parsedTypes = JSON.parse(savedEventTypes);
+        // Convert hex colors to bg-color classes
+        const formattedTypes = parsedTypes.map((type: any) => ({
+          ...type,
+          color: type.id === "projects" ? "bg-blue-500" : 
+                 type.id === "tasks" ? "bg-amber-500" : 
+                 type.id === "meetings" ? "bg-green-500" :
+                 type.id === "other" ? "bg-purple-500" : 
+                 `bg-[${type.color}]`
+        }));
+        setEventTypes(formattedTypes);
+      } catch (e) {
+        console.error("Error loading saved event types", e);
+      }
+    }
+  }, []);
 
   // Create demo events for demonstration purposes
   const projectEvents: EventType[] = projects?.map((project: Project) => ({
@@ -166,6 +196,19 @@ const Calendar = () => {
             onDateChange={setDate}
             onDateSelect={handleDateSelect}
           />
+          
+          {/* Legend Section Below Calendar */}
+          <div className="mt-4 bg-white rounded-lg border p-4 shadow-sm">
+            <h3 className="font-semibold mb-3">Legend</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {eventTypes.map(type => (
+                <div key={type.id} className="flex items-center gap-2">
+                  <div className={`${type.color.startsWith('bg-[') ? type.color : type.color} rounded-full w-4 h-4`}></div>
+                  <span className="text-sm">{type.name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Event Details Sidebar */}
@@ -195,28 +238,6 @@ const Calendar = () => {
               ))}
             </div>
           )}
-          
-          <div className="mt-8">
-            <h3 className="font-semibold mb-3">Legend</h3>
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <div className="bg-blue-500 rounded-full w-3 h-3"></div>
-                <span className="text-sm">Projects</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="bg-amber-500 rounded-full w-3 h-3"></div>
-                <span className="text-sm">Tasks</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="bg-green-500 rounded-full w-3 h-3"></div>
-                <span className="text-sm">Meetings</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="bg-purple-500 rounded-full w-3 h-3"></div>
-                <span className="text-sm">Other</span>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
