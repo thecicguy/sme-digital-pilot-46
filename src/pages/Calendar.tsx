@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { addDays, format, startOfToday } from "date-fns";
@@ -6,10 +5,11 @@ import { fetchProjects, fetchTasks, fetchClients } from "@/lib/api";
 import { Project, Task } from "@/types";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { User, Building, BookmarkCheck, CalendarPlus } from "lucide-react";
+import { CalendarPlus } from "lucide-react";
 import { CreateEventDialog } from "@/components/calendar/CreateEventDialog";
 import { useIsMobile } from "@/hooks/use-mobile";
 import MonthlyCalendar from "@/components/calendar/MonthlyCalendar";
+import CalendarFilterBar from "@/components/calendar/CalendarFilterBar";
 
 interface EventType {
   id: string;
@@ -138,6 +138,11 @@ const Calendar = () => {
     setSelectedDate(date);
   };
 
+  // Handle filter change from the filter bar
+  const handleFilterChange = (newFilter: "all" | "projects" | "tasks" | "meetings" | "other") => {
+    setView(newFilter);
+  };
+
   return (
     <div className="flex flex-col h-screen -mx-6 -my-6 overflow-hidden">
       <div className="flex justify-between items-center px-6 py-4 bg-background sticky top-0 z-10 border-b">
@@ -147,18 +152,10 @@ const Calendar = () => {
             Track your project deadlines, task deadlines, client meetings, and other events
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <Tabs value={view} onValueChange={(value) => setView(value as any)} className="hidden md:flex">
-            <TabsList>
-              <TabsTrigger value="all">All</TabsTrigger>
-              <TabsTrigger value="projects">Projects</TabsTrigger>
-              <TabsTrigger value="tasks">Tasks</TabsTrigger>
-              <TabsTrigger value="meetings">Meetings</TabsTrigger>
-            </TabsList>
-          </Tabs>
-          <CreateEventDialog onEventCreated={handleEventCreated} />
-        </div>
+        <CreateEventDialog onEventCreated={handleEventCreated} />
       </div>
+
+      <CalendarFilterBar activeFilter={view} onFilterChange={handleFilterChange} />
 
       <div className="flex flex-col md:flex-row h-full overflow-hidden">
         {/* Main Calendar Section */}
