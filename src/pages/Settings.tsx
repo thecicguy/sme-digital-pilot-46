@@ -22,6 +22,7 @@ import ReportSettingsContent from "@/components/settings/ReportSettingsContent";
 import WhitelabelContent from "@/components/settings/WhitelabelContent";
 import IntegrationsContent from "@/components/settings/IntegrationsContent";
 import SubscriptionsContent from "@/components/settings/SubscriptionsContent";
+import RolesPermissionsContent from "@/components/settings/RolesPermissionsContent";
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState("profile");
@@ -265,7 +266,7 @@ const Settings = () => {
         </TabsContent>
         
         <TabsContent value="team">
-          <Card>
+          <Card className="mb-6">
             <CardHeader>
               <CardTitle>Team Management</CardTitle>
               <CardDescription>
@@ -273,7 +274,7 @@ const Settings = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <div className="flex justify-between items-center">
                   <h3 className="text-lg font-medium">Team Members</h3>
                   <Button variant="outline">Invite New Member</Button>
@@ -320,6 +321,18 @@ const Settings = () => {
                   </div>
                 </div>
               </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <CardTitle>Roles & Permissions</CardTitle>
+              <CardDescription>
+                Configure user roles and their access permissions
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <RolesPermissionsContent />
             </CardContent>
           </Card>
         </TabsContent>
