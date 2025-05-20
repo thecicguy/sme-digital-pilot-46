@@ -29,15 +29,15 @@ const Reports = () => {
   const [typeFilter, setTypeFilter] = useState("all");
   const { toast } = useToast();
   
-  // Updated report types with presentation type
+  // Updated report types removing "document" and "other" types
   const reportTypes: ReportTypeInfo[] = [
     { name: "Update", presentationType: "meeting" },
     { name: "Pitch", presentationType: "slidedeck" },
     { name: "Standup", presentationType: "meeting" },
-    { name: "Proposal", presentationType: "document" },
+    { name: "Proposal", presentationType: "slidedeck" },
     { name: "Kanban", presentationType: "board" },
     { name: "KickOff", presentationType: "meeting" },
-    { name: "Lessons Learnt", presentationType: "document" },
+    { name: "Lessons Learnt", presentationType: "meeting" },
   ];
   
   // Define statuses consistent with status settings
@@ -47,7 +47,7 @@ const Reports = () => {
     { name: "draft", colorScheme: "orange" },
   ];
   
-  // Updated reports without the aiModel property
+  // Updated reports
   const reports = [
     {
       id: "report1",
