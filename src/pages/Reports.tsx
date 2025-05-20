@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -29,7 +30,7 @@ const Reports = () => {
   const [typeFilter, setTypeFilter] = useState("all");
   const { toast } = useToast();
   
-  // Updated report types removing "document" and "other" types
+  // Updated report types removing "document" type
   const reportTypes: ReportTypeInfo[] = [
     { name: "Update", presentationType: "meeting" },
     { name: "Pitch", presentationType: "slidedeck" },
@@ -47,7 +48,7 @@ const Reports = () => {
     { name: "draft", colorScheme: "orange" },
   ];
   
-  // Updated reports
+  // Updated reports - removed any document-specific reports
   const reports = [
     {
       id: "report1",
