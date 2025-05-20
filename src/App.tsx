@@ -24,6 +24,7 @@ import Settings from "./pages/Settings";
 import Dashboard from "./pages/Dashboard";
 import Calendar from "./pages/Calendar";
 import Documents from "./pages/Documents";
+import TemplateStore from "./pages/TemplateStore";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -61,7 +62,7 @@ const App = () => (
                   <Route path="/documents" element={<Documents />} />
                   <Route path="/reports" element={<Reports />} />
                   <Route path="/settings" element={<Settings />} />
-                  <Route path="/template-store" element={<Documents />} /> {/* Temporarily point to Documents page */}
+                  <Route path="/template-store" element={<TemplateStore />} />
                 </Route>
                 
                 <Route path="/unauthorized" element={<Unauthorized />} />
