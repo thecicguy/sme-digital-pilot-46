@@ -2,7 +2,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { User, Role } from "@/types";
 import { getCurrentUser, authenticateUser } from "@/lib/api";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/components/ui/toast";
 
 interface AuthContextType {
   user: User | null;
