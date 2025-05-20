@@ -85,7 +85,7 @@ const Settings = () => {
           <TabsTrigger value="subscriptions">Subscriptions</TabsTrigger>
           <TabsTrigger value="team">Team Management</TabsTrigger>
           <TabsTrigger value="email-templates">Email Templates</TabsTrigger>
-          <TabsTrigger value="report-settings">Report Settings</TabsTrigger>
+          <TabsTrigger value="report-settings">Configuration</TabsTrigger>
           <TabsTrigger value="whitelabel">Whitelabel</TabsTrigger>
         </TabsList>
         

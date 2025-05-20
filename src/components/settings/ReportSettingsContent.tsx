@@ -12,7 +12,7 @@ const ReportSettingsContent = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Report Settings</CardTitle>
+        <CardTitle>Configuration</CardTitle>
         <CardDescription>
           Configure report types, statuses, and kanban settings for your organization
         </CardDescription>
