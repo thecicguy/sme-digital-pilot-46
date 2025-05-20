@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Download, FileText, Mail } from "lucide-react";
+import { Download, FileText, Mail, Collection, Folder } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import DocumentTemplates from "@/components/documents/DocumentTemplates";
 
@@ -21,6 +21,18 @@ interface EmailTemplate {
   createdAt: Date;
   lastUsed: Date | null;
   tags: string[];
+}
+
+// Define collection interface
+interface TemplateCollection {
+  id: string;
+  name: string;
+  description: string;
+  templatesCount: number;
+  createdAt: Date;
+  lastModified: Date;
+  tags: string[];
+  type: "project" | "client" | "meeting" | "other";
 }
 
 const TemplateStore = () => {
@@ -77,6 +89,50 @@ const TemplateStore = () => {
     }
   ];
 
+  // Template collections data
+  const collections: TemplateCollection[] = [
+    {
+      id: "new-client-onboarding",
+      name: "New Client Onboarding",
+      description: "Complete template collection for onboarding new clients",
+      templatesCount: 5,
+      createdAt: new Date("2023-04-10"),
+      lastModified: new Date("2023-06-15"),
+      tags: ["Onboarding", "Client"],
+      type: "client"
+    },
+    {
+      id: "project-kickoff",
+      name: "Project Kickoff",
+      description: "Templates for starting a new project effectively",
+      templatesCount: 4,
+      createdAt: new Date("2023-05-05"),
+      lastModified: new Date("2023-06-12"),
+      tags: ["Project", "Kickoff"],
+      type: "project"
+    },
+    {
+      id: "quarterly-review",
+      name: "Quarterly Business Review",
+      description: "Templates for conducting quarterly business reviews",
+      templatesCount: 3,
+      createdAt: new Date("2023-03-22"),
+      lastModified: new Date("2023-06-01"),
+      tags: ["Review", "Quarterly"],
+      type: "meeting"
+    },
+    {
+      id: "legal-templates",
+      name: "Legal Documentation",
+      description: "Standard legal templates for client agreements",
+      templatesCount: 6,
+      createdAt: new Date("2023-02-18"),
+      lastModified: new Date("2023-05-29"),
+      tags: ["Legal", "Contracts"],
+      type: "other"
+    }
+  ];
+
   // Document templates data is imported from DocumentTemplates component
 
   // Filter email templates based on search term
@@ -86,6 +142,13 @@ const TemplateStore = () => {
     template.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
+  // Filter collections based on search term
+  const filteredCollections = collections.filter(collection =>
+    collection.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    collection.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    collection.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
+
   // Handle template download
   const handleEmailTemplateDownload = (templateId: string) => {
     const template = emailTemplates.find(t => t.id === templateId);
@@ -93,6 +156,17 @@ const TemplateStore = () => {
       toast({
         title: "Template Downloaded",
         description: `Downloaded "${template.name}" template successfully.`,
+      });
+    }
+  };
+
+  // Handle collection download
+  const handleCollectionOpen = (collectionId: string) => {
+    const collection = collections.find(c => c.id === collectionId);
+    if (collection) {
+      toast({
+        title: "Collection Opened",
+        description: `Opened "${collection.name}" collection.`,
       });
     }
   };
@@ -108,6 +182,21 @@ const TemplateStore = () => {
         return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300";
       case "Project Management":
         return "bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300";
+      default:
+        return "bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-300";
+    }
+  };
+
+  // Get collection type badge classes
+  const getCollectionTypeBadgeClasses = (type: string) => {
+    switch (type) {
+      case "project":
+        return "bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300";
+      case "client":
+        return "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300";
+      case "meeting":
+        return "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300";
+      case "other":
       default:
         return "bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-300";
     }
@@ -148,6 +237,10 @@ const TemplateStore = () => {
           <TabsTrigger value="emails" className="data-[state=active]:bg-white data-[state=active]:shadow-sm dark:data-[state=active]:bg-slate-700">
             <Mail className="mr-2 h-4 w-4" />
             Email Templates
+          </TabsTrigger>
+          <TabsTrigger value="collections" className="data-[state=active]:bg-white data-[state=active]:shadow-sm dark:data-[state=active]:bg-slate-700">
+            <Folder className="mr-2 h-4 w-4" />
+            Collections
           </TabsTrigger>
         </TabsList>
 
@@ -210,9 +303,52 @@ const TemplateStore = () => {
                 </CardContent>
               </Card>
             ))}
+
+            {/* Collections */}
+            {filteredCollections.map((collection) => (
+              <Card key={collection.id} className="overflow-hidden border-slate-200 dark:border-slate-700 hover:shadow-md transition-all">
+                <CardHeader className="p-4 pb-2 bg-gradient-to-r from-slate-50 to-white dark:from-slate-800 dark:to-slate-900">
+                  <div className="flex items-center justify-between mb-1">
+                    <Badge className={getCollectionTypeBadgeClasses(collection.type)}>
+                      {collection.type.charAt(0).toUpperCase() + collection.type.slice(1)}
+                    </Badge>
+                    <Badge variant="outline" className="text-xs">
+                      Collection
+                    </Badge>
+                  </div>
+                  <CardTitle className="text-md">{collection.name}</CardTitle>
+                  <CardDescription className="line-clamp-2">{collection.description}</CardDescription>
+                </CardHeader>
+                <CardContent className="p-4">
+                  <div className="flex flex-wrap gap-1 mb-3">
+                    {collection.tags.map((tag) => (
+                      <Badge key={tag} variant="outline" className="text-xs bg-slate-50 dark:bg-slate-800">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                  <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
+                    <span>Templates: {collection.templatesCount}</span>
+                    <span>Modified: {collection.lastModified.toLocaleDateString()}</span>
+                  </div>
+                  <div className="flex space-x-2">
+                    <Button 
+                      size="sm" 
+                      className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white"
+                      onClick={() => handleCollectionOpen(collection.id)}
+                    >
+                      <Folder className="h-4 w-4 mr-1" /> Open Collection
+                    </Button>
+                    <Button size="sm" variant="outline" className="flex-1">
+                      Details
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
           
-          {filteredEmailTemplates.length === 0 && (
+          {filteredEmailTemplates.length === 0 && filteredCollections.length === 0 && (
             <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
               <p className="text-lg font-medium">No templates found</p>
               <p className="text-muted-foreground">Try adjusting your search or upload a new template</p>
@@ -273,6 +409,57 @@ const TemplateStore = () => {
               <div className="col-span-full flex flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
                 <p className="text-lg font-medium">No email templates found</p>
                 <p className="text-muted-foreground">Try adjusting your search or upload a new template</p>
+              </div>
+            )}
+          </div>
+        </TabsContent>
+
+        {/* Collections Tab */}
+        <TabsContent value="collections" className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+            {filteredCollections.map((collection) => (
+              <Card key={collection.id} className="overflow-hidden border-slate-200 dark:border-slate-700 hover:shadow-md transition-all">
+                <CardHeader className="p-4 pb-2 bg-gradient-to-r from-slate-50 to-white dark:from-slate-800 dark:to-slate-900">
+                  <div className="flex items-center justify-between mb-1">
+                    <Badge className={getCollectionTypeBadgeClasses(collection.type)}>
+                      {collection.type.charAt(0).toUpperCase() + collection.type.slice(1)}
+                    </Badge>
+                  </div>
+                  <CardTitle className="text-md">{collection.name}</CardTitle>
+                  <CardDescription className="line-clamp-2">{collection.description}</CardDescription>
+                </CardHeader>
+                <CardContent className="p-4">
+                  <div className="flex flex-wrap gap-1 mb-3">
+                    {collection.tags.map((tag) => (
+                      <Badge key={tag} variant="outline" className="text-xs bg-slate-50 dark:bg-slate-800">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                  <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
+                    <span>Templates: {collection.templatesCount}</span>
+                    <span>Modified: {collection.lastModified.toLocaleDateString()}</span>
+                  </div>
+                  <div className="flex space-x-2">
+                    <Button 
+                      size="sm" 
+                      className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white"
+                      onClick={() => handleCollectionOpen(collection.id)}
+                    >
+                      <Folder className="h-4 w-4 mr-1" /> Open Collection
+                    </Button>
+                    <Button size="sm" variant="outline" className="flex-1">
+                      Details
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+            
+            {filteredCollections.length === 0 && (
+              <div className="col-span-full flex flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
+                <p className="text-lg font-medium">No collections found</p>
+                <p className="text-muted-foreground">Try adjusting your search or create a new collection</p>
               </div>
             )}
           </div>

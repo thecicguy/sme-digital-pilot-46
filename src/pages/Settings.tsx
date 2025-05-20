@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,7 +16,6 @@ import { Switch } from "@/components/ui/switch";
 import { toast } from "@/hooks/use-toast";
 
 // Import the content components
-import EmailTemplatesContent from "./EmailTemplates";
 import ReportTypesContent from "@/components/settings/ReportTypesContent";
 import StatusesContent from "@/components/settings/StatusesContent";
 import ReportSettingsContent from "@/components/settings/ReportSettingsContent";
@@ -85,7 +85,6 @@ const Settings = () => {
           <TabsTrigger value="integrations">Integrations</TabsTrigger>
           <TabsTrigger value="subscriptions">Subscriptions</TabsTrigger>
           <TabsTrigger value="team">Team Management</TabsTrigger>
-          <TabsTrigger value="email-templates">Email Templates</TabsTrigger>
           <TabsTrigger value="report-settings">Configuration</TabsTrigger>
           <TabsTrigger value="whitelabel" disabled className="opacity-50 cursor-not-allowed" title="Available on Pro Plan">Whitelabel</TabsTrigger>
         </TabsList>
@@ -335,10 +334,6 @@ const Settings = () => {
               <RolesPermissionsContent />
             </CardContent>
           </Card>
-        </TabsContent>
-        
-        <TabsContent value="email-templates">
-          <EmailTemplatesContent />
         </TabsContent>
         
         <TabsContent value="report-settings">
