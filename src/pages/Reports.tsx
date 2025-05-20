@@ -11,6 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import ReportsListView from "@/components/reports/ReportsListView";
 
 // Define the interfaces consistent with the settings page
 interface ReportTypeInfo {
@@ -204,54 +205,13 @@ const Reports = () => {
         </Select>
       </div>
       
-      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-        {filteredReports.map((report) => (
-          <Card key={report.id} className="overflow-hidden">
-            <CardHeader>
-              <CardTitle className="truncate">{report.title}</CardTitle>
-              <CardDescription>Client: {report.clientName}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Status</span>
-                  <span className={`rounded-full px-2 py-1 text-xs font-medium ${getStatusBadgeClasses(report.status)}`}>
-                    {getStatusLabel(report.status)}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Type</span>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium">{report.type}</span>
-                    <span className={`rounded-full px-2 py-1 text-xs ${getPresentationTypeBadgeClasses(getPresentationType(report.type))}`}>
-                      {getPresentationType(report.type)}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Generated</span>
-                  <span className="text-sm">{report.generatedAt.toLocaleDateString()}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">AI Model</span>
-                  <span className="text-sm">{report.aiModel}</span>
-                </div>
-                <div className="mt-4 flex space-x-2">
-                  <Button size="sm" variant="outline" className="flex-1">View</Button>
-                  <Button size="sm" variant="outline" className="flex-1">Download</Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-        
-        {filteredReports.length === 0 && (
-          <div className="col-span-full flex flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
-            <p className="text-lg font-medium">No reports found</p>
-            <p className="text-muted-foreground">Try adjusting your search filters or generate a new report</p>
-          </div>
-        )}
-      </div>
+      <ReportsListView 
+        reports={filteredReports}
+        getStatusBadgeClasses={getStatusBadgeClasses}
+        getStatusLabel={getStatusLabel}
+        getPresentationType={getPresentationType}
+        getPresentationTypeBadgeClasses={getPresentationTypeBadgeClasses}
+      />
     </div>
   );
 };
