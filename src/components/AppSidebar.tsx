@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import {
   Home,
@@ -12,7 +13,7 @@ import {
 } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { useMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
   Sheet,
   SheetContent,
@@ -27,8 +28,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 const AppSidebar = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const { isAuthenticated } = useAuth();
-  const isMobile = useMobile();
+  const { user } = useAuth();
+  const isMobile = useIsMobile();
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
@@ -95,7 +96,7 @@ const AppSidebar = ({ children }: { children: React.ReactNode }) => {
 
   const renderNavItems = () => {
     return navItems.map((item) => {
-      if (item.protected && !isAuthenticated) {
+      if (item.protected && !user) {
         return null;
       }
 

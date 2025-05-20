@@ -50,25 +50,25 @@ export const TimeTrackingProvider: React.FC<{ children: React.ReactNode }> = ({ 
   // Fetch all time entries
   const { data: timeEntries = [], isLoading: isTimeEntriesLoading } = useQuery({
     queryKey: ["timeEntries"],
-    queryFn: fetchTimeEntries,
+    queryFn: () => fetchTimeEntries(),
   });
 
   // Fetch clients
   const { data: clients = [], isLoading: isClientsLoading } = useQuery({
     queryKey: ["clients"],
-    queryFn: fetchClients,
+    queryFn: () => fetchClients(),
   });
 
   // Fetch projects
   const { data: projects = [], isLoading: isProjectsLoading } = useQuery({
     queryKey: ["projects"],
-    queryFn: fetchProjects,
+    queryFn: () => fetchProjects(),
   });
 
   // Fetch tasks
   const { data: tasks = [], isLoading: isTasksLoading } = useQuery({
     queryKey: ["tasks"],
-    queryFn: fetchTasks,
+    queryFn: () => fetchTasks(),
   });
 
   const isLoading = isTimeEntriesLoading || isClientsLoading || isProjectsLoading || isTasksLoading;

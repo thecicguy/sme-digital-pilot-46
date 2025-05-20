@@ -1,13 +1,14 @@
+
 import React from 'react';
 import {
   createBrowserRouter,
   RouterProvider,
   Navigate,
 } from "react-router-dom";
-import { useAuth } from "./contexts/AuthContext";
+import { useAuth, AuthProvider } from "./contexts/AuthContext";
 import AppLayout from './components/AppLayout';
-import { ThemeProvider } from "@/components/ui/theme-provider"
-import { Toaster } from "@/components/ui/toaster"
+import { ThemeProvider } from "@/components/ui/theme-provider";
+import { Toaster } from "sonner";
 
 // Pages
 import Index from "@/pages/Index";
@@ -39,7 +40,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     return <Navigate to="/login" />;
   }
 
-  return children;
+  return <>{children}</>;
 };
 
 const router = createBrowserRouter([
@@ -188,11 +189,17 @@ const router = createBrowserRouter([
   }
 ]);
 
-export default function App() {
+function AppWithProviders() {
   return (
-    <ThemeProvider defaultTheme="system" storageKey="vite-react-theme">
-      <RouterProvider router={router} />
-      <Toaster />
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider defaultTheme="system" storageKey="vite-react-theme">
+        <RouterProvider router={router} />
+        <Toaster />
+      </ThemeProvider>
+    </AuthProvider>
   );
+}
+
+export default function App() {
+  return <AppWithProviders />;
 }
