@@ -2,7 +2,6 @@
 import { FolderPlus, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import DocumentTemplates from "@/components/documents/DocumentTemplates";
 
 interface DocumentHeaderProps {
   handleUpload: () => void;
@@ -18,7 +17,6 @@ const DocumentHeader = ({ handleUpload }: DocumentHeaderProps) => {
         </p>
       </div>
       <div className="flex flex-wrap gap-2">
-        <DocumentTemplates />
         <Button onClick={handleUpload} className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700">
           <Upload className="h-4 w-4" />
           Upload Document

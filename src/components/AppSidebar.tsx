@@ -2,7 +2,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
-import { Book, BookmarkCheck, Building, Calendar, Briefcase, Settings, Users, FileText, HelpCircle } from "lucide-react";
+import { Book, BookmarkCheck, Building, Calendar, Briefcase, Settings, Users, FileText, HelpCircle, Template } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
@@ -90,6 +90,14 @@ const AppSidebar = () => {
       </nav>
 
       {user && <div className="mt-auto border-t border-border p-6">
+          {/* Template Store Button */}
+          <Link to="/template-store" className="block w-full mb-4">
+            <Button variant="outline" className="w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border-indigo-200 flex items-center gap-2 dark:bg-indigo-900/30 dark:hover:bg-indigo-900/50 dark:text-indigo-300 dark:border-indigo-800">
+              <Template className="h-4 w-4" />
+              Template Store
+            </Button>
+          </Link>
+          
           {/* Access Support Button */}
           <Popover>
             <PopoverTrigger asChild>

@@ -61,6 +61,7 @@ const App = () => (
                   <Route path="/documents" element={<Documents />} />
                   <Route path="/reports" element={<Reports />} />
                   <Route path="/settings" element={<Settings />} />
+                  <Route path="/template-store" element={<Documents />} /> {/* Temporarily point to Documents page */}
                 </Route>
                 
                 <Route path="/unauthorized" element={<Unauthorized />} />
