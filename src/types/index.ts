@@ -69,6 +69,21 @@ export interface Task {
   createdAt: Date;
 }
 
+// Time Entry Types
+export interface TimeEntry {
+  id: string;
+  description: string;
+  duration: number; // Duration in minutes
+  startTime: Date;
+  endTime?: Date;
+  isRunning: boolean;
+  userId: string;
+  clientId?: string;
+  projectId?: string;
+  taskId?: string;
+  createdAt: Date;
+}
+
 // Deliverable Types
 export interface Deliverable {
   id: string;
