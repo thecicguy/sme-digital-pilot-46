@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -121,22 +120,6 @@ const RolesPermissionsContent = () => {
     setNewRoleDescription(role.description);
   };
 
-  const handleAddNewRole = () => {
-    const newRole: Role = {
-      id: `role-${Date.now()}`,
-      name: "New Role",
-      description: "Description for new role",
-      permissions: [],
-      isDefault: false
-    };
-    
-    setRoles([...roles, newRole]);
-    setSelectedRole(newRole);
-    setEditMode(true);
-    setNewRoleName(newRole.name);
-    setNewRoleDescription(newRole.description);
-  };
-
   const handleSaveRole = () => {
     if (!selectedRole) return;
     
@@ -227,7 +210,7 @@ const RolesPermissionsContent = () => {
           ))}
         </div>
         
-        <Button onClick={handleAddNewRole} className="w-full">Add New Role</Button>
+        {/* Remove the "Add New Role" button */}
       </div>
       
       <div className="md:col-span-8">
