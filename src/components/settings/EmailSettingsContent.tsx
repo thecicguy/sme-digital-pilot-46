@@ -24,31 +24,31 @@ const EmailSettingsContent = () => {
     queryFn: () => fetchProjects(),
   });
 
-  // Form schema for DCC email
-  const dccFormSchema = z.object({
-    dccEmail: z.string().email({ message: "Please enter a valid email address" }).or(z.literal("")),
-    enableDcc: z.boolean().default(false),
+  // Form schema for BCC email
+  const bccFormSchema = z.object({
+    bccEmail: z.string().email({ message: "Please enter a valid email address" }).or(z.literal("")),
+    enableBcc: z.boolean().default(false),
   });
 
-  const dccForm = useForm<z.infer<typeof dccFormSchema>>({
-    resolver: zodResolver(dccFormSchema),
+  const bccForm = useForm<z.infer<typeof bccFormSchema>>({
+    resolver: zodResolver(bccFormSchema),
     defaultValues: {
-      dccEmail: "",
-      enableDcc: false,
+      bccEmail: "",
+      enableBcc: false,
     },
   });
 
-  const handleSaveDccSettings = (values: z.infer<typeof dccFormSchema>) => {
+  const handleSaveBccSettings = (values: z.infer<typeof bccFormSchema>) => {
     setSaving(true);
     
     // Simulate API call
     setTimeout(() => {
       setSaving(false);
       toast({
-        title: "DCC Email Settings Saved",
-        description: values.enableDcc 
-          ? `DCC email set to ${values.dccEmail}` 
-          : "DCC email functionality disabled",
+        title: "BCC Email Settings Saved",
+        description: values.enableBcc 
+          ? `BCC email set to ${values.bccEmail}` 
+          : "BCC email functionality disabled",
       });
     }, 1000);
   };
@@ -75,7 +75,7 @@ const EmailSettingsContent = () => {
 
   return (
     <div className="space-y-6">
-      {/* DCC Email Settings */}
+      {/* BCC Email Settings */}
       <Card>
         <CardHeader>
           <CardTitle>CRM Email Integration</CardTitle>
@@ -84,17 +84,17 @@ const EmailSettingsContent = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Form {...dccForm}>
-            <form onSubmit={dccForm.handleSubmit(handleSaveDccSettings)} className="space-y-6">
+          <Form {...bccForm}>
+            <form onSubmit={bccForm.handleSubmit(handleSaveBccSettings)} className="space-y-6">
               <div className="flex items-center justify-between space-x-2">
                 <div className="flex-1">
                   <FormField
-                    control={dccForm.control}
-                    name="enableDcc"
+                    control={bccForm.control}
+                    name="enableBcc"
                     render={({ field }) => (
                       <FormItem className="flex flex-row items-center justify-between">
                         <div>
-                          <FormLabel>Enable DCC Functionality</FormLabel>
+                          <FormLabel>Enable BCC Functionality</FormLabel>
                           <FormDescription>
                             Send a copy of all client emails to the CRM
                           </FormDescription>
@@ -112,11 +112,11 @@ const EmailSettingsContent = () => {
               </div>
               
               <FormField
-                control={dccForm.control}
-                name="dccEmail"
+                control={bccForm.control}
+                name="bccEmail"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>DCC Email Address</FormLabel>
+                    <FormLabel>BCC Email Address</FormLabel>
                     <FormDescription>
                       This email will receive a copy of all client communications
                     </FormDescription>
@@ -124,7 +124,7 @@ const EmailSettingsContent = () => {
                       <Input 
                         placeholder="crm@yourcompany.com" 
                         {...field} 
-                        disabled={!dccForm.watch("enableDcc")}
+                        disabled={!bccForm.watch("enableBcc")}
                       />
                     </FormControl>
                     <FormMessage />
@@ -134,7 +134,7 @@ const EmailSettingsContent = () => {
               
               <div className="flex justify-end">
                 <Button type="submit" disabled={saving}>
-                  {saving ? 'Saving...' : 'Save DCC Settings'}
+                  {saving ? 'Saving...' : 'Save BCC Settings'}
                 </Button>
               </div>
             </form>
