@@ -12,14 +12,16 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { Project } from "@/types";
 
 const EmailSettingsContent = () => {
   const [saving, setSaving] = useState(false);
   const [projectBccEmails, setProjectBccEmails] = useState<Record<string, string>>({});
 
+  // Modified useQuery to correctly handle the fetchProjects function
   const { data: projects = [] } = useQuery({
     queryKey: ['projects'],
-    queryFn: fetchProjects,
+    queryFn: () => fetchProjects(),
   });
 
   // Form schema for DCC email
@@ -153,13 +155,13 @@ const EmailSettingsContent = () => {
             {projects.length > 0 ? (
               <>
                 <div className="grid grid-cols-2 gap-4 font-medium text-sm">
-                  <div>Project Name</div>
+                  <div>Project ID</div>
                   <div>BCC Email Address</div>
                 </div>
                 
-                {projects.map((project) => (
+                {projects.map((project: Project) => (
                   <div key={project.id} className="grid grid-cols-2 gap-4 items-center">
-                    <div className="font-medium">{project.name}</div>
+                    <div className="font-medium">{project.id}</div>
                     <Input
                       type="email"
                       placeholder="project-bcc@yourcompany.com"
