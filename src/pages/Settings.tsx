@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -23,6 +22,7 @@ import WhitelabelContent from "@/components/settings/WhitelabelContent";
 import IntegrationsContent from "@/components/settings/IntegrationsContent";
 import SubscriptionsContent from "@/components/settings/SubscriptionsContent";
 import RolesPermissionsContent from "@/components/settings/RolesPermissionsContent";
+import EmailSettingsContent from "@/components/settings/EmailSettingsContent";
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState("profile");
@@ -86,6 +86,7 @@ const Settings = () => {
           <TabsTrigger value="subscriptions">Subscriptions</TabsTrigger>
           <TabsTrigger value="team">Team Management</TabsTrigger>
           <TabsTrigger value="report-settings">Configuration</TabsTrigger>
+          <TabsTrigger value="email-settings">Email Settings</TabsTrigger>
           <TabsTrigger value="whitelabel" disabled className="opacity-50 cursor-not-allowed" title="Available on Pro Plan">Whitelabel</TabsTrigger>
         </TabsList>
         
@@ -338,6 +339,10 @@ const Settings = () => {
         
         <TabsContent value="report-settings">
           <ReportSettingsContent />
+        </TabsContent>
+        
+        <TabsContent value="email-settings">
+          <EmailSettingsContent />
         </TabsContent>
         
         <TabsContent value="whitelabel">
