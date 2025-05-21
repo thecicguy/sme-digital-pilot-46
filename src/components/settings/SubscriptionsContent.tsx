@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardHeader, CardContent, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -67,11 +66,11 @@ const SubscriptionsContent = () => {
             
             <h3 className="font-semibold text-xl mb-1">Annual Subscription</h3>
             <div className="flex items-end gap-1 mb-4">
-              <span className="text-3xl font-bold">€30</span>
+              <span className="text-3xl font-bold">$19</span>
               <span className="text-muted-foreground mb-1">/month per active team member</span>
             </div>
             <p className="text-sm text-muted-foreground mb-4">
-              Billed annually in advance (€360/year per active team member)
+              Billed annually in advance ($228/year per active team member)
             </p>
             
             <div className="space-y-3 mb-6">
@@ -131,9 +130,9 @@ const SubscriptionsContent = () => {
             <div className="border-t pt-4 mb-6">
               <div className="flex justify-between items-center">
                 <span className="font-medium">Annual Total:</span>
-                <span className="font-bold text-xl">€1,800.00</span>
+                <span className="font-bold text-xl">$1,140.00</span>
               </div>
-              <p className="text-xs text-muted-foreground text-right">5 team members × €360/year</p>
+              <p className="text-xs text-muted-foreground text-right">5 team members × $228/year</p>
             </div>
             
             <div className="flex justify-center space-x-4">
