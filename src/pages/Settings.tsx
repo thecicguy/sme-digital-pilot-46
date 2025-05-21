@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "@/hooks/use-toast";
-import { User } from "lucide-react";
+import { User, LogOut } from "lucide-react";
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -23,6 +23,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/contexts/AuthContext";
 
 // Import the content components
 import ReportTypesContent from "@/components/settings/ReportTypesContent";
@@ -35,6 +36,7 @@ import EmailSettingsContent from "@/components/settings/EmailSettingsContent";
 const Settings = () => {
   const [activeTab, setActiveTab] = useState("profile");
   const [saving, setSaving] = useState(false);
+  const { user, logout } = useAuth();
   
   const [profileForm, setProfileForm] = useState({
     name: "Jane Smith",
@@ -83,6 +85,10 @@ const Settings = () => {
     }, 1000);
   };
 
+  const handleLogout = () => {
+    logout();
+  };
+
   return (
     <div className="container mx-auto py-8">
       <div className="flex justify-between items-center mb-6">
@@ -99,15 +105,17 @@ const Settings = () => {
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuLabel>
               <div className="flex flex-col space-y-1">
-                <span className="font-medium">{profileForm.name}</span>
-                <span className="text-xs text-muted-foreground">{profileForm.email}</span>
+                <span className="font-medium">{user?.name || "Demo User"}</span>
+                <span className="text-xs text-muted-foreground">{user?.email || "demo@example.com"}</span>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>Profile Settings</DropdownMenuItem>
-            <DropdownMenuItem>Change Password</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Log out</DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout} className="flex items-center gap-2">
+              <LogOut className="h-4 w-4" />
+              <span>Log out</span>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
