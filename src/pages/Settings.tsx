@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -14,15 +13,6 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "@/hooks/use-toast";
-import { User, LogOut } from "lucide-react";
-import { 
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/contexts/AuthContext";
 
 // Import the content components
@@ -36,7 +26,7 @@ import EmailSettingsContent from "@/components/settings/EmailSettingsContent";
 const Settings = () => {
   const [activeTab, setActiveTab] = useState("profile");
   const [saving, setSaving] = useState(false);
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   
   const [profileForm, setProfileForm] = useState({
     name: "Jane Smith",
@@ -85,39 +75,10 @@ const Settings = () => {
     }, 1000);
   };
 
-  const handleLogout = () => {
-    logout();
-  };
-
   return (
     <div className="container mx-auto py-8">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Settings</h1>
-        
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-10 w-10 rounded-full">
-              <div className="flex items-center justify-center h-8 w-8 rounded-full bg-primary text-primary-foreground">
-                <User className="h-4 w-4" />
-              </div>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuLabel>
-              <div className="flex flex-col space-y-1">
-                <span className="font-medium">{user?.name || "Demo User"}</span>
-                <span className="text-xs text-muted-foreground">{user?.email || "demo@example.com"}</span>
-              </div>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile Settings</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleLogout} className="flex items-center gap-2">
-              <LogOut className="h-4 w-4" />
-              <span>Log out</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
       </div>
       
       <Tabs value={activeTab} onValueChange={setActiveTab}>

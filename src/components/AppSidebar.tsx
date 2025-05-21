@@ -2,9 +2,18 @@
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
-import { Book, BookmarkCheck, Building, Calendar, Briefcase, Settings, Users, FileText, HelpCircle, FileIcon } from "lucide-react";
+import { Book, BookmarkCheck, Building, Calendar, Briefcase, Settings, Users, FileText, HelpCircle, FileIcon, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const AppSidebar = () => {
   const {
@@ -58,6 +67,10 @@ const AppSidebar = () => {
       return true;
     }
     return false;
+  };
+
+  const handleLogout = () => {
+    logout();
   };
 
   return <aside className="fixed left-0 top-0 z-30 flex h-screen w-64 flex-col border-r border-border bg-background transition-all duration-300">
@@ -127,18 +140,32 @@ const AppSidebar = () => {
             </PopoverContent>
           </Popover>
 
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white">
-              {user.name.charAt(0).toUpperCase()}
-            </div>
-            <div className="overflow-hidden">
-              <p className="truncate font-medium">{user.name}</p>
-              <p className="truncate text-xs text-muted-foreground">{user.email}</p>
-            </div>
-          </div>
-          <button onClick={logout} className="mt-4 w-full rounded-lg border border-border bg-background px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground">
-            Sign Out
-          </button>
+          {/* User Profile Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger className="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-accent transition-colors">
+              <Avatar className="h-10 w-10 border border-primary/10">
+                <AvatarFallback className="bg-primary/10 text-primary font-medium">
+                  {user.name?.charAt(0) || "U"}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col items-start flex-1 overflow-hidden">
+                <p className="font-medium truncate w-full text-left">{user?.name || "Demo User"}</p>
+                <p className="text-xs text-muted-foreground truncate w-full text-left">{user?.email || "demo@example.com"}</p>
+              </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuLabel>Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <Link to="/settings">
+                <DropdownMenuItem>Profile Settings</DropdownMenuItem>
+              </Link>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={handleLogout} className="flex items-center gap-2 text-destructive">
+                <LogOut className="h-4 w-4" />
+                <span>Log out</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>}
     </aside>;
 };
