@@ -84,6 +84,7 @@ const Settings = () => {
           <TabsTrigger value="profile">Profile & Preferences</TabsTrigger>
           <TabsTrigger value="subscriptions">Subscriptions</TabsTrigger>
           <TabsTrigger value="team">Team Management</TabsTrigger>
+          <TabsTrigger value="roles-permissions">Roles & Permissions</TabsTrigger>
           <TabsTrigger value="report-settings">Configuration</TabsTrigger>
           <TabsTrigger value="email-settings">Email Settings</TabsTrigger>
           <TabsTrigger value="whitelabel" disabled className="opacity-50 cursor-not-allowed" title="Available on Pro Plan">Whitelabel</TabsTrigger>
