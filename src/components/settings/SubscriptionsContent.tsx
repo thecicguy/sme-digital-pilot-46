@@ -2,7 +2,9 @@
 import React from "react";
 import { Card, CardHeader, CardContent, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FileText, RotateCw, Shield, Trash2 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { FileText, RotateCw, Shield, Trash2, Users } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 const SubscriptionsContent = () => {
   return (
@@ -53,93 +55,86 @@ const SubscriptionsContent = () => {
         <CardHeader>
           <CardTitle>Application Subscription</CardTitle>
           <CardDescription>
-            View and manage your current subscription plan
+            View and manage your annual subscription plan
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-3">
-            <div className="border rounded-lg p-4 relative">
-              <div className="absolute top-2 right-2 bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">
-                Current Plan
+          {/* Single subscription plan card with per-user pricing */}
+          <div className="border rounded-lg p-6 relative">
+            <div className="absolute top-3 right-3">
+              <Badge variant="success" className="text-xs">Current Plan</Badge>
+            </div>
+            
+            <h3 className="font-semibold text-xl mb-1">Annual Subscription</h3>
+            <div className="flex items-end gap-1 mb-4">
+              <span className="text-3xl font-bold">€30</span>
+              <span className="text-muted-foreground mb-1">/month per user</span>
+            </div>
+            <p className="text-sm text-muted-foreground mb-4">
+              Billed annually in advance (€360/year per user)
+            </p>
+            
+            <div className="space-y-3 mb-6">
+              <div className="flex items-center gap-2">
+                <div className="h-4 w-4 rounded-full bg-primary/20 flex items-center justify-center">
+                  <div className="h-2 w-2 rounded-full bg-primary"></div>
+                </div>
+                <span>Full access to all features</span>
               </div>
-              <h3 className="font-semibold text-lg mb-2">Professional</h3>
-              <p className="text-2xl font-bold mb-4">$49<span className="text-sm text-muted-foreground">/month</span></p>
-              <ul className="space-y-2 text-sm mb-4">
-                <li className="flex items-center gap-2">
-                  <div className="h-4 w-4 rounded-full bg-primary/20 flex items-center justify-center">
-                    <div className="h-2 w-2 rounded-full bg-primary"></div>
-                  </div>
-                  <span>Up to 10 team members</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <div className="h-4 w-4 rounded-full bg-primary/20 flex items-center justify-center">
-                    <div className="h-2 w-2 rounded-full bg-primary"></div>
-                  </div>
-                  <span>Advanced reporting</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <div className="h-4 w-4 rounded-full bg-primary/20 flex items-center justify-center">
-                    <div className="h-2 w-2 rounded-full bg-primary"></div>
-                  </div>
-                  <span>Custom branding</span>
-                </li>
-              </ul>
-              <Button className="w-full" disabled>Current Plan</Button>
+              <div className="flex items-center gap-2">
+                <div className="h-4 w-4 rounded-full bg-primary/20 flex items-center justify-center">
+                  <div className="h-2 w-2 rounded-full bg-primary"></div>
+                </div>
+                <span>Advanced analytics & reporting</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="h-4 w-4 rounded-full bg-primary/20 flex items-center justify-center">
+                  <div className="h-2 w-2 rounded-full bg-primary"></div>
+                </div>
+                <span>Custom branding & integrations</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="h-4 w-4 rounded-full bg-primary/20 flex items-center justify-center">
+                  <div className="h-2 w-2 rounded-full bg-primary"></div>
+                </div>
+                <span>Priority support</span>
+              </div>
             </div>
-
-            <div className="border rounded-lg p-4">
-              <h3 className="font-semibold text-lg mb-2">Business</h3>
-              <p className="text-2xl font-bold mb-4">$99<span className="text-sm text-muted-foreground">/month</span></p>
-              <ul className="space-y-2 text-sm mb-4">
-                <li className="flex items-center gap-2">
-                  <div className="h-4 w-4 rounded-full bg-primary/20 flex items-center justify-center">
-                    <div className="h-2 w-2 rounded-full bg-primary"></div>
-                  </div>
-                  <span>Unlimited team members</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <div className="h-4 w-4 rounded-full bg-primary/20 flex items-center justify-center">
-                    <div className="h-2 w-2 rounded-full bg-primary"></div>
-                  </div>
-                  <span>Advanced analytics</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <div className="h-4 w-4 rounded-full bg-primary/20 flex items-center justify-center">
-                    <div className="h-2 w-2 rounded-full bg-primary"></div>
-                  </div>
-                  <span>Priority support</span>
-                </li>
-              </ul>
-              <Button variant="outline" className="w-full">Upgrade</Button>
+            
+            {/* User count section */}
+            <div className="border-t pt-4 mb-6">
+              <label htmlFor="user-count" className="block text-sm font-medium mb-2">Number of Users</label>
+              <div className="flex items-center gap-4">
+                <div className="w-32">
+                  <Input 
+                    id="user-count" 
+                    type="number" 
+                    min="1" 
+                    defaultValue="5" 
+                    className="text-center" 
+                  />
+                </div>
+                <div className="flex items-center gap-2">
+                  <Users className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">Currently: 5 users</span>
+                </div>
+              </div>
             </div>
-
-            <div className="border rounded-lg p-4">
-              <h3 className="font-semibold text-lg mb-2">Enterprise</h3>
-              <p className="text-2xl font-bold mb-4">$249<span className="text-sm text-muted-foreground">/month</span></p>
-              <ul className="space-y-2 text-sm mb-4">
-                <li className="flex items-center gap-2">
-                  <div className="h-4 w-4 rounded-full bg-primary/20 flex items-center justify-center">
-                    <div className="h-2 w-2 rounded-full bg-primary"></div>
-                  </div>
-                  <span>Unlimited everything</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <div className="h-4 w-4 rounded-full bg-primary/20 flex items-center justify-center">
-                    <div className="h-2 w-2 rounded-full bg-primary"></div>
-                  </div>
-                  <span>Dedicated support</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <div className="h-4 w-4 rounded-full bg-primary/20 flex items-center justify-center">
-                    <div className="h-2 w-2 rounded-full bg-primary"></div>
-                  </div>
-                  <span>Custom development</span>
-                </li>
-              </ul>
-              <Button variant="outline" className="w-full">Contact Sales</Button>
+            
+            {/* Estimated total */}
+            <div className="border-t pt-4 mb-6">
+              <div className="flex justify-between items-center">
+                <span className="font-medium">Annual Total:</span>
+                <span className="font-bold text-xl">€1,800.00</span>
+              </div>
+              <p className="text-xs text-muted-foreground text-right">5 users × €360/year</p>
+            </div>
+            
+            <div className="flex justify-center space-x-4">
+              <Button className="w-full">Update Subscription</Button>
             </div>
           </div>
-
+          
           <div className="text-center mt-4">
             <p className="text-sm text-muted-foreground mb-2">Next billing date: June 15, 2025</p>
             <Button variant="link" size="sm">View subscription details</Button>
