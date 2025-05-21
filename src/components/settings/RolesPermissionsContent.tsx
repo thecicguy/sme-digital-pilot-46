@@ -139,47 +139,6 @@ const RolesPermissionsContent = () => {
     });
   };
 
-  const handleDeleteRole = () => {
-    if (!selectedRole) return;
-    
-    // Prevent deleting the last role
-    if (roles.length <= 1) {
-      toast({
-        title: "Cannot Delete Role",
-        description: "You must have at least one role in the system.",
-        variant: "destructive"
-      });
-      return;
-    }
-    
-    const updatedRoles = roles.filter(r => r.id !== selectedRole.id);
-    setRoles(updatedRoles);
-    setSelectedRole(updatedRoles[0]);
-    
-    toast({
-      title: "Role Deleted",
-      description: `${selectedRole.name} role has been removed.`,
-      variant: "destructive"
-    });
-  };
-
-  const handleSetAsDefault = () => {
-    if (!selectedRole) return;
-    
-    const updatedRoles = roles.map(r => ({
-      ...r,
-      isDefault: r.id === selectedRole.id
-    }));
-    
-    setRoles(updatedRoles);
-    setSelectedRole({...selectedRole, isDefault: true});
-    
-    toast({
-      title: "Default Role Set",
-      description: `${selectedRole.name} is now the default role for new team members.`,
-    });
-  };
-
   return (
     <div className="grid gap-6 md:grid-cols-12">
       <div className="md:col-span-4 space-y-4">
@@ -255,16 +214,7 @@ const RolesPermissionsContent = () => {
                     <Settings className="h-5 w-5" />
                     <span>Permissions</span>
                   </h3>
-                  <div className="space-x-2">
-                    {!selectedRole.isDefault && (
-                      <Button variant="outline" size="sm" onClick={handleSetAsDefault}>
-                        Set as Default
-                      </Button>
-                    )}
-                    <Button variant="destructive" size="sm" onClick={handleDeleteRole}>
-                      Delete Role
-                    </Button>
-                  </div>
+                  {/* Removed the "Set as Default" and "Delete Role" buttons */}
                 </div>
                 
                 <div className="space-y-6">
