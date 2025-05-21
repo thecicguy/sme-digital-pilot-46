@@ -4,10 +4,18 @@ import { apiRequest } from "./apiClient";
 
 // Contact API Calls
 export const fetchContacts = async (clientId?: string): Promise<Contact[]> => {
-  if (clientId) {
-    return apiRequest(`/api/clients/${clientId}/contacts`);
+  try {
+    if (clientId) {
+      const response = await apiRequest(`/api/clients/${clientId}/contacts`);
+      // Ensure we always return an array
+      return Array.isArray(response) ? response : [];
+    }
+    const response = await apiRequest('/api/contacts');
+    return Array.isArray(response) ? response : [];
+  } catch (error) {
+    console.error("Error fetching contacts:", error);
+    return [];
   }
-  return apiRequest('/api/contacts');
 };
 
 export const fetchContact = async (contactId: string): Promise<Contact> => {

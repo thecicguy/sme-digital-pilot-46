@@ -53,9 +53,10 @@ const CreateTaskDialog = ({ open, onClose, projectId: initialProjectId }: Create
     enabled: open && !initialProjectId,
   });
 
-  const { data: contacts, refetch: refetchContacts } = useQuery({
+  // Update to initialize contacts as an empty array
+  const { data: contacts = [], refetch: refetchContacts } = useQuery({
     queryKey: ["contacts", projectId],
-    queryFn: () => fetchContacts(),
+    queryFn: () => fetchContacts(projectId),
     enabled: false,
   });
 
@@ -141,6 +142,9 @@ const CreateTaskDialog = ({ open, onClose, projectId: initialProjectId }: Create
     onClose();
   };
 
+  // Ensure contacts is always an array
+  const contactsList = Array.isArray(contacts) ? contacts : [];
+
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-md">
@@ -206,13 +210,13 @@ const CreateTaskDialog = ({ open, onClose, projectId: initialProjectId }: Create
               <Select
                 value={assigneeId}
                 onValueChange={setAssigneeId}
-                disabled={!projectId || !contacts?.length}
+                disabled={!projectId || !contactsList.length}
               >
                 <SelectTrigger id="assignee" className={errors.assigneeId ? "border-destructive" : ""}>
                   <SelectValue placeholder={!projectId ? "Select a project first" : "Select assignee"} />
                 </SelectTrigger>
                 <SelectContent>
-                  {contacts?.map((contact) => (
+                  {contactsList.map((contact) => (
                     <SelectItem key={contact.id} value={contact.id}>
                       {contact.name} ({contact.email})
                     </SelectItem>
