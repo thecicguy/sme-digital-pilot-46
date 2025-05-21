@@ -82,7 +82,6 @@ const Settings = () => {
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="mb-6">
           <TabsTrigger value="profile">Profile & Preferences</TabsTrigger>
-          <TabsTrigger value="integrations">Integrations</TabsTrigger>
           <TabsTrigger value="subscriptions">Subscriptions</TabsTrigger>
           <TabsTrigger value="team">Team Management</TabsTrigger>
           <TabsTrigger value="report-settings">Configuration</TabsTrigger>
@@ -255,10 +254,6 @@ const Settings = () => {
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
-        
-        <TabsContent value="integrations">
-          <IntegrationsContent />
         </TabsContent>
         
         <TabsContent value="subscriptions">
