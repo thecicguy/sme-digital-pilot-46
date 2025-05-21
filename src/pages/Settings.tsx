@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,15 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "@/hooks/use-toast";
+import { User } from "lucide-react";
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 // Import the content components
 import ReportTypesContent from "@/components/settings/ReportTypesContent";
@@ -54,8 +64,8 @@ const Settings = () => {
     setTimeout(() => {
       setSaving(false);
       toast({
-        title: "Profile Updated",
-        description: "Your profile information has been saved successfully.",
+        title: "Business Information Updated",
+        description: "Your business information has been saved successfully.",
       });
     }, 1000);
   };
@@ -75,11 +85,36 @@ const Settings = () => {
 
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-6">Settings</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Settings</h1>
+        
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-10 w-10 rounded-full">
+              <div className="flex items-center justify-center h-8 w-8 rounded-full bg-primary text-primary-foreground">
+                <User className="h-4 w-4" />
+              </div>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuLabel>
+              <div className="flex flex-col space-y-1">
+                <span className="font-medium">{profileForm.name}</span>
+                <span className="text-xs text-muted-foreground">{profileForm.email}</span>
+              </div>
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Profile Settings</DropdownMenuItem>
+            <DropdownMenuItem>Change Password</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Log out</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
       
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="mb-6">
-          <TabsTrigger value="profile">Profile & Preferences</TabsTrigger>
+          <TabsTrigger value="profile">Business & Preferences</TabsTrigger>
           <TabsTrigger value="subscriptions">Subscriptions</TabsTrigger>
           <TabsTrigger value="team">Team Management</TabsTrigger>
           <TabsTrigger value="roles-permissions">Roles & Permissions</TabsTrigger>
@@ -90,15 +125,15 @@ const Settings = () => {
         <TabsContent value="profile">
           <Card className="mb-6">
             <CardHeader>
-              <CardTitle>Profile Information</CardTitle>
+              <CardTitle>Business Information</CardTitle>
               <CardDescription>
-                Manage your personal information and contact details
+                Manage your company information and contact details
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="name">Full Name</Label>
+                  <Label htmlFor="name">Business Name</Label>
                   <Input 
                     id="name" 
                     name="name" 
@@ -107,7 +142,7 @@ const Settings = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email Address</Label>
+                  <Label htmlFor="email">Business Email</Label>
                   <Input 
                     id="email" 
                     name="email" 
@@ -117,7 +152,7 @@ const Settings = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="phone">Phone Number</Label>
+                  <Label htmlFor="phone">Contact Phone</Label>
                   <Input 
                     id="phone" 
                     name="phone" 
@@ -126,7 +161,7 @@ const Settings = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="company">Company</Label>
+                  <Label htmlFor="company">Legal Entity Name</Label>
                   <Input 
                     id="company" 
                     name="company" 
@@ -137,7 +172,7 @@ const Settings = () => {
               </div>
               <div className="flex justify-end">
                 <Button onClick={handleSaveProfile} disabled={saving}>
-                  {saving ? 'Saving...' : 'Save Profile'}
+                  {saving ? 'Saving...' : 'Save Business Info'}
                 </Button>
               </div>
             </CardContent>
@@ -189,8 +224,8 @@ const Settings = () => {
                 </div>
                 
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="reminder-notifications">Reminders</Label>
                   <div>
+                    <Label htmlFor="reminder-notifications">Reminders</Label>
                     <p className="text-sm text-muted-foreground">Receive task and meeting reminders</p>
                   </div>
                   <Switch
@@ -221,34 +256,6 @@ const Settings = () => {
                 <Button onClick={handleSavePreferences} disabled={saving}>
                   {saving ? 'Saving...' : 'Save Preferences'}
                 </Button>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader>
-              <CardTitle>Change Password</CardTitle>
-              <CardDescription>
-                Update your account password
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="current-password">Current Password</Label>
-                  <Input id="current-password" type="password" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="new-password">New Password</Label>
-                  <Input id="new-password" type="password" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="confirm-password">Confirm New Password</Label>
-                  <Input id="confirm-password" type="password" />
-                </div>
-              </div>
-              <div className="flex justify-end">
-                <Button>Change Password</Button>
               </div>
             </CardContent>
           </Card>
