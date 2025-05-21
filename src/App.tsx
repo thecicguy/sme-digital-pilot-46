@@ -25,6 +25,7 @@ import Dashboard from "./pages/Dashboard";
 import Calendar from "./pages/Calendar";
 import Documents from "./pages/Documents";
 import TemplateStore from "./pages/TemplateStore";
+import StaffAdmin from "./pages/StaffAdmin";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -63,6 +64,7 @@ const App = () => (
                   <Route path="/reports" element={<Reports />} />
                   <Route path="/settings" element={<Settings />} />
                   <Route path="/template-store" element={<TemplateStore />} />
+                  <Route path="/staff-admin" element={<StaffAdmin />} />
                 </Route>
                 
                 <Route path="/unauthorized" element={<Unauthorized />} />

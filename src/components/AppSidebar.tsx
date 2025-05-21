@@ -2,7 +2,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
-import { Book, BookmarkCheck, Building, Calendar, Briefcase, Settings, Users, FileText, HelpCircle, LogOut } from "lucide-react";
+import { Book, BookmarkCheck, Building, Calendar, Briefcase, Settings, Users, FileText, HelpCircle, LogOut, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -53,6 +53,11 @@ const AppSidebar = () => {
     name: "Settings",
     path: "/settings",
     icon: <Settings className="h-5 w-5" />
+  }, {
+    name: "Staff Admin",
+    path: "/staff-admin",
+    icon: <Shield className="h-5 w-5" />,
+    isAdmin: true
   }];
   
   // Helper function to check if a path is active
@@ -73,6 +78,11 @@ const AppSidebar = () => {
     logout();
   };
 
+  // Filter nav items based on admin status
+  const filteredNavItems = user?.role === "service_provider" 
+    ? navItems 
+    : navItems.filter(item => !item.isAdmin);
+
   return <aside className="fixed left-0 top-0 z-30 flex h-screen w-64 flex-col border-r border-border bg-background transition-all duration-300">
       <div className="flex h-16 items-center border-b border-border px-6">
         <Link to="/" className="flex items-center gap-2 font-bold text-xl">
@@ -83,7 +93,7 @@ const AppSidebar = () => {
 
       <nav className="flex-1 overflow-auto p-6">
         <ul className="space-y-2">
-          {navItems.map((item) => (
+          {filteredNavItems.map((item) => (
             <li key={item.path}>
               <Link 
                 to={item.path} 
@@ -96,6 +106,11 @@ const AppSidebar = () => {
               >
                 {item.icon}
                 <span>{item.name}</span>
+                {item.isAdmin && (
+                  <span className="ml-auto bg-primary/20 text-primary text-xs px-1.5 py-0.5 rounded-full">
+                    Admin
+                  </span>
+                )}
               </Link>
             </li>
           ))}
@@ -153,6 +168,14 @@ const AppSidebar = () => {
               <Link to="/settings">
                 <DropdownMenuItem>Profile Settings</DropdownMenuItem>
               </Link>
+              {user?.role === "service_provider" && (
+                <Link to="/staff-admin">
+                  <DropdownMenuItem className="flex items-center gap-2 text-primary">
+                    <Shield className="h-4 w-4" />
+                    <span>Staff Admin Portal</span>
+                  </DropdownMenuItem>
+                </Link>
+              )}
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout} className="flex items-center gap-2 text-destructive">
                 <LogOut className="h-4 w-4" />
