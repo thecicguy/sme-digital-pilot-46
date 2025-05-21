@@ -68,10 +68,10 @@ const SubscriptionsContent = () => {
             <h3 className="font-semibold text-xl mb-1">Annual Subscription</h3>
             <div className="flex items-end gap-1 mb-4">
               <span className="text-3xl font-bold">€30</span>
-              <span className="text-muted-foreground mb-1">/month per user</span>
+              <span className="text-muted-foreground mb-1">/month per active team member</span>
             </div>
             <p className="text-sm text-muted-foreground mb-4">
-              Billed annually in advance (€360/year per user)
+              Billed annually in advance (€360/year per active team member)
             </p>
             
             <div className="space-y-3 mb-6">
@@ -80,6 +80,12 @@ const SubscriptionsContent = () => {
                   <div className="h-2 w-2 rounded-full bg-primary"></div>
                 </div>
                 <span>Full access to all features</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="h-4 w-4 rounded-full bg-primary/20 flex items-center justify-center">
+                  <div className="h-2 w-2 rounded-full bg-primary"></div>
+                </div>
+                <span>Unlimited Clients</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="h-4 w-4 rounded-full bg-primary/20 flex items-center justify-center">
@@ -103,7 +109,7 @@ const SubscriptionsContent = () => {
             
             {/* User count section */}
             <div className="border-t pt-4 mb-6">
-              <label htmlFor="user-count" className="block text-sm font-medium mb-2">Number of Users</label>
+              <label htmlFor="user-count" className="block text-sm font-medium mb-2">Number of team members</label>
               <div className="flex items-center gap-4">
                 <div className="w-32">
                   <Input 
@@ -116,7 +122,7 @@ const SubscriptionsContent = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <Users className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">Currently: 5 users</span>
+                  <span className="text-sm text-muted-foreground">Currently: 5 team members</span>
                 </div>
               </div>
             </div>
@@ -127,7 +133,7 @@ const SubscriptionsContent = () => {
                 <span className="font-medium">Annual Total:</span>
                 <span className="font-bold text-xl">€1,800.00</span>
               </div>
-              <p className="text-xs text-muted-foreground text-right">5 users × €360/year</p>
+              <p className="text-xs text-muted-foreground text-right">5 team members × €360/year</p>
             </div>
             
             <div className="flex justify-center space-x-4">
