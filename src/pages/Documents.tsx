@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
@@ -152,6 +153,7 @@ const categories = [
   "Financial",
   "Marketing",
   "Meetings",
+  "Templates",
   "Miscellaneous"
 ];
 

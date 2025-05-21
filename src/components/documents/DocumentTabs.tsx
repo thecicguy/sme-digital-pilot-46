@@ -1,6 +1,6 @@
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 import DocumentListView from "./DocumentListView";
 
 interface Document {
@@ -34,14 +34,6 @@ const DocumentTabs = ({
 }: DocumentTabsProps) => {
   return (
     <Tabs defaultValue="list" className="w-full">
-      <div className="border-b mb-4">
-        <TabsList className="bg-transparent">
-          <TabsTrigger value="list" className="text-sm py-2 px-4 data-[state=active]:border-b-2 data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 rounded-none">
-            List View
-          </TabsTrigger>
-        </TabsList>
-      </div>
-      
       <TabsContent value="list" className="mt-0">
         <Card className="border-0 shadow-none">
           <CardContent className="p-0">
