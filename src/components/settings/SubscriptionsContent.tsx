@@ -1,7 +1,8 @@
+
 import React from "react";
 import { Card, CardHeader, CardContent, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FileText, CreditCard, Trash2, RotateCw, Shield } from "lucide-react";
+import { FileText, RotateCw, Shield, Trash2 } from "lucide-react";
 
 const SubscriptionsContent = () => {
   return (
@@ -161,7 +162,7 @@ const SubscriptionsContent = () => {
             <div className="flex items-center justify-between p-4 border rounded-lg">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 flex items-center justify-center bg-gray-100 rounded-full">
-                  <CreditCard className="h-6 w-6 text-gray-600" />
+                  <FileText className="h-6 w-6 text-gray-600" />
                 </div>
                 <div>
                   <p className="font-medium">Visa ending in 4242</p>

@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Card, CardHeader, CardContent, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Video, Calendar, Mail, MessageCircle, CreditCard, CalendarDays, FileText, Brain, Bot, Settings } from "lucide-react";
+import { Video, Calendar, Mail, MessageCircle, CalendarDays, FileText, Brain, Bot, Settings } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -405,58 +405,6 @@ const IntegrationsContent = () => {
                 </div>
                 <div>
                   <p className="font-medium">Capsule</p>
-                  <p className="text-sm text-muted-foreground">Not connected</p>
-                </div>
-              </div>
-              <Button variant="outline">Connect</Button>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Payment Integrations */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Payment Integrations</CardTitle>
-          <CardDescription>
-            Connect your payment processors for seamless invoicing and billing
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="flex items-center justify-between p-4 border rounded-lg">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 flex items-center justify-center bg-green-100 rounded-full">
-                  <CreditCard className="h-6 w-6 text-green-600" />
-                </div>
-                <div>
-                  <p className="font-medium">Stripe</p>
-                  <p className="text-sm text-muted-foreground">Not connected</p>
-                </div>
-              </div>
-              <Button variant="outline">Connect</Button>
-            </div>
-            
-            <div className="flex items-center justify-between p-4 border rounded-lg">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 flex items-center justify-center bg-blue-100 rounded-full">
-                  <CreditCard className="h-6 w-6 text-blue-600" />
-                </div>
-                <div>
-                  <p className="font-medium">PayPal</p>
-                  <p className="text-sm text-muted-foreground">Not connected</p>
-                </div>
-              </div>
-              <Button variant="outline">Connect</Button>
-            </div>
-            
-            <div className="flex items-center justify-between p-4 border rounded-lg">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 flex items-center justify-center bg-green-100 rounded-full">
-                  <div className="text-green-600 font-bold text-lg">GC</div>
-                </div>
-                <div>
-                  <p className="font-medium">GoCardless</p>
                   <p className="text-sm text-muted-foreground">Not connected</p>
                 </div>
               </div>
