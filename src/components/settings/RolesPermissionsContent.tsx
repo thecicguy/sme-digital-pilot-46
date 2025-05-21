@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -34,7 +35,7 @@ const RolesPermissionsContent = () => {
     },
     {
       id: "manager",
-      name: "Manager",
+      name: "Consultant",
       description: "Can manage projects and reports",
       permissions: ["reports:view", "reports:edit", "clients:view", "clients:edit", "projects:view", "projects:edit", "tasks:view", "tasks:edit"],
       isDefault: false
