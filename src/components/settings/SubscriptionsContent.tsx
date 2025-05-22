@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Card, CardHeader, CardContent, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -72,6 +73,9 @@ const SubscriptionsContent = () => {
             <p className="text-sm text-muted-foreground mb-4">
               Billed annually in advance ($228/year per active team member)
             </p>
+            <p className="text-sm font-medium text-amber-600 bg-amber-50 px-3 py-2 rounded-md mb-4">
+              $250 one-time setup fee per account
+            </p>
             
             <div className="space-y-3 mb-6">
               <div className="flex items-center gap-2">
@@ -133,6 +137,7 @@ const SubscriptionsContent = () => {
                 <span className="font-bold text-xl">$1,140.00</span>
               </div>
               <p className="text-xs text-muted-foreground text-right">5 team members × $228/year</p>
+              <p className="text-xs text-amber-600 text-right mt-1">+ $250 one-time setup fee</p>
             </div>
             
             <div className="flex justify-center space-x-4">
