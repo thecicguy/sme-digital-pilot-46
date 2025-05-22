@@ -67,14 +67,14 @@ const SubscriptionsContent = () => {
             
             <h3 className="font-semibold text-xl mb-1">Annual Subscription</h3>
             <div className="flex items-end gap-1 mb-4">
-              <span className="text-3xl font-bold">$19</span>
+              <span className="text-3xl font-bold">€19</span>
               <span className="text-muted-foreground mb-1">/month per active team member</span>
             </div>
             <p className="text-sm text-muted-foreground mb-4">
-              Billed annually in advance ($228/year per active team member)
+              Billed annually in advance (€228/year per active team member)
             </p>
             <p className="text-sm font-medium text-amber-600 bg-amber-50 px-3 py-2 rounded-md mb-4">
-              $250 one-time setup fee per account
+              €250 one-time setup fee per account
             </p>
             
             <div className="space-y-3 mb-6">
@@ -134,10 +134,10 @@ const SubscriptionsContent = () => {
             <div className="border-t pt-4 mb-6">
               <div className="flex justify-between items-center">
                 <span className="font-medium">Annual Total:</span>
-                <span className="font-bold text-xl">$1,140.00</span>
+                <span className="font-bold text-xl">€1,140.00</span>
               </div>
-              <p className="text-xs text-muted-foreground text-right">5 team members × $228/year</p>
-              <p className="text-xs text-amber-600 text-right mt-1">+ $250 one-time setup fee</p>
+              <p className="text-xs text-muted-foreground text-right">5 team members × €228/year</p>
+              <p className="text-xs text-amber-600 text-right mt-1">+ €250 one-time setup fee</p>
             </div>
             
             <div className="flex justify-center space-x-4">
