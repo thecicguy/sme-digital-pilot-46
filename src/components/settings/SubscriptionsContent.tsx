@@ -119,16 +119,13 @@ const SubscriptionsContent = () => {
                 <div className="h-4 w-4 rounded-full bg-primary/20 flex items-center justify-center">
                   <div className="h-2 w-2 rounded-full bg-primary"></div>
                 </div>
-                <span className="flex items-center gap-2">
-                  <Workflow className="h-4 w-4 text-primary" /> 
-                  AI Workflow Included As Standard
-                </span>
+                <span>AI Workflow Included As Standard</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="h-4 w-4 rounded-full bg-primary/20 flex items-center justify-center">
                   <div className="h-2 w-2 rounded-full bg-primary"></div>
                 </div>
-                <span>Priority support</span>
+                <span>24/7 Integrated IA Support</span>
               </div>
             </div>
             
