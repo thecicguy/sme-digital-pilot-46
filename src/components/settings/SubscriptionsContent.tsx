@@ -1,12 +1,31 @@
-
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardHeader, CardContent, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { FileText, RotateCw, Shield, Trash2, Users } from "lucide-react";
+import { FileText, RotateCw, Shield, Trash2, Users, Workflow, Bot } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { toast } from "@/hooks/use-toast";
 
 const SubscriptionsContent = () => {
+  const [userCount, setUserCount] = useState(5);
+  
+  const handleUserCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value);
+    if (value < 5) {
+      setUserCount(5);
+      toast({
+        title: "Minimum team members",
+        description: "You need at least 5 team members for this subscription.",
+      });
+    } else {
+      setUserCount(value);
+    }
+  };
+
+  const calculateTotal = (count: number) => {
+    return (count * 228) + 250;
+  };
+
   return (
     <div className="space-y-8">
       {/* Application Invoice Section */}
@@ -88,7 +107,7 @@ const SubscriptionsContent = () => {
                 <div className="h-4 w-4 rounded-full bg-primary/20 flex items-center justify-center">
                   <div className="h-2 w-2 rounded-full bg-primary"></div>
                 </div>
-                <span>Unlimited Clients</span>
+                <span>Unlimited Free Client Accounts</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="h-4 w-4 rounded-full bg-primary/20 flex items-center justify-center">
@@ -100,7 +119,10 @@ const SubscriptionsContent = () => {
                 <div className="h-4 w-4 rounded-full bg-primary/20 flex items-center justify-center">
                   <div className="h-2 w-2 rounded-full bg-primary"></div>
                 </div>
-                <span>Custom branding & integrations</span>
+                <span className="flex items-center gap-2">
+                  <Workflow className="h-4 w-4 text-primary" /> 
+                  AI Workflow Included As Standard
+                </span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="h-4 w-4 rounded-full bg-primary/20 flex items-center justify-center">
@@ -118,14 +140,15 @@ const SubscriptionsContent = () => {
                   <Input 
                     id="user-count" 
                     type="number" 
-                    min="1" 
-                    defaultValue="5" 
+                    min="5" 
+                    value={userCount}
+                    onChange={handleUserCountChange}
                     className="text-center" 
                   />
                 </div>
                 <div className="flex items-center gap-2">
                   <Users className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm text-muted-foreground">Currently: 5 team members</span>
+                  <span className="text-sm text-muted-foreground">Currently: {userCount} team members</span>
                 </div>
               </div>
             </div>
@@ -134,9 +157,9 @@ const SubscriptionsContent = () => {
             <div className="border-t pt-4 mb-6">
               <div className="flex justify-between items-center">
                 <span className="font-medium">Annual Total:</span>
-                <span className="font-bold text-xl">€1,140.00</span>
+                <span className="font-bold text-xl">€{calculateTotal(userCount).toFixed(2)}</span>
               </div>
-              <p className="text-xs text-muted-foreground text-right">5 team members × €228/year</p>
+              <p className="text-xs text-muted-foreground text-right">{userCount} team members × €228/year</p>
               <p className="text-xs text-amber-600 text-right mt-1">+ €250 one-time setup fee</p>
             </div>
             
